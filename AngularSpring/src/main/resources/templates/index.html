@@ -54,7 +54,7 @@
         <a href="#" style="margin: 20px 0" class="btn btn-primary" data-toggle="modal" data-target="#addStudentModal">
             Add Students
         </a>
-        <div class="modal fade" id="updateStudentModal" tabindex="-1" role="dialog" aria-labelledby="updateStudentModalLabel">
+        <div ng-hide="isUpdateSuccess" class="modal fade" id="updateStudentModal" tabindex="-1" role="dialog" aria-labelledby="updateStudentModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -66,7 +66,7 @@
                     <div class="modal-body">
                         <form ng-submit="update()">
                             <input type="hidden" name="id" ng-model="student.id">
-                            <div class="form-group">
+                            <div class="form-group" >
                                 <label for="fName">First Name</label>
                                 <input type="text" class="form-control" required ng-model="student.fName" id="fName"
                                        placeholder="Enter first name">
@@ -84,10 +84,28 @@
                                        placeholder="Enter semester">
                                 <br>
                             </div>
+
+
                             <button type="submit" class="btn btn-primary">
                                 Update Student
                             </button>
                         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Success Modal -->
+        <div class="modal fade" id="SuccessModal" tabindex="-1" role="dialog" aria-labelledby="updateSuccessModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateSuccessModalLabel">Operation Successful</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ successMessage }}
                     </div>
                 </div>
             </div>
@@ -138,7 +156,6 @@
                 </div>
             </div>
         </div>
-
 
 
 

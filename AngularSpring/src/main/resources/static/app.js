@@ -3,9 +3,9 @@ var app = angular.module('student', []);
 	
 	//first page
 
-    app.controller('StudentController', function ($scope, $http, $window) {
-		
-        $http.get('/api/students') // Replace this URL with your Spring Boot API endpoint
+    app.controller('StudentController', function ($scope, $http, $window, $timeout) {
+
+        $http.get('/api/students')
             .then(function (response) {
                 $scope.students = response.data;
             }, function (error) {
@@ -15,19 +15,21 @@ var app = angular.module('student', []);
 			if (confirm('Are you sure you want to delete this task?')) {
 				$http.delete('/api/delete/' + studentID) // Replace this URL with the actual backend API endpoint
 					.then(function (response) {
-						console.log('Task deleted successfully:', response.data);
-						// Assuming you want to refresh the task list after deletion
-						$window.location.reload();
+						$scope.successMessage = 'Student data deleted successfully.';
+						$('#SuccessModal').modal('show');
+						// Reset the form fields after successful update
+						$scope.student = null;
+						// Set the flag to true to hide the form and show the success message
+						$scope.isUpdateSuccess = true;
+						$timeout(function () {
+							$window.location.reload();
+						}, 3000);
 					})
 					.catch(function (error) {
 						console.error('Error deleting task:', error);
 						// Handle error if the deletion fails
 					});
 			}
-		}
-
-		$scope.doUpdate = function (studentID){
-				$scope.id = studentID;
 		}
 
 		 $scope.openAddStudentModal = function () {
@@ -53,14 +55,23 @@ var app = angular.module('student', []);
 				console.error('Student not found:', studentID);
 			}
 		};
-		$scope.update = function (){
+		$scope.update = function () {
 			$http.put('/api/add', $scope.student).then(function (response) {
+				$scope.successMessage = 'Student data updated successfully.';
+				$('#SuccessModal').modal('show');
+				// Reset the form fields after successful update
+				$scope.student = null;
+				// Set the flag to true to hide the form and show the success message
+				$scope.isUpdateSuccess = true;
+				$timeout(function () {
+					$window.location.reload();
+				}, 3000);
 
-				$window.location.reload();
-			}).catch(function (error) {
-				console.error('Error updating student:', error);
-				// Handle error if the update fails
-			});
+			})
+				.catch(function (error) {
+					console.error('Error updating student:', error);
+					// Handle error if the update fails
+				});
 		};
 
 	});
