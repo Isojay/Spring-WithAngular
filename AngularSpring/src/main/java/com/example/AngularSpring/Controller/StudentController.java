@@ -44,11 +44,13 @@ public class StudentController {
 	
 	@PutMapping("/add")
 	public StudentDetails updateStudent(@RequestBody StudentDetails studentDetail) {
-		return studentService.save(studentDetail);
+		StudentDetails studentDetails2 = studentService.save(studentDetail);
+
+		return studentDetails2;
 	}
 	
 	@GetMapping("/update")
-	public Optional<StudentDetails> returnbId(@RequestParam int studentID){
+	public Optional<StudentDetails> returnbyId(@RequestParam int studentID){
 		return studentService.findById(studentID);
 	}
 	
