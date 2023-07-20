@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -41,13 +42,13 @@ public class StudentController {
 		
 	}
 	
-	@PutMapping("/students")
+	@PutMapping("/add")
 	public StudentDetails updateStudent(@RequestBody StudentDetails studentDetail) {
 		return studentService.save(studentDetail);
 	}
 	
-	@GetMapping("/students/{studentID}")
-	public Optional<StudentDetails> returnbId(@PathVariable int studentID){
+	@GetMapping("/update")
+	public Optional<StudentDetails> returnbId(@RequestParam int studentID){
 		return studentService.findById(studentID);
 	}
 	

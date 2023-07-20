@@ -25,6 +25,9 @@ var app = angular.module('student', []);
 		        });
 		    }
 		}
+		 $scope.openAddStudentModal = function () {
+      		  $('#addStudentModal').modal('show');
+  		  };
     });
    
      app.controller('AddStudentController', function ($scope, $http, $window) {
@@ -40,7 +43,11 @@ var app = angular.module('student', []);
     /*
   app.controller('updateStudentController',function ($scope, $http, $window){
 	  
-	  $http.get('/api/update')
+	  $scope.doUpdate = function(){
+		  $http.put('/api/add',$scope.student)
+		  
+	  }
+	  
 	  
   });*/
    
