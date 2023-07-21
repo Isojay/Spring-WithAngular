@@ -26,9 +26,21 @@
 
     <!-- Main Content -->
     <div class="container" ng-controller="StudentController">
-        <!-- Student list table -->
-        <p>Search for Records:</p>
-        <p><input type="text" ng-model="test"></p>
+        <div class="row">
+        <!-- Search for Records input on the left -->
+        <div class="col-md-6">
+            <p>Search for Records:</p>
+            <p><input type="text" ng-model="test"></p>
+        </div>
+
+        <!-- Add Students button on the right -->
+        <div class="col-md-6 text-right">
+            <br>
+            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addStudentModal">
+                Add Students
+            </a>
+        </div>
+    </div>
         <table class="table">
             <thead class="thead-light">
                 <tr>
@@ -51,9 +63,7 @@
                 </tr>
             </tbody>
         </table>
-        <a href="#" style="margin: 20px 0" class="btn btn-primary" data-toggle="modal" data-target="#addStudentModal">
-            Add Students
-        </a>
+
         <div ng-hide="isUpdateSuccess" class="modal fade" id="updateStudentModal" tabindex="-1" role="dialog" aria-labelledby="updateStudentModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">

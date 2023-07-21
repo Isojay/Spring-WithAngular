@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -37,6 +38,8 @@ public class StudentService {
     public Optional<StudentDetails> findById(int id){
     	return studentRepo.findById(id);
     }
-    
-    
+
+    public List<StudentDetails> findAll(String field) {
+        return studentRepo.findAll(Sort.by(Sort.Direction.ASC,field));
+    }
 }
