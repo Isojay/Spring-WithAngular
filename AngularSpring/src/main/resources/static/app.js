@@ -23,7 +23,7 @@ var app = angular.module('student', []);
 						$scope.isUpdateSuccess = true;
 						$timeout(function () {
 							$window.location.reload();
-						}, 3000);
+						}, 2000);
 					})
 					.catch(function (error) {
 						console.error('Error deleting task:', error);
@@ -65,7 +65,7 @@ var app = angular.module('student', []);
 				$scope.isUpdateSuccess = true;
 				$timeout(function () {
 					$window.location.reload();
-				}, 3000);
+				}, 2000);
 
 			})
 				.catch(function (error) {
@@ -76,14 +76,26 @@ var app = angular.module('student', []);
 
 	});
    
-     app.controller('AddStudentController', function ($scope, $http, $window) {
+     app.controller('AddStudentController', function ($scope, $http, $window, $timeout) {
 	    $scope.student = {};
 	
 	
 	    $scope.addStudent = function () {
 	        $http.post('/api/add', $scope.student).then(function (response) {
-				$window.location.reload();
-	        });
+				$scope.successMessage1 = 'Student data added successfully.';
+				$('#addSuccessModal').modal('show');
+				// Reset the form fields after successful update
+				$scope.student = null;
+				// Set the flag to true to hide the form and show the success message
+				$scope.isUpdateSuccess = true;
+				$timeout(function () {
+					$window.location.reload();
+				}, 2000);
+	        })
+				.catch(function (error) {
+					console.error('Error updating student:', error);
+					// Handle error if the update fails
+				});
 	    };
 	});
 
