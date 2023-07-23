@@ -56,9 +56,8 @@ public class StudentService {
         return studentRepo.findAllByEmailContainingIgnoreCase(keyword, pageable);
     }
 
-
     public  Page<StudentDetails> searchkeyword(String keyword, Pageable pageable){
-        return studentRepo.findAllByFnameContainingIgnoreCase(keyword, pageable);
+        return studentRepo.findAllByfNameContainingIgnoreCase(keyword, pageable);
     }
     public  Page<StudentDetails> findbysemester(String keyword, Pageable pageable){
         return studentRepo.findStudentDetailsBySemesterContainingIgnoreCase(keyword, pageable);

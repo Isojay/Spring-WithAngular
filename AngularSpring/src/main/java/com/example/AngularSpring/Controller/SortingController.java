@@ -24,31 +24,68 @@ public class SortingController {
     }
 
     @GetMapping("/{column}")
-    public List<StudentDetails> SortingbyColumn(@PathVariable String column){
+    public List<StudentDetails> SortingbyColumn(@PathVariable String column) {
         return studentService.findAllwithfield(column);
     }
 
-    @GetMapping("/{pagesize}/{offset}")
-    private Page<StudentDetails> pagenation(@PathVariable int pagesize,@PathVariable int offset){
-        return studentService.findAllwithpagesize(offset,pagesize);
+    @GetMapping("/{pagesize}/{pageNumber}")
+    private Page<StudentDetails> pagenation(@PathVariable int pagesize, @PathVariable int pageNumber) {
+        Page<StudentDetails> page = studentService.findAllwithpagesize(pageNumber, pagesize);
+
+        int totalPages = page.getTotalPages();
+        long totalelements = page.getTotalElements();
+        if (totalPages > 2) {
+            if (totalelements % 2 == 0) {
+                return studentService.findAllwithpagesize(pageNumber, ((int) totalelements) / 2);
+            }
+        }
+        return studentService.findAllwithpagesize(pageNumber, ((int) totalelements + 1) / 2);
     }
 
-    @GetMapping("/email/{keyword}/{offset}/{pagesize}")
+    @GetMapping("/{criteria}/{keyword}/{offset}/{pagesize}")
+    private Page<StudentDetails> getByCriteria(@PathVariable String criteria,
+                                               @PathVariable String keyword,
+                                               @PathVariable int pagesize,
+                                               @PathVariable int offset) {
+        Pageable pageable = PageRequest.of(pagesize,offset);
+
+
+        switch (criteria) {
+            case "Email":
+                return studentService.findbyemail(keyword, pageable);
+            case "Name":
+                return studentService.searchkeyword(keyword, pageable);
+            case "Semester":
+                return studentService.findbysemester(keyword, pageable);
+            default:
+                throw new IllegalArgumentException("Invalid search criteria: " + criteria);
+        }
+    }
+/*
+    @GetMapping("/Email/{keyword}/{offset}/{pagesize}")
     private Page<StudentDetails> byEmail(@PathVariable String keyword,@PathVariable int pagesize,@PathVariable int offset){
         Pageable pageable = PageRequest.of(pagesize,offset);
         return studentService.findbyemail(keyword,pageable);
     }
 
-    @GetMapping("/name/{keyword}/{offset}/{pagesize}")
+    @GetMapping("/Name/{keyword}/{offset}/{pagesize}")
     private Page<StudentDetails> byName(@PathVariable String keyword,@PathVariable int pagesize,@PathVariable int offset){
         Pageable pageable = PageRequest.of(pagesize,offset);
         return studentService.searchkeyword(keyword,pageable);
     }
-    @GetMapping("/semester/{keyword}/{offset}/{pagesize}")
+    @GetMapping("/Semester/{keyword}/{offset}/{pagesize}")
     private Page<StudentDetails> bySemester(@PathVariable String keyword,@PathVariable int pagesize,@PathVariable int offset){
         Pageable pageable = PageRequest.of(pagesize,offset);
         return studentService.findbysemester(keyword,pageable);
     }
+*/
+
+
+
+
+
+
+
 
 
 

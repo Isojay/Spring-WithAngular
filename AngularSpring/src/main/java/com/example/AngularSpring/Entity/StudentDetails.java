@@ -59,7 +59,7 @@ public class StudentDetails {
     }
 
     public void setSemester(String semester) {
-        semester = semester;
+        this.semester = semester;
     }
 
     public String getlName() {
