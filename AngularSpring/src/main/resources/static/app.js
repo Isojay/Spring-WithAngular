@@ -1,17 +1,47 @@
 var app = angular.module('student', []);
 
-	
-	//first page
-
     app.controller('StudentController', function ($scope, $http, $window, $timeout) {
 
-        $http.get('/api/students')
-            .then(function (response) {
-                $scope.students = response.data;
-            }, function (error) {
-                console.error('Error fetching statuses:', error);
-            });
-        $scope.deleteStudent = function(studentID) {
+		$scope.currentPage = 0;
+		$scope.pageSize = 2;
+		$scope.keyword = 0;
+
+		function fetchPaginatedStudents() {
+			$http.get(`/api/${$scope.pageSize}/${$scope.currentPage}`)
+				.then(function (response) {
+					$scope.students = response.data.content;
+					$scope.totalItems = response.data.totalElements;
+					$scope.getTotalPages = response.data.totalPages;
+					console.log($scope.getTotalPages)
+				})
+				.catch(function (error) {
+					console.error('Error fetching paginated students:', error);
+				});
+		}
+
+		fetchPaginatedStudents();
+
+		$scope.setPageSize = function (size){
+			$scope.pageSize = size;
+			fetchPaginatedStudents();
+
+		}
+
+		$scope.goToPage = function (pageNumber) {
+			$scope.currentPage = pageNumber;
+			fetchPaginatedStudents(); // Fetch data for the new page
+
+		};
+
+		// Function to create an array of page numbers for pagination links
+		$scope.getTotalPagesArray = function () {
+			var totalPages = $scope.getTotalPages;
+			return Array.from({ length: totalPages }, (_, index) => index);
+		};
+
+
+
+		$scope.deleteStudent = function(studentID) {
 			if (confirm('Are you sure you want to delete this task?')) {
 				$http.delete('/api/delete/' + studentID) // Replace this URL with the actual backend API endpoint
 					.then(function (response) {

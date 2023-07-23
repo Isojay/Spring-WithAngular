@@ -21,7 +21,7 @@ public class StudentDetails {
     @NotEmpty
     private  String email;
 
-    private String Semester;
+    private String semester;
     private String password;
 
     public StudentDetails() {
@@ -33,7 +33,7 @@ public class StudentDetails {
         this.fName = fName;
         this.lName = lName;
         this.email = email;
-        this.Semester = semester;
+        this.semester = semester;
         this.password = password;
     }
 
@@ -55,11 +55,11 @@ public class StudentDetails {
     }
 
     public String getSemester() {
-        return Semester;
+        return semester;
     }
 
     public void setSemester(String semester) {
-        Semester = semester;
+        semester = semester;
     }
 
     public String getlName() {
@@ -93,7 +93,7 @@ public class StudentDetails {
                 ", fName='" + fName + '\'' +
                 ", lName='" + lName + '\'' +
                 ", email='" + email + '\'' +
-                ", Semester='" + Semester + '\'' +
+                ", Semester='" + semester + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }

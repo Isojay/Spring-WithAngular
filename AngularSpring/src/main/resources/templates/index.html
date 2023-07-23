@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="student">
+<html lang="en" >
 
 <head>
     <meta charset="UTF-8">
@@ -9,14 +9,11 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
 </head>
 
-<body>
+<body ng-app="student">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img ng-src="../static/images/logo.png" width="auto" height="40" class="d-inline-block align-top"
-                     alt=""/>
-            </a>
+
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -27,13 +24,13 @@
     <!-- Main Content -->
     <div class="container" ng-controller="StudentController">
         <div class="row">
-        <!-- Search for Records input on the left -->
+
         <div class="col-md-6">
             <p>Search for Records:</p>
             <p><input type="text" ng-model="test"></p>
         </div>
 
-        <!-- Add Students button on the right -->
+
         <div class="col-md-6 text-right">
             <br>
             <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addStudentModal">
@@ -45,6 +42,7 @@
             <thead class="thead-light">
                 <tr>
                     <th scope="col">SN</th>
+                    <th scope="col">ID</th>
                     <th scope="col">Student Name</th>
                     <th scope="col">Email</th>
                     <th scope="col">Semester</th>
@@ -55,6 +53,7 @@
             <tbody>
                 <tr ng-repeat="product in students | filter : test">
                     <th scope="row" ng-bind="$index + 1"></th>
+                    <td ng-bind="product.id"></td>
                     <td ng-bind="product.fName + ' ' + product.lName"></td>
                     <td ng-bind="product.email"></td>
                     <td ng-bind="product.semester"></td>
@@ -63,7 +62,27 @@
                 </tr>
             </tbody>
         </table>
-
+       <!-- <div class="text-center">
+            <pagination ng-model="currentPage" total-items="totalItems" items-per-page="pageSize" max-size="5"
+                        ng-change="pageChanged()" class="mt-4" boundary-links="true"></pagination>
+        </div>-->
+        <ul class="pagination justify-content-center">
+            <li class="page-item" ng-class="{ 'disabled': currentPage === 0 }">
+                <a class="page-link" href="#" ng-click="goToPage(1)">First</a>
+            </li>
+            <li class="page-item" ng-class="{ 'disabled': currentPage === 0 }">
+                <a class="page-link" href="#" ng-click="goToPage(currentPage - 1)">Previous</a>
+            </li>
+            <li class="page-item" ng-class="{'active': page === currentPage}" ng-repeat="page in getTotalPagesArray()">
+                <a class="page-link" href="#" ng-click="goToPage(page)">{{ page + 1}}</a>
+            </li>
+            <li class="page-item" ng-class="{ 'disabled': currentPage === getTotalPages - 1 }">
+                <a class="page-link" href="#" ng-click="goToPage(currentPage + 1)">Next</a>
+            </li>
+            <li class="page-item" ng-class="{ 'disabled': currentPage === getTotalPages - 1 }">
+                <a class="page-link" href="#" ng-click="goToPage(getTotalPages-1)">Last</a>
+            </li>
+        </ul>
         <div ng-hide="isUpdateSuccess" class="modal fade" id="updateStudentModal" tabindex="-1" role="dialog" aria-labelledby="updateStudentModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">

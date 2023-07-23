@@ -2,19 +2,24 @@ package com.example.AngularSpring.Service;
 
 import com.example.AngularSpring.Entity.StudentDetails;
 import com.example.AngularSpring.Repo.StudentRepo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-
 @Service
 public class StudentService {
 	
-	@Autowired
-   StudentRepo studentRepo;
+	final
+    StudentRepo studentRepo;
+
+    public StudentService(StudentRepo studentRepo) {
+        this.studentRepo = studentRepo;
+    }
 
 
     public StudentDetails save(StudentDetails studentDetails){
@@ -28,7 +33,7 @@ public class StudentService {
     
     public void deletebyId(int id) {
     	
-		 studentRepo.deleteById(id);;
+		 studentRepo.deleteById(id);
     }
     
     public List<StudentDetails> findAll() {
@@ -39,7 +44,25 @@ public class StudentService {
     	return studentRepo.findById(id);
     }
 
-    public List<StudentDetails> findAll(String field) {
+    public List<StudentDetails> findAllwithfield(String field) {
         return studentRepo.findAll(Sort.by(Sort.Direction.ASC,field));
     }
+
+    public Page<StudentDetails> findAllwithpagesize(int offset, int pagesize) {
+        return studentRepo.findAll(PageRequest.of(offset,pagesize));
+    }
+
+    public  Page<StudentDetails> findbyemail(String keyword, Pageable pageable){
+        return studentRepo.findAllByEmailContainingIgnoreCase(keyword, pageable);
+    }
+
+
+    public  Page<StudentDetails> searchkeyword(String keyword, Pageable pageable){
+        return studentRepo.findAllByFnameContainingIgnoreCase(keyword, pageable);
+    }
+    public  Page<StudentDetails> findbysemester(String keyword, Pageable pageable){
+        return studentRepo.findStudentDetailsBySemesterContainingIgnoreCase(keyword, pageable);
+    }
+
+
 }

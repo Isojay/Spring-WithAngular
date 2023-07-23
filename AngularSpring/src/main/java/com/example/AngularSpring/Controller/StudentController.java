@@ -2,16 +2,7 @@ package com.example.AngularSpring.Controller;
 
 import com.example.AngularSpring.Entity.StudentDetails;
 import com.example.AngularSpring.Service.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,9 +11,13 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class StudentController {
 	
-	@Autowired
+	final
 	StudentService studentService;
-	
+
+	public StudentController(StudentService studentService) {
+		this.studentService = studentService;
+	}
+
 	@GetMapping
 	public String showHome(){
 		return "index";
@@ -36,17 +31,14 @@ public class StudentController {
 	@PostMapping("/add")
 	public StudentDetails addStudents(@RequestBody StudentDetails studentDetails) {
 
-		StudentDetails studentDetails2 = studentService.save(studentDetails);
-
-		return studentDetails2;
+		return studentService.save(studentDetails);
 		
 	}
 	
 	@PutMapping("/add")
 	public StudentDetails updateStudent(@RequestBody StudentDetails studentDetail) {
-		StudentDetails studentDetails2 = studentService.save(studentDetail);
 
-		return studentDetails2;
+		return studentService.save(studentDetail);
 	}
 	
 	@GetMapping("/update")
