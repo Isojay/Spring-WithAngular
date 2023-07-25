@@ -7,18 +7,32 @@
     <title>Student Management System</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <style>
+        .ng-table-pager {
+            display: none;
+        }
+    </style>
 </head>
 
 <body ng-app="student">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2">
+                <img src="icon.png" width="auto" height="45" class="d-inline-block align-top" alt=""/>
+            </div>
+            <div class="col-md-3">
+                <a class="navbar-brand" href="#">  Student Management</a>
+            </div>
+
+        </div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
     </div>
 </nav>
-
+<br>
 <div class="container " ng-controller="StudentController">
     <div class="card shadow-none p-3 mb-5 bg-light rounded">
         <h5 class="card-header">Search for Records:</h5>
@@ -49,33 +63,18 @@
     <div class="card shadow p-3 mb-5 bg-white rounded">
         <h5 class="card-header">Student Details</h5>
         <div class="card-body">
-            <table class="table">
-                <thead class="thead-light">
-                <tr>
-                    <th scope="col">SN</th>
-                    <th scope="col">ID</th>
-                    <th scope="col">Student Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Semester</th>
-                    <th scope="col">Delete</th>
-                    <th scope="col">Update</th>
+            <table ng-table="tableParams" class="table" show-filter="true">
+              <tr ng-repeat="student in $data">
+                    <td title="'SN'" ng-bind="$index+1 "></td>
+                    <td title="'ID'">{{student.id}}</td>
+                    <td title="'First Name'" sortable="'fName'" filter="{ 'fName': 'text' }">{{student.fName}}</td>
+                    <td title="'Last Name'" sortable="'lName'" filter="{ 'lName': 'text' }">{{ student.lName}}</td>
+                    <td title="'Email'" sortable="'name'" filter="{ 'email': 'text' }">{{student.email}}</td>
+                    <td title="'Semester'" sortable="'semester'" filter="{ 'semester': 'text' }">{{student.semester}}</td>
+                    <td title="'Delete'"><a href="#" ng-click="deleteStudent(product.id)" class="btn btn-danger">Delete</a></td>
+                    <td title="'Update'"><a href="#" ng-click="doUpdate(product.id)" class="btn btn-warning">Update</a></td>
                 </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="product in students">
-                    <th scope="row" ng-bind="$index + 1"></th>
-                    <td ng-bind="product.id"></td>
-                    <td ng-bind="product.fName + ' ' + product.lName"></td>
-                    <td ng-bind="product.email"></td>
-                    <td ng-bind="product.semester"></td>
-                    <td>
-                        <a href="#" ng-click="deleteStudent(product.id)" class="btn btn-danger">Delete</a>
-                    </td>
-                    <td>
-                        <a href="#" ng-click="doUpdate(product.id)" class="btn btn-warning">Update</a>
-                    </td>
-                </tr>
-                </tbody>
+
             </table>
             <ul class="pagination justify-content-center">
                 <li class="page-item" ng-hide="currentPage === 0">
@@ -212,10 +211,10 @@
     </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.2/angular.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ng-table/1.0.0/ng-table.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ng-table/1.0.0/ng-table.js"></script>
+
 <script src="app.js"></script>
 </body>
 
