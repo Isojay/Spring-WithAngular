@@ -1,10 +1,11 @@
 package com.example.AngularSpring.Entity;
 
 import jakarta.persistence.*;
+
 import jakarta.validation.constraints.NotEmpty;
 
 @Entity
-@Table(name= "Student")
+@Table(name = "Student")
 public class StudentDetails {
 
     @Id
@@ -14,19 +15,20 @@ public class StudentDetails {
     @NotEmpty
     @Column(name = "First_name")
     private String fName;
+
     @NotEmpty
     @Column(name = "Last_name")
     private String lName;
+
     @Column(nullable = false, unique = true)
     @NotEmpty
-    private  String email;
+    private String email;
 
     private String semester;
     private String password;
 
     public StudentDetails() {
     }
-
 
     public StudentDetails(int id, String fName, String lName, String email, String semester, String password) {
         this.id = id;
@@ -37,7 +39,6 @@ public class StudentDetails {
         this.password = password;
     }
 
-
     public int getId() {
         return id;
     }
@@ -46,6 +47,7 @@ public class StudentDetails {
         this.id = id;
     }
 
+    @NotEmpty
     public String getfName() {
         return fName;
     }
@@ -62,6 +64,7 @@ public class StudentDetails {
         this.semester = semester;
     }
 
+    @NotEmpty
     public String getlName() {
         return lName;
     }
@@ -70,6 +73,7 @@ public class StudentDetails {
         this.lName = lName;
     }
 
+    @NotEmpty
     public String getEmail() {
         return email;
     }
@@ -93,9 +97,8 @@ public class StudentDetails {
                 ", fName='" + fName + '\'' +
                 ", lName='" + lName + '\'' +
                 ", email='" + email + '\'' +
-                ", Semester='" + semester + '\'' +
+                ", semester='" + semester + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }
-
 }

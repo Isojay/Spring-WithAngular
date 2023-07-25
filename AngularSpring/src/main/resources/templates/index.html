@@ -10,7 +10,6 @@
 </head>
 
 <body ng-app="student">
-<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -20,78 +19,86 @@
     </div>
 </nav>
 
-<!-- Main Content -->
-<div class="container" ng-controller="StudentController">
-    <div class="row">
-        <div class="col-md-2">
-            <p>Search for Records:</p>
-        </div>
-        <div class="col-md-2">
-            <select ng-model="SearchCategory" ng-click="setCategory(SearchCategory)" class="form-control">
-                <option selected>Name</option>
-                <option>Email</option>
-                <option>Semester</option>
-            </select>
-        </div>
-        <div class="col-md-2">
-            <input type="text" ng-model="searchKeyword" ng-change="searchWord(searchKeyword)" class="form-control"
-                   placeholder="Enter keyword">
-        </div>
-        <div class="col-md-1">
-            <button ng-click="searchProducts()" class="btn btn-primary">Search</button>
-        </div>
-        <div class="col-md-1 text-right">
-            <button ng-click="Reset()" class="btn btn-secondary">Reset</button>
+<div class="container " ng-controller="StudentController">
+    <div class="card shadow-none p-3 mb-5 bg-light rounded">
+        <h5 class="card-header">Search for Records:</h5>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2">
+                    <input type="text" ng-model="keywordName" class="form-control" placeholder="Enter Name">
+                </div>
+                <div class="col-md-2">
+                    <input type="text" ng-model="keywordEmail" class="form-control" placeholder="Enter Email">
+                </div>
+                <div class="col-md-2">
+                    <input type="text" ng-model="keywordSemester" class="form-control" placeholder="Enter Semester">
+                </div>
+                <div class="col-md-1">
+                    <button ng-click="searchKeywords()" class="btn btn-primary">Search</button>
+                </div>
+                <div class="col-md-1">
+                    <button ng-click="Reset()" class="btn btn-secondary">Reset</button>
+                </div>
+                <div class="col-md-2">
+                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addStudentModal">Add Students</a>
+                </div>
+            </div>
         </div>
     </div>
-    <table class="table">
-        <thead class="thead-light">
-        <tr>
-            <th scope="col">SN</th>
-            <th scope="col">ID</th>
-            <th scope="col">Student Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Semester</th>
-            <th scope="col">Delete</th>
-            <th scope="col">Update</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="product in students">
-            <th scope="row" ng-bind="$index + 1"></th>
-            <td ng-bind="product.id"></td>
-            <td ng-bind="product.fName + ' ' + product.lName"></td>
-            <td ng-bind="product.email"></td>
-            <td ng-bind="product.semester"></td>
-            <td><a href="#" ng-click="deleteStudent(product.id)" class="btn btn-danger">Delete</a></td>
-            <td><a href="#" ng-click="doUpdate(product.id)" class="btn btn-warning">Update</a></td>
-        </tr>
-        </tbody>
-    </table>
 
-    <div class="col-md-2 ">
-        <br>
-        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addStudentModal">Add Students</a>
+    <div class="card shadow p-3 mb-5 bg-white rounded">
+        <h5 class="card-header">Student Details</h5>
+        <div class="card-body">
+            <table class="table">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">SN</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Student Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Semester</th>
+                    <th scope="col">Delete</th>
+                    <th scope="col">Update</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="product in students">
+                    <th scope="row" ng-bind="$index + 1"></th>
+                    <td ng-bind="product.id"></td>
+                    <td ng-bind="product.fName + ' ' + product.lName"></td>
+                    <td ng-bind="product.email"></td>
+                    <td ng-bind="product.semester"></td>
+                    <td>
+                        <a href="#" ng-click="deleteStudent(product.id)" class="btn btn-danger">Delete</a>
+                    </td>
+                    <td>
+                        <a href="#" ng-click="doUpdate(product.id)" class="btn btn-warning">Update</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <ul class="pagination justify-content-center">
+                <li class="page-item" ng-hide="currentPage === 0">
+                    <a class="page-link" href="#" ng-click="goToPage(0)">First</a>
+                </li>
+                <li class="page-item" ng-hide="currentPage === 0">
+                    <a class="page-link" href="#" ng-click="goToPage(currentPage - 1)">Previous</a>
+                </li>
+                <li class="page-item" ng-class="{'active': page === currentPage}" ng-repeat="page in getTotalPagesArray()">
+                    <a class="page-link" href="#" ng-click="goToPage(page)">{{ page + 1}}</a>
+                </li>
+                <li class="page-item" ng-hide="currentPage === getTotalPages - 1">
+                    <a class="page-link" href="#" ng-click="goToPage(currentPage + 1)">Next</a>
+                </li>
+                <li class="page-item" ng-hide="currentPage === getTotalPages - 1">
+                    <a class="page-link" href="#" ng-click="goToPage(getTotalPages-1)">Last</a>
+                </li>
+            </ul>
+        </div>
     </div>
-    <ul class="pagination justify-content-center">
-        <li class="page-item" ng-class="{ 'disabled': currentPage === 0 }">
-            <a class="page-link" href="#" ng-click="goToPage(1)">First</a>
-        </li>
-        <li class="page-item" ng-class="{ 'disabled': currentPage === 0 }">
-            <a class="page-link" href="#" ng-click="goToPage(currentPage - 1)">Previous</a>
-        </li>
-        <li class="page-item" ng-class="{'active': page === currentPage}" ng-repeat="page in getTotalPagesArray()">
-            <a class="page-link" href="#" ng-click="goToPage(page)">{{ page + 1}}</a>
-        </li>
-        <li class="page-item" ng-class="{ 'disabled': currentPage === getTotalPages - 1 }">
-            <a class="page-link" href="#" ng-click="goToPage(currentPage + 1)">Next</a>
-        </li>
-        <li class="page-item" ng-class="{ 'disabled': currentPage === getTotalPages - 1 }">
-            <a class="page-link" href="#" ng-click="goToPage(getTotalPages-1)">Last</a>
-        </li>
-    </ul>
 
-    <!-- Update Student Modal -->
+    <br>
+
     <div ng-hide="isUpdateSuccess" class="modal fade" id="updateStudentModal" tabindex="-1" role="dialog"
          aria-labelledby="updateStudentModalLabel">
         <div class="modal-dialog" role="document">
@@ -130,7 +137,6 @@
         </div>
     </div>
 
-    <!-- Success Modal -->
     <div class="modal fade" id="SuccessModal" tabindex="-1" role="dialog" aria-labelledby="updateSuccessModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -148,7 +154,6 @@
     </div>
 </div>
 
-<!-- Add Student Modal -->
 <div ng-controller="AddStudentController">
     <div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog" aria-labelledby="addStudentModalLabel"
          aria-hidden="true" ng-hide="isUpdateSuccess">
@@ -207,7 +212,6 @@
     </div>
 </div>
 
-<!-- Scripts -->
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>

@@ -44,13 +44,10 @@ public class StudentService {
     	return studentRepo.findById(id);
     }
 
-    public List<StudentDetails> findAllwithfield(String field) {
-        return studentRepo.findAll(Sort.by(Sort.Direction.ASC,field));
-    }
-
-    public Page<StudentDetails> findAllwithpagesize(int offset, int pagesize) {
+   public Page<StudentDetails> findAllwithpagesize(int offset, int pagesize) {
         return studentRepo.findAll(PageRequest.of(offset,pagesize));
     }
+
 
     public  Page<StudentDetails> findbyemail(String keyword, Pageable pageable){
         return studentRepo.findAllByEmailContainingIgnoreCase(keyword, pageable);
@@ -62,6 +59,20 @@ public class StudentService {
     public  Page<StudentDetails> findbysemester(String keyword, Pageable pageable){
         return studentRepo.findStudentDetailsBySemesterContainingIgnoreCase(keyword, pageable);
     }
+
+    public Page<StudentDetails> findbyemailfnamesemester(String fName,String email,  String Semester,Pageable pageable){
+        return studentRepo.findStudentDetailsByfNameContainingIgnoreCaseAndEmailContainingIgnoreCaseAndSemesterContainingIgnoreCase(fName,email, Semester, pageable);
+    }
+    public Page<StudentDetails> findbyemailfname(String fName,String email, Pageable pageable){
+        return studentRepo.findStudentDetailsByfNameContainingIgnoreCaseAndEmailContainingIgnoreCase(fName,email,  pageable);
+    }
+    public Page<StudentDetails> findbyemailsemester(String email, String Semester,Pageable pageable){
+        return studentRepo.findStudentDetailsByEmailContainingIgnoreCaseAndSemesterContainingIgnoreCase(email, Semester, pageable);
+    }
+    public Page<StudentDetails> findbyfnamesemester(String fName, String Semester,Pageable pageable){
+        return studentRepo.findAllByfNameContainingIgnoreCaseAndSemesterContainingIgnoreCase(fName, Semester, pageable);
+    }
+
 
 
 }
