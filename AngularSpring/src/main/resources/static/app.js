@@ -1,8 +1,8 @@
-var app = angular.module('student', []);
+var app = angular.module('student', ['ngTable']);
 
-app.controller('StudentController', function ($scope, $http, $window, $timeout) {
+app.controller('StudentController', function ($scope, $http,NgTableParams, $window, $timeout) {
 	$scope.currentPage = 0;
-	$scope.pageSize = 1;
+	$scope.pageSize = 5;
 	$scope.keywordSemester;
 	$scope.keywordName;
 	$scope.keywordEmail;
@@ -34,12 +34,23 @@ app.controller('StudentController', function ($scope, $http, $window, $timeout) 
 
 		$http.get(apiUrl)
 			.then(function (response) {
-				$scope.students = response.data.content;
+				var data = response.data.content;
 				$scope.totalItems = response.data.totalElements;
 				$scope.getTotalPages = response.data.totalPages;
 				$scope.currentPage = response.data.pageable.pageNumber;
-				console.log($scope.keywordEmail);
-				console.log($scope.keywordName);
+				$scope.tableParams = new NgTableParams(
+					{
+						page: 1, // Show the first page
+						count: 100, // Number of items per page
+						sorting: {
+							fName: 'asc' // Default sorting by 'First Name' column in ascending order
+						}
+					},
+					{
+
+						dataset: data // Set the fetched data as the dataset
+					}
+				);
 			})
 			.catch(function (error) {
 				console.error('Error fetching paginated students:', error);
