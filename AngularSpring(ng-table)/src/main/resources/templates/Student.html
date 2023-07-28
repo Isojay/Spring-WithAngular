@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management System</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <style>
+        .ng-table-pagination{
+            display: flex;
+            justify-content: center;
+        }
+        .ng-table-pagination a {
+            color: black;
+            float: right;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+        .ng-table-pagination-page-size{
+            display: flex;
+            justify-content: right;
+        }
+
+    </style>
+</head>
+
+<body ng-app="student">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2">
+                <img src="icon.png" width="auto" height="45" class="d-inline-block align-top" alt=""/>
+            </div>
+            <div class="col-md-3">
+                <a class="navbar-brand" href="#">  Student Management</a>
+            </div>
+
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto"></ul>
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/Students">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">shop</a>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+</nav>
+<br>
+<div class="container " ng-controller="StudentController">
+    <div class="card shadow-none p-3 mb-5 bg-light rounded">
+        <h5 class="card-header">Search for Records:</h5>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2">
+                    <input type="text" ng-model="keywordName" class="form-control" placeholder="Enter Name">
+                </div>
+                <div class="col-md-2">
+                    <input type="text" ng-model="keywordEmail" class="form-control" placeholder="Enter Email">
+                </div>
+                <div class="col-md-2">
+                    <input type="text" ng-model="keywordSemester" class="form-control" placeholder="Enter Semester">
+                </div>
+                <div class="col-md-1">
+                    <button ng-click="searchKeywords()" class="btn btn-primary">Search</button>
+                </div>
+                <div class="col-md-1">
+                    <button ng-click="Reset()" class="btn btn-secondary">Reset</button>
+                </div>
+                <div class="col-md-2">
+                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addStudentModal">Add Students</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow p-3 mb-5 bg-white rounded">
+        <h5 class="card-header">Student Details</h5>
+        <div class="card-body">
+            <table ng-table="tableParams" class="table" show-filter="true">
+                <tr ng-repeat="student in $data">
+                    <td title="'SN'" ng-bind="$index+1 "></td>
+                    <td title="'ID'">{{student.id}}</td>
+                    <td title="'First Name'" sortable="'fName'" filter="{ 'fName': 'text' }">{{student.fName}}</td>
+                    <td title="'Last Name'" sortable="'lName'" filter="{ 'lName': 'text' }">{{ student.lName}}</td>
+                    <td title="'Email'" sortable="'name'" filter="{ 'email': 'text' }">{{student.email}}</td>
+                    <td title="'Semester'" sortable="'semester'" filter="{ 'semester': 'text' }">{{student.semester}}</td>
+                    <td title="Delete"><a href="#" ng-click="deleteStudent(student.id)" class="btn btn-danger">Delete</a></td>
+                    <td title="Update"><a href="#" ng-click="doUpdate(student.id)" class="btn btn-warning">Update</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <br>
+
+    <div ng-hide="isUpdateSuccess" class="modal fade" id="updateStudentModal" tabindex="-1" role="dialog"
+         aria-labelledby="updateStudentModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateStudentModalLabel">Update Student</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form ng-submit="update()">
+                        <input type="hidden" name="id" ng-model="student.id">
+                        <div class="form-group">
+                            <label for="fName">First Name</label>
+                            <input type="text" class="form-control" required ng-model="student.fName" id="fName"
+                                   placeholder="Enter first name">
+                            <br>
+                            <label for="lName">Last Name</label>
+                            <input type="text" class="form-control" required ng-model="student.lName" id="lName"
+                                   placeholder="Enter last name">
+                            <br>
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" required ng-model="student.email" id="email"
+                                   placeholder="Enter email">
+                            <br>
+                            <label for="semester">Semester</label>
+                            <input type="text" class="form-control" required ng-model="student.semester"
+                                   id="semester" placeholder="Enter semester">
+                            <br>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Student</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="SuccessModal" tabindex="-1" role="dialog" aria-labelledby="updateSuccessModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateSuccessModalLabel">Operation Successful</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ successMessage }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-controller="AddStudentController">
+    <div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog" aria-labelledby="addStudentModalLabel"
+         aria-hidden="true" ng-hide="isUpdateSuccess">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addStudentModalLabel">Add a new Student</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form ng-submit="addStudent()">
+                        <input type="hidden" name="id" ng-model="student.id">
+                        <div class="form-group">
+                            <label for="fName">First Name</label>
+                            <input type="text" class="form-control" required ng-model="student.fName" id="fName"
+                                   placeholder="Enter first name">
+                            <br>
+                            <label for="lName">Last Name</label>
+                            <input type="text" class="form-control" required ng-model="student.lName" id="lName"
+                                   placeholder="Enter last name">
+                            <br>
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" required ng-model="student.email" id="email"
+                                   placeholder="Enter email">
+                            <br>
+                            <label for="semester">Semester</label>
+                            <input type="text" class="form-control" required ng-model="student.semester"
+                                   id="semester" placeholder="Enter semester">
+                            <br>
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" required ng-model="student.password"
+                                   id="password" placeholder="Enter password">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Student</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addSuccessModal" tabindex="-1" role="dialog" aria-labelledby="SuccessModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="SuccessModalLabel">Operation Successful</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ successMessage1 }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.2/angular.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ng-table/1.0.0/ng-table.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ng-table/1.0.0/ng-table.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<script src="app.js"></script>
+</body>
+
+</html>
