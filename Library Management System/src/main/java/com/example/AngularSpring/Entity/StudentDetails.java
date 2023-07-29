@@ -9,7 +9,6 @@ import lombok.Getter;
 @Table(name = "Student")
 public class StudentDetails {
 
-    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

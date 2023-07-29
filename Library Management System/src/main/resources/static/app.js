@@ -5,9 +5,9 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	$scope.showLibrary = false;
 	$scope.currentPage = 0;
 	$scope.pageSize = 10000;
-	$scope.keywordSemester;
-	$scope.keywordName;
-	$scope.keywordEmail;
+	$scope.keywordSemester = '';
+	$scope.keywordName = '';
+	$scope.keywordEmail = '';
 	$scope.count = 0;
 
 	function fetchStudents() {
@@ -34,8 +34,9 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		$http.get(apiUrl)
 			.then(function (response) {
 				$scope.students = response.data.content;
-				var data = response.data.content;
+				const data = response.data.content;
 				console.log("I was Here!!")
+				console.log($scope.keywordEmail)
 				$scope.tableParams = new NgTableParams(
 					{
 						page: 1, // Show the first page
@@ -59,7 +60,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		$http.get(apiUrl1)
 			.then(function (response) {
 				$scope.books = response.data;
-				var data1 = response.data;
+				const data1 = response.data;
 				console.log("I was also Here!!")
 				$scope.tableParams1 = new NgTableParams(
 					{
@@ -97,29 +98,25 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	}
 
 	$scope.Reset = function () {
+		console.log("Reset")
 		$scope.keywordSemester = null;
 		$scope.keywordName = null;
 		$scope.keywordEmail = null;
 		$scope.count = 0;
-		fetchStudents();
+		$scope.triggerStudent();
 	};
 
 	$scope.searchKeywords = function () {
+		console.log("Keywords")
 		$scope.count = 1;
-		fetchStudents();
+		$scope.triggerStudent();
 	}
 
 	$scope.deleteStudent = function (studentID) {
 		if (confirm('Are you sure you want to delete this task?')) {
 			$http.delete('/api/delete/' + studentID)
 				.then(function (response) {
-					$scope.successMessage = 'Student data deleted successfully.';
-					$('#SuccessModal').modal('show');
-					$scope.student = null;
-					$scope.isUpdateSuccess = true;
-					$timeout(function () {
-						$window.location.reload();
-					}, 1000);
+					deleteMessage(true)
 				})
 				.catch(function (error) {
 					console.error('Error deleting Student Data:', error);
@@ -132,13 +129,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			console.log(BookID)
 			$http.delete('/api/deleteBook/' + BookID)
 				.then(function () {
-					$scope.successMessage = 'Book deleted sucessfully.';
-					$('#SuccessModal').modal('show');
-					$scope.book = null;
-					$scope.isUpdateSuccess = true;
-					$timeout(function () {
-						$window.location.reload();
-					}, 1000);
+					deleteMessage(false);
 				})
 				.catch(function (error) {
 					console.error('Error deleting Book:', error);
@@ -146,11 +137,17 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		}
 	};
 
-	$scope.openAddStudentModal = function () {
-		console.log("I was Here!!")
-		$('#addStudentModal').modal('show', 'keyboard', 'focus');
-	};
-
+	$scope.showDetails= function (stdId){
+		$http.get('/api/getDetails/'+ stdId)
+			.then(function (response){
+				console.log("I am in Details")
+				$scope.details = response.data;
+				$('#showDetailsModal').modal('show', 'keyboard', 'focus');
+			})
+			.catch(function (error) {
+				console.error('Error Not found :', error);
+			});
+	}
 
 //Update Student
 	$scope.doUpdate = function (studentID) {
@@ -173,7 +170,8 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	$scope.update = function () {
 		$http.put('/api/add', $scope.student)
 			.then(function (response) {
-				updateMessage(true);
+				var update = "studentUpdate"
+				updateMessage(update);
 			})
 			.catch(function (error) {
 				console.error('Error updating student:', error);
@@ -201,19 +199,50 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	$scope.updateBook = function () {
 		$http.put('/api/addBook', $scope.book)
 			.then(function () {
-				updateMessage(false);
+				var update = "bookUpdate"
+				updateMessage(update);
 			})
 			.catch(function (error) {
-				console.error('Error updating Book:', error);
+				var from = "bookUpdate"
+				errorMessage(from);
 			});
 	}
 
 	function updateMessage(from) {
 		$scope.successMessage = 'Updated successful.';
+		$scope.successMessage1 = 'Student data added successfully.';
+		$scope.book = null;
+		$scope.student = null;
 		$('#updateStudentModal').modal('hide');
 		$('#updateBookModal').modal('hide');
+		if (from === "studentAdd"){
+			$('#addStudentModal').modal('hide');
+			$('#addSuccessModal').modal('show');
+			$timeout(function () {
+					$('#addSuccessModal').modal('hide')
+					console.log("damnnnnn")
+					fetchStudents();
+			}, 1000);
+		}else{
+			$('#SuccessModal').modal('show');
+			$scope.book = null;
+			$timeout(function () {
+				$('#SuccessModal').modal('hide');
+				if (from === "bookUpdate"){
+					console.log("damnnnnn")
+					$scope.triggerBook();
+				}else if(from === "studentUpdate"){
+					fetchStudents();
+				}
+			}, 1000);
+		}
+	};
+
+	function deleteMessage(from){
+		$scope.successMessage = 'Data deleted sucessfully.';
 		$('#SuccessModal').modal('show');
 		$scope.book = null;
+		$scope.student = null;
 		$timeout(function () {
 			$('#SuccessModal').modal('hide');
 			if (from){
@@ -222,20 +251,36 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 				$scope.triggerBook();
 			}
 		}, 1000);
+	}
+
+	function errorMessage(msg){
+		if(msg === "bookUpdate"){
+			$('#updateBookModal').modal('hide');
+			$('#errorModal').modal('show');
+			$scope.errorMessage = 'Student ID not Found';
+		}else if (msg ==="addStudent"){
+			$('#addStudentModal').modal('hide');
+			$('#errorModal').modal('show');
+			$scope.errorMessage = 'Email Id already Registered';
+		}
+
+	}
+	$scope.openAddStudentModal = function () {
+		console.log("I was Here!!")
+		$('#addStudentModal').modal('show', 'keyboard', 'focus');
 	};
 
 //Add Student
 	$scope.addStudent = function () {
 		$http.post('/api/add', $scope.student)
 			.then(function (response) {
-				$scope.successMessage1 = 'Student data added successfully.';
-				$('#addSuccessModal').modal('show');
 				$scope.student = null;
-				$timeout(function () {
-					$window.location.reload();
-				}, 1000);
+				var update = "studentAdd"
+				updateMessage(update);
 			})
 			.catch(function (error) {
+				var from = "addStudent"
+				errorMessage(from)
 				console.error('Error updating student:', error);
 			});
 	}

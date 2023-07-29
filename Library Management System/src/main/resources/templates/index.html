@@ -67,12 +67,35 @@
     </div>
 </nav>
 <br>
-<div class="container" ng-if="!showLibrary">
+<div class="container" ng-show="!showLibrary">
 
+    <div class="card shadow p-3 mb-5 bg-white rounded ">
+        <h5 class="card-header text-center">Library Management System</h5>
+        <div class="card-body">
+            <p>
+                This Library Management System is a web-based application that facilitates the management of a library's resources and operations. It allows librarians to handle various tasks efficiently while providing users with easy access to the library's catalog and services.
+            </p>
+            <h4>Key Features:</h4>
+            <ul>
+                <li>User-Friendly Interface: The system has a user-friendly interface that makes it easy for both librarians and library users to navigate and interact with the application.</li>
+                <li>Search and Filter: Users can search for books and other resources using different criteria like title, author, email, and semester. The system also provides filtering options to refine search results.</li>
+                <li>Student and Book Management: Librarians can manage student and book information efficiently. They can add new students, update existing student details, and delete student records. Similarly, they can add new books to the library, update book information, and remove books from the catalog.</li>
+                <li>Pagination: The system supports pagination, which means that large datasets are divided into pages, making it easier to browse through the information.</li>
+                <li>Borrowing and Returning: The system handles the borrowing and returning of books by students. It keeps track of the borrowing history, due dates, and fines for overdue items.</li>
+                <li>Book Status: The system maintains the status of books, indicating whether they are available in the library or currently borrowed by students.</li>
+                <li>Student Details: For borrowed books, the system displays the student details who have borrowed the book, including the student's ID and name.</li>
+                <li>Updates and Deletes: Librarians can update book information and student details when needed. They can also delete student records and book records from the database.</li>
+                <li>Success Modals: The system uses modal pop-ups to display success messages when operations like adding, updating, or deleting records are successful.</li>
+                <li>Responsive Design: The application is responsive, ensuring that it adapts to different screen sizes and devices, providing an optimal user experience.</li>
+                <li>AngularJS and ngTable: The system is built using AngularJS framework and utilizes the ngTable module for table display and pagination.</li>
+                <li>Integration with Backend APIs: The system communicates with backend APIs to fetch and store data from and to the database.</li>
+            </ul>
+        </div>
+    </div>
 
 </div>
 
-<div class="container " ng-if="showLibrary">
+<div class="container " ng-show="showLibrary">
     <div class="card shadow-none p-3 mb-5 bg-light rounded">
         <h5 class="card-header">Search for Records:</h5>
         <div class="card-body">
@@ -99,13 +122,13 @@
         </div>
     </div>
 
-    <div class="card shadow p-3 mb-5 bg-white rounded" ng-if="showTable">
+    <div class="card shadow p-3 mb-5 bg-white rounded" ng-show="showTable">
         <h5 class="card-header">Student Details</h5>
         <div class="card-body">
             <table ng-table="tableParams" class="table" show-filter="true">
                 <tr ng-repeat="student in $data">
                     <td title="'SN'" ng-bind="$index+1 "></td>
-                    <td title="'ID'">{{student.id}}</td>
+                    <td title="'ID'" class="text-center align-middle"  sortable="'id'" filter="{ 'id': 'number' }">{{student.id}}</td>
                     <td class="text-center align-middle" title="'First Name'" sortable="'fName'" filter="{ 'fName': 'text' }">{{student.fName}}</td>
                     <td class="text-center align-middle" title="'Last Name'" sortable="'lName'" filter="{ 'lName': 'text' }">{{ student.lName}}</td>
                     <td class="text-center align-middle" title="'Email'" sortable="'name'" filter="{ 'email': 'text' }">{{student.email}}</td>
@@ -116,7 +139,7 @@
             </table>
         </div>
     </div>
-    <div class="card shadow p-3 mb-5 bg-white rounded" ng-if="!showTable">
+    <div class="card shadow p-3 mb-5 bg-white rounded" ng-show="!showTable">
         <h5 class="card-header">Book Details</h5>
         <div class="card-body">
             <table ng-table="tableParams1" class="table text-center" show-filter="true">
@@ -130,8 +153,8 @@
                     <td class="text-center align-middle" title="'Borrowed date'" sortable="'date'" filter="{ 'date': 'number' }">{{book.date}}</td>
                     <td class="text-center align-middle" title="'Borrowed by'" sortable="'date'" filter="{ 'date': 'number' }">{{book.studentDetails.fName+" "+book.studentDetails.lName}}</td>
                     <td class="text-center align-middle" title="Update"><a href="#" ng-click="doUpdateBook(book.bcode)" class="btn btn-warning">{{ book.status === 0 ? 'Borrow' : 'Return' }}</a></td>
-                    <td class="text-center align-middle" title="Delete" ng-if="book.status === 0"><a href="#" ng-click="deleteBook(book.bcode)" class="btn btn-danger">Delete</a></td>
-                    <td class="text-center align-middle" title="Delete" ng-if="book.status === 1"><a href="#" ng-click="showDetails(book.bcode)" class="btn btn-primary">Student Info</a></td>
+                    <td class="text-center align-middle" title="Delete" ng-show="book.status === 0"><a href="#" ng-click="deleteBook(book.bcode)" class="btn btn-danger">Delete</a></td>
+                    <td class="text-center align-middle" title="Delete" ng-show="book.status === 1"><a href="#" ng-click="showDetails(book.studentDetails.id)" class="btn btn-primary">Student Info</a></td>
                 </tr>
             </table>
         </div>
@@ -221,6 +244,7 @@
             </div>
         </div>
     </div>
+
     <div class="modal fade" id="SuccessModal" tabindex="-1" role="dialog" aria-labelledby="updateSuccessModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -232,6 +256,22 @@
                 </div>
                 <div class="modal-body">
                     {{ successMessage }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">Error Error Error!!!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ errorMessage }}
                 </div>
             </div>
         </div>
@@ -256,13 +296,13 @@
                             <label>Book Name :</label>
                             {{ book.bname }}
                             <br>
-                            <div class="row" ng-if="book.status === 0">
+                            <div class="row" ng-show="book.status === 0">
                                 <div class="col-md-5">
                                     <label>Student ID</label>
                                     <input type="text" class="form-control" required ng-model="book.studentDetails" id="studentDetails" placeholder="Student ID">
                                 </div>
                             </div>
-                            <div ng-if="book.status === 1">
+                            <div ng-show="book.status === 1">
                                 <label>Borrowed by </label>
                                 <div class="row">
                                     <div class="col-md-4">
@@ -280,6 +320,44 @@
                         <button type="submit" class="btn btn-primary">{{ book.status === 0 ? 'Register Borrow' : 'Return' }}</button>
                     </form>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="showDetailsModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="showDetailsModalLabel">Operation Successful</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <table class="table text-center align-middle">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Student Id</th>
+                        <th scope="col">Student Name</th>
+                        <th scope="col">Semester</th>
+                        <th scope="col">Book Code</th>
+                        <th scope="col">Book name</th>
+                        <th scope="col">Borrowed Date</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="detail in details">
+                        <th scope="row" ng-bind="detail.studentDetails.id"></th>
+                        <td ng-bind="detail.studentDetails.fName + ' ' + detail.studentDetails.lName"></td>
+                        <td ng-bind="detail.studentDetails.semester"></td>
+                        <td ng-bind="detail.bcode"></td>
+                        <td ng-bind="detail.bname"></td>
+                        <td ng-bind="detail.date"></td>
+
+                    </tr>
+                    </tbody>
+                </table>
+
             </div>
         </div>
     </div>

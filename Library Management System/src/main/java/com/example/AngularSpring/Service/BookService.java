@@ -27,13 +27,8 @@ public class BookService {
     public Optional<Book> findById(String id){
        return bookRepo.findById(id);
     }
-    /*
-    public void deletebyid(String id){
-        bookRepo.deleteBookBybcode(id);
-    }
 
-    public Optional<Book> findById(String id){
-       return bookRepo.findBookBybcode(id);
+    public List<Book> findbystdid(int id){
+        return  bookRepo.findAllByStudentDetails_id(id);
     }
-    */
 }
