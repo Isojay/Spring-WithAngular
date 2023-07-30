@@ -9,6 +9,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	$scope.keywordName = '';
 	$scope.keywordEmail = '';
 	$scope.count = 0;
+	$scope.statusId = null;
 
 	function fetchStudents() {
 		let apiUrl = '/api/';
@@ -35,8 +36,6 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			.then(function (response) {
 				$scope.students = response.data.content;
 				const data = response.data.content;
-				console.log("I was Here!!")
-				console.log($scope.keywordEmail)
 				$scope.tableParams = new NgTableParams(
 					{
 						page: 1, // Show the first page
@@ -56,12 +55,17 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	}
 
 	function fetchBook() {
-		let apiUrl1 = '/api/getBook';
+		let apiUrl1 = '/api/';
+		if($scope.statusId === null){
+			apiUrl1 += 'getBook';
+		}else{
+			apiUrl1 += 'getByStatus/'+$scope.statusId ;
+		}
+
 		$http.get(apiUrl1)
 			.then(function (response) {
 				$scope.books = response.data;
 				const data1 = response.data;
-				console.log("I was also Here!!")
 				$scope.tableParams1 = new NgTableParams(
 					{
 						page: 1, // Show the first page
@@ -170,10 +174,18 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	$scope.update = function () {
 		$http.put('/api/add', $scope.student)
 			.then(function (response) {
-				var update = "studentUpdate"
-				updateMessage(update);
+				$scope.successMessage = 'Student data updated successfully.';
+				$('#updateStudentModal').modal('hide');
+				$('#SuccessModal').modal('show');
+				$scope.student = {};
+				$timeout(function () {
+					$('#SuccessModal').modal('hide');
+					fetchStudents();
+				}, 1000);
 			})
 			.catch(function (error) {
+				var from = "studentUpdate"
+				errorMessage(from);
 				console.error('Error updating student:', error);
 			});
 	};
@@ -197,46 +209,24 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	};
 
 	$scope.updateBook = function () {
-		$http.put('/api/addBook', $scope.book)
-			.then(function () {
-				var update = "bookUpdate"
-				updateMessage(update);
+		$http.put('/api/addBook', $scope.book, { responseType: 'text' })
+			.then(function (response) {
+				if(response.status === 200) {
+					$scope.successMessage = 'Data updated successfully.';
+					$('#updateBookModal').modal('hide');
+					$('#SuccessModal').modal('show');
+					$scope.book = null;
+					$timeout(function () {
+						$('#SuccessModal').modal('hide');
+						$scope.triggerBook();
+					}, 1000);
+				}
 			})
 			.catch(function (error) {
 				var from = "bookUpdate"
 				errorMessage(from);
 			});
 	}
-
-	function updateMessage(from) {
-		$scope.successMessage = 'Updated successful.';
-		$scope.successMessage1 = 'Student data added successfully.';
-		$scope.book = null;
-		$scope.student = null;
-		$('#updateStudentModal').modal('hide');
-		$('#updateBookModal').modal('hide');
-		if (from === "studentAdd"){
-			$('#addStudentModal').modal('hide');
-			$('#addSuccessModal').modal('show');
-			$timeout(function () {
-					$('#addSuccessModal').modal('hide')
-					console.log("damnnnnn")
-					fetchStudents();
-			}, 1000);
-		}else{
-			$('#SuccessModal').modal('show');
-			$scope.book = null;
-			$timeout(function () {
-				$('#SuccessModal').modal('hide');
-				if (from === "bookUpdate"){
-					console.log("damnnnnn")
-					$scope.triggerBook();
-				}else if(from === "studentUpdate"){
-					fetchStudents();
-				}
-			}, 1000);
-		}
-	};
 
 	function deleteMessage(from){
 		$scope.successMessage = 'Data deleted sucessfully.';
@@ -262,11 +252,20 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			$('#addStudentModal').modal('hide');
 			$('#errorModal').modal('show');
 			$scope.errorMessage = 'Email Id already Registered';
+		}else if (msg ==="addBook"){
+			$('#addBookModal').modal('hide');
+			$('#errorModal').modal('show');
+			$scope.errorMessage = 'Book Code already Registered';
+		}else if (msg ==="studentUpdate"){
+			$('#updateStudentModal').modal('hide');
+			$('#errorModal').modal('show');
+			$scope.errorMessage = 'Email Id already Registered';
 		}
 
 	}
-	$scope.openAddStudentModal = function () {
-		console.log("I was Here!!")
+	$scope.addStudentModal = function () {
+		console.log('Opening Add Student modal...');
+		$scope.student = {};
 		$('#addStudentModal').modal('show', 'keyboard', 'focus');
 	};
 
@@ -274,14 +273,60 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	$scope.addStudent = function () {
 		$http.post('/api/add', $scope.student)
 			.then(function (response) {
-				$scope.student = null;
-				var update = "studentAdd"
-				updateMessage(update);
+				$scope.successMessage1 = 'Student data added successfully.';
+				$('#addStudentModal').modal('hide');
+				$('#addSuccessModal').modal('show');
+				$scope.student = {};
+				$timeout(function () {
+					$('#addSuccessModal').modal('hide');
+					fetchStudents();
+				}, 1000);
 			})
 			.catch(function (error) {
 				var from = "addStudent"
 				errorMessage(from)
 				console.error('Error updating student:', error);
 			});
+	};
+	$scope.addBookModal = function () {
+		console.log('Opening Add Book modal...');
+		$scope.book = null;
+		$('#addBookModal').modal('show');
+	};
+
+	$scope.addBook = function (){
+		$http.post('api/addBooks', $scope.book, { responseType: 'text' })
+			.then(function (response){
+				if( response.status === 200){
+					$scope.successMessage1 = 'Book data added successfully.';
+					$('#addBookModal').modal('hide');
+					$('#addSuccessModal').modal('show');
+					$scope.book = {};
+					$timeout(function () {
+						$('#addSuccessModal').modal('hide');
+						$scope.triggerBook();
+					}, 1000);
+				}else{
+
+				}
+
+			})
+			.catch(function (error) {
+				var from = "addBook"
+				errorMessage(from)
+			});
 	}
-}	);
+
+	$scope.byStatus = function(statusID){
+		if(statusID !== "null"){
+			$scope.statusId = statusID;
+			fetchBook();
+		}else{
+			console.log("nullify")
+			$scope.statusId = null;
+			fetchBook();
+		}
+
+	}
+
+	});

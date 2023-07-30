@@ -31,4 +31,6 @@ public class BookService {
     public List<Book> findbystdid(int id){
         return  bookRepo.findAllByStudentDetails_id(id);
     }
+
+    public List<Book> findbystatus(int id){ return bookRepo.findAllByStatus(id);}
 }

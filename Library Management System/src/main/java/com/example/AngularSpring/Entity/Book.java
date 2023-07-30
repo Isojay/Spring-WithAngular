@@ -8,7 +8,6 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name="Books")
-@Getter @Setter
 public class Book {
 
     @Id

@@ -34,7 +34,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		$http.get(apiUrl)
 			.then(function (response) {
 				$scope.students = response.data.content;
-				var data = response.data.content;
+				const data = response.data.content;
 				console.log("I was Here!!")
 				console.log($scope.keywordEmail)
 				$scope.tableParams = new NgTableParams(
@@ -60,7 +60,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		$http.get(apiUrl1)
 			.then(function (response) {
 				$scope.books = response.data;
-				var data1 = response.data;
+				const data1 = response.data;
 				console.log("I was also Here!!")
 				$scope.tableParams1 = new NgTableParams(
 					{
@@ -98,6 +98,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	}
 
 	$scope.Reset = function () {
+		console.log("Reset")
 		$scope.keywordSemester = null;
 		$scope.keywordName = null;
 		$scope.keywordEmail = null;
@@ -198,6 +199,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	$scope.updateBook = function () {
 		$http.put('/api/addBook', $scope.book)
 			.then(function () {
+				$scope.student = null;
 				var update = "bookUpdate"
 				updateMessage(update);
 			})
@@ -206,12 +208,14 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 				errorMessage(from);
 			});
 	}
-/*
+
 	function updateMessage(from) {
 		$scope.successMessage = 'Updated successful.';
 		$scope.successMessage1 = 'Student data added successfully.';
 		$scope.book = null;
 		$scope.student = null;
+		$('#updateStudentModal').modal('hide');
+		$('#updateBookModal').modal('hide');
 		if (from === "studentAdd"){
 			$('#addStudentModal').modal('hide');
 			$('#addSuccessModal').modal('show');
@@ -220,38 +224,21 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 					console.log("damnnnnn")
 					fetchStudents();
 			}, 1000);
-		}else if (from === "bookUpdate"){
-			$('#updateStudentModal').modal('hide');
-			$('#updateBookModal').modal('hide');
+		}else{
 			$('#SuccessModal').modal('show');
+			$scope.book = null;
 			$timeout(function () {
 				$('#SuccessModal').modal('hide');
-				{
+				if (from === "bookUpdate"){
 					console.log("damnnnnn")
 					$scope.triggerBook();
-				}else if(from === "studentBook"){
+				}else if(from === "studentUpdate"){
 					fetchStudents();
 				}
 			}, 1000);
 		}
 	};
-*/
-	function updateMessage(from) {
-		$scope.successMessage = 'Updated successful.';
-		$('#updateStudentModal').modal('hide');
-		$('#updateBookModal').modal('hide');
-		$('#SuccessModal').modal('show');
-		$scope.book = null;
-		$timeout(function () {
-			$('#SuccessModal').modal('hide');
-			if (from === "studentBook"){
-				console.log("damnnnnn")
-				fetchStudents();
-			}else if(from === "bookUpdate"){
-				$scope.triggerBook();
-			}
-		}, 1000);
-	};
+
 	function deleteMessage(from){
 		$scope.successMessage = 'Data deleted sucessfully.';
 		$('#SuccessModal').modal('show');
@@ -288,7 +275,6 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	$scope.addStudent = function () {
 		$http.post('/api/add', $scope.student)
 			.then(function (response) {
-				$scope.student = null;
 				var update = "studentAdd"
 				updateMessage(update);
 			})

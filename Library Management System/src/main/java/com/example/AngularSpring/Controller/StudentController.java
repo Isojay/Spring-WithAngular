@@ -33,9 +33,7 @@ public class StudentController {
 		
 	@PostMapping("/add")
 	public StudentDetails addStudents(@RequestBody StudentDetails studentDetails) {
-
 		return studentService.save(studentDetails);
-		
 	}
 	
 	@PutMapping("/add")

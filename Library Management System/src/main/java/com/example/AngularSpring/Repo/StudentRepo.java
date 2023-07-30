@@ -14,8 +14,6 @@ public interface StudentRepo extends JpaRepository<StudentDetails, Integer> {
 
     Page<StudentDetails> findStudentDetailsBySemesterContainingIgnoreCase(String keyword, Pageable pageable);
 
-    Page<StudentDetails> findAllBylNameContainingIgnoreCase(String keyword, Pageable pageable);
-
     Page<StudentDetails> findStudentDetailsByfNameContainingIgnoreCaseAndEmailContainingIgnoreCase(String fName,String email,  Pageable pageable);
 
     Page<StudentDetails> findAllByfNameContainingIgnoreCaseAndSemesterContainingIgnoreCase(String fName, String semester, Pageable pageable);

@@ -29,7 +29,7 @@ public class BookController {
         return bookService.findAll();
     }
 
-    @GetMapping("/deleteBook/{id}")
+    @DeleteMapping("/deleteBook/{id}")
     public void deleteBook(@PathVariable String id){
         bookService.deletebyid(id);
     }
@@ -39,27 +39,40 @@ public class BookController {
         return bookService.findbystdid(id);
     }
 
+    @GetMapping("/getByStatus/{id}")
+    public List<Book> findbystatus(@PathVariable int id){
+        return bookService.findbystatus(id);
+    }
 
-    @PostMapping("/addBook")
-    public Book addBook(@RequestBody Book book){
-        book.setStatus(0);
-
-        return  bookService.save(book);
+    @PostMapping("/addBooks")
+    public ResponseEntity<?> addBook(@RequestBody Book book){
+        Optional<Book> bid = bookService.findById(book.getBcode());
+        if(bid.isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }else{
+            book.setStatus(0);
+            bookService.save(book);
+            return ResponseEntity.ok(bookService.save(book));
+        }
     }
 
 
     @PutMapping("/addBook")
-    public Book editBook(@RequestBody Book book){
-
-            if(book.getStatus() ==0 ){
+    public ResponseEntity<?> editBook(@RequestBody Book book){
+        Optional<StudentDetails> present = studentService.findById(book.getStudentDetails().getId());
+        if (present.isPresent()) {
+            if (book.getStatus() == 0 && book.getStudentDetails() != null) {
                 book.setStatus(1);
                 book.setDate(LocalDate.now());
-            }else {
+            } else {
                 book.setStatus(0);
                 book.setDate(null);
                 book.setStudentDetails(null);
             }
-            return bookService.save(book);
+            return ResponseEntity.ok(bookService.save(book));
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
     /*
      @PutMapping("/addBook")
