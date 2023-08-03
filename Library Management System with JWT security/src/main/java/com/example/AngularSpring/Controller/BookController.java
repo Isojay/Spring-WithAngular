@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/books")
 public class BookController {
 
     final BookService bookService;
@@ -61,7 +61,7 @@ public class BookController {
     public ResponseEntity<?> editBook(@RequestBody Book book){
         Optional<StudentDetails> present = studentService.findById(book.getStudentDetails().getId());
         if (present.isPresent()) {
-            if (book.getStatus() == 0 && book.getStudentDetails() != null) {
+            if (book.getStatus() == 0) {
                 book.setStatus(1);
                 book.setDate(LocalDate.now());
             } else {

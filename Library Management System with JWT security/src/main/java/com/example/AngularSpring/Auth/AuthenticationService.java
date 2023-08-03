@@ -5,7 +5,6 @@ import com.example.AngularSpring.Entity.Role;
 import com.example.AngularSpring.Entity.Staff;
 import com.example.AngularSpring.Entity.StudentDetails;
 import com.example.AngularSpring.Repo.StaffRepo;
-import com.example.AngularSpring.Repo.StudentRepo;
 import com.example.AngularSpring.Service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +22,7 @@ public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
+
 
     public Staff registerStaff(RegisterRequest request) {
         Staff staffUser = Staff.builder()

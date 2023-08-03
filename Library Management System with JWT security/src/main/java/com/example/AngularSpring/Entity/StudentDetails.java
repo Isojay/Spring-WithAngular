@@ -1,5 +1,6 @@
 package com.example.AngularSpring.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import jakarta.validation.constraints.NotEmpty;
@@ -41,10 +42,15 @@ public class StudentDetails implements UserDetails {
     private String semester;
     private String password;
 
+    public StudentDetails(int id) {
+        this.id = id;
+    }
+
     @Enumerated(EnumType.STRING)
-    private Role role = Role.USER;
+    private Role role;
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }

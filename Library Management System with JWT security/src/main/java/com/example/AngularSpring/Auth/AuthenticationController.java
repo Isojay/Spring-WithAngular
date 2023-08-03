@@ -1,10 +1,7 @@
 package com.example.AngularSpring.Auth;
 
 
-import com.example.AngularSpring.Entity.Staff;
-import com.example.AngularSpring.Entity.StudentDetails;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,12 +14,13 @@ public class AuthenticationController {
 
     private final AuthenticationService service;
 
+
     @PostMapping("/staff/register")
     public ResponseEntity<?> registerStaff(@RequestBody RegisterRequest request){
 
         return ResponseEntity.ok(service.registerStaff(request));
     }
-
+/*
     @PostMapping("/student/register")
     public ResponseEntity<?> registerStudent(@RequestBody StudentDetails request){
         try {
@@ -40,7 +38,7 @@ public class AuthenticationController {
         }
     }
 
-
+*/
     @PostMapping("/login")
     public ResponseEntity<?> doLogin(@RequestBody AuthenticationRequest request) {
         try {

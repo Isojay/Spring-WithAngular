@@ -11,8 +11,24 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	$scope.count = 0;
 	$scope.statusId = null;
 
+	$scope.logIn = function () {
+		$('#logInModal').modal('show');
+	}
+	$scope.logInData = function () {
+
+	}
+
+	$scope.logOut = function () {
+
+		$scope.token = null;
+		$scope.role = null;
+		$scope.currentSTDid = null;
+
+
+	}
+/*
 	function fetchStudents() {
-		let apiUrl = '/api/';
+		let apiUrl = '/api/students/';
 
 		if ($scope.count !== 0) {
 			apiUrl += `search?pagesize=${$scope.pageSize}&offset=${$scope.currentPage}`;
@@ -22,7 +38,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			}
 
 			if ($scope.keywordName) {
-				apiUrl += `&fName=${$scope.keywordName}`;
+				apiUrl += `&fname=${$scope.keywordName}`;
 			}
 
 			if ($scope.keywordSemester) {
@@ -34,6 +50,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 
 		$http.get(apiUrl)
 			.then(function (response) {
+				console.log("Reset")
 				$scope.students = response.data.content;
 				const data = response.data.content;
 				$scope.tableParams = new NgTableParams(
@@ -41,7 +58,33 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 						page: 1, // Show the first page
 						count: 10, // Number of items per page
 						sorting: {
-							fName: 'asc' // Default sorting by 'First Name' column in ascending order
+							fname: 'asc' // Default sorting by 'First Name' column in ascending order
+						}
+					},
+					{
+						dataset: data // Set the fetched data as the dataset
+					}
+				);
+			})
+			.catch(function (error) {
+				console.error('Error fetching paginated students:', error);
+			});
+	}*/
+
+	function fetchStudents() {
+		let apiUrl = '/api/students/students';
+
+		$http.get(apiUrl)
+			.then(function (response) {
+				console.log("Reset")
+				$scope.students = response.data;
+				const data = response.data;
+				$scope.tableParams = new NgTableParams(
+					{
+						page: 1, // Show the first page
+						count: 10, // Number of items per page
+						sorting: {
+							fname: 'asc' // Default sorting by 'First Name' column in ascending order
 						}
 					},
 					{
@@ -54,8 +97,9 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			});
 	}
 
+
 	function fetchBook() {
-		let apiUrl1 = '/api/';
+		let apiUrl1 = '/api/books/';
 		if($scope.statusId === null){
 			apiUrl1 += 'getBook';
 		}else{
@@ -118,7 +162,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 
 	$scope.deleteStudent = function (studentID) {
 		if (confirm('Are you sure you want to delete this task?')) {
-			$http.delete('/api/delete/' + studentID)
+			$http.delete('/api/students/delete/' + studentID)
 				.then(function (response) {
 					deleteMessage(true)
 				})
@@ -131,7 +175,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	$scope.deleteBook = function (BookID) {
 		if (confirm('Are you sure you want to delete this task?')) {
 			console.log(BookID)
-			$http.delete('/api/deleteBook/' + BookID)
+			$http.delete('/api/books/deleteBook/' + BookID)
 				.then(function () {
 					deleteMessage(false);
 				})
@@ -142,7 +186,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	};
 
 	$scope.showDetails= function (stdId){
-		$http.get('/api/getDetails/'+ stdId)
+		$http.get('/api/books/getDetails/'+ stdId)
 			.then(function (response){
 				console.log("I am in Details")
 				$scope.details = response.data;
@@ -159,8 +203,8 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		if (studentToUpdate) {
 			$scope.student = {
 				id: studentToUpdate.id,
-				fName: studentToUpdate.fName,
-				lName: studentToUpdate.lName,
+				fname: studentToUpdate.fname,
+				lname: studentToUpdate.lname,
 				email: studentToUpdate.email,
 				semester: studentToUpdate.semester
 			};
@@ -172,7 +216,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	};
 
 	$scope.update = function () {
-		$http.put('/api/add', $scope.student)
+		$http.put('/api/students/add', $scope.student)
 			.then(function (response) {
 				$scope.successMessage = 'Student data updated successfully.';
 				$('#updateStudentModal').modal('hide');
@@ -209,7 +253,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	};
 
 	$scope.updateBook = function () {
-		$http.put('/api/addBook', $scope.book, { responseType: 'text' })
+		$http.put('/api/books/addBook', $scope.book, { responseType: 'text' })
 			.then(function (response) {
 				if(response.status === 200) {
 					$scope.successMessage = 'Data updated successfully.';
@@ -271,7 +315,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 
 //Add Student
 	$scope.addStudent = function () {
-		$http.post('/api/add', $scope.student)
+		$http.post('/api/students/add', $scope.student)
 			.then(function (response) {
 				$scope.successMessage1 = 'Student data added successfully.';
 				$('#addStudentModal').modal('hide');
@@ -289,13 +333,12 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			});
 	};
 	$scope.addBookModal = function () {
-		console.log('Opening Add Book modal...');
 		$scope.book = null;
 		$('#addBookModal').modal('show');
 	};
 
 	$scope.addBook = function (){
-		$http.post('api/addBooks', $scope.book, { responseType: 'text' })
+		$http.post('api/books/addBooks', $scope.book, { responseType: 'text' })
 			.then(function (response){
 				if( response.status === 200){
 					$scope.successMessage1 = 'Book data added successfully.';
