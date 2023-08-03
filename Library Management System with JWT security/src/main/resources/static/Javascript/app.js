@@ -128,6 +128,34 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 				console.error('Error fetching paginated students:', error);
 			});
 	}
+/*
+	function fetchStudents() {
+		let apiUrl = '/api/students/students';
+
+		$http.get(apiUrl)
+			.then(function (response) {
+				console.log("Reset")
+				$scope.students = response.data;
+				const data = response.data;
+				$scope.tableParams = new NgTableParams(
+					{
+						page: 1, // Show the first page
+						count: 10, // Number of items per page
+						sorting: {
+							fname: 'asc' // Default sorting by 'First Name' column in ascending order
+						}
+					},
+					{
+						dataset: data // Set the fetched data as the dataset
+					}
+				);
+			})
+			.catch(function (error) {
+				console.error('Error fetching paginated students:', error);
+			});
+	}
+
+*/
 	function fetchBook() {
 		let apiUrl1 = '/api/books/';
 		if($scope.statusId === null){
