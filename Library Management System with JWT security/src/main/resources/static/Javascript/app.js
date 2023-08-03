@@ -27,8 +27,8 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	if (storedToken) {
 		// Token is set, you can handle this as needed
 		$scope.loginStatus = true;
-		$scope.token = storedToken;
-		console.log($scope.token)
+		var token = storedToken;
+		console.log(token)
 		// ... Other code ...
 	}
 	$scope.logInData = function () {
@@ -40,7 +40,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 				$scope.role = response.data.role;
 				$scope.currentSTDid = response.data.id;
 				$('#logInModal').modal('hide');
-				console.log($scope.token)
+				console.log(token)
 				getnumber($scope.currentSTDid)
 				console.log($scope.role)
 			})
@@ -128,34 +128,6 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 				console.error('Error fetching paginated students:', error);
 			});
 	}
-/*
-	function fetchStudents() {
-		let apiUrl = '/api/students/students';
-
-		$http.get(apiUrl)
-			.then(function (response) {
-				console.log("Reset")
-				$scope.students = response.data;
-				const data = response.data;
-				$scope.tableParams = new NgTableParams(
-					{
-						page: 1, // Show the first page
-						count: 10, // Number of items per page
-						sorting: {
-							fname: 'asc' // Default sorting by 'First Name' column in ascending order
-						}
-					},
-					{
-						dataset: data // Set the fetched data as the dataset
-					}
-				);
-			})
-			.catch(function (error) {
-				console.error('Error fetching paginated students:', error);
-			});
-	}
-
-*/
 	function fetchBook() {
 		let apiUrl1 = '/api/books/';
 		if($scope.statusId === null){
