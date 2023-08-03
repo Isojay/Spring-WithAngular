@@ -1,35 +1,73 @@
 var app = angular.module('student', ['ngTable']);
 
+app.factory('JwtInterceptor', function ($window) {
+	return {
+		request: function (config) {
+			var token = $window.localStorage.getItem('jwtToken');
+			if (token) {
+				config.headers['Authorization'] = 'Bearer ' + token;
+			}
+			return config;
+		}
+	};
+});
+
+app.config(function ($httpProvider) {
+	$httpProvider.interceptors.push('JwtInterceptor');
+});
+
 
 app.controller('LibraryController', function ($scope, $http,NgTableParams, $window, $timeout) {
-	$scope.login = {};
-	$scope.showLibrary = false;
-	$scope.currentPage = 0;
-	$scope.pageSize = 10000;
-	$scope.keywordSemester = '';
-	$scope.keywordName = '';
-	$scope.keywordEmail = '';
-	$scope.count = 0;
-	$scope.statusId = null;
-	$scope.loginStatus = false;
+
 
 	$scope.logInModal = function () {
 		$('#logInModal').modal('show');
+	}
+	const storedToken = $window.localStorage.getItem('jwtToken');
+	if (storedToken) {
+		// Token is set, you can handle this as needed
+		$scope.loginStatus = true;
+		$scope.token = storedToken;
+		console.log($scope.token)
+		// ... Other code ...
 	}
 	$scope.logInData = function () {
 		$http.post('/api/auth/login', $scope.login)
 			.then(function (response) {
 				$scope.loginStatus = true;
-				$scope.token = response.data.token;
+				var token = response.data.token;
+				$window.localStorage.setItem('jwtToken', token);
 				$scope.role = response.data.role;
-				$scope.currentSTDid = null;
+				$scope.currentSTDid = response.data.id;
 				$('#logInModal').modal('hide');
+				console.log($scope.token)
+				getnumber($scope.currentSTDid)
 				console.log($scope.role)
 			})
 			.catch(function (error) {
 				console.error('Error in Logging in user ', error);
 			});
 
+	}
+	function getnumber(currentSTDid) {
+		$('#logInModal').modal('hide');
+		$http.get('/api/books/getDetails/'+ currentSTDid)
+			.then(function (response){
+				$scope.numberOfElements = response.data.length;
+			})
+	}
+
+	$scope.showDetails= function (stdId){
+		$http.get('/api/books/getDetails/'+ stdId)
+			.then(function (response){
+				$scope.details = response.data;
+				$scope.numberOfElements = response.data.length;
+
+				$('#showDetailsModal').modal('show', 'keyboard', 'focus');
+			})
+			.catch(function (error) {
+				console.error('Error Not found :', error);
+			});
 	}
 
 	$scope.logOutModal = function () {
@@ -38,6 +76,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 
 
 	$scope.logOut = function () {
+		$window.localStorage.removeItem('jwtToken');
 		$scope.loginStatus = false;
 		$scope.token = null;
 		$scope.role = null;
@@ -176,17 +215,6 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		}
 	};
 
-	$scope.showDetails= function (stdId){
-		$http.get('/api/books/getDetails/'+ stdId)
-			.then(function (response){
-				console.log("I am in Details")
-				$scope.details = response.data;
-				$('#showDetailsModal').modal('show', 'keyboard', 'focus');
-			})
-			.catch(function (error) {
-				console.error('Error Not found :', error);
-			});
-	}
 
 //Update Student
 	$scope.doUpdate = function (studentID) {
@@ -362,5 +390,16 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		}
 
 	}
+
+	$scope.login = {};
+	$scope.showLibrary = false;
+	$scope.currentPage = 0;
+	$scope.pageSize = 10000;
+	$scope.keywordSemester = '';
+	$scope.keywordName = '';
+	$scope.keywordEmail = '';
+	$scope.count = 0;
+	$scope.statusId = null;
+	$scope.loginStatus = false;
 
 	});

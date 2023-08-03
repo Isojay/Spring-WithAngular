@@ -1,0 +1,39 @@
+
+<div class="modal fade" id="showDetailsModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="showDetailsModalLabel">Operation Successful</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <table class="table text-center align-middle">
+        <thead class="thead-light">
+        <tr>
+          <th scope="col">Student Id</th>
+          <th scope="col">Student Name</th>
+          <th scope="col">Semester</th>
+          <th scope="col">Book Code</th>
+          <th scope="col">Book name</th>
+          <th scope="col">Borrowed Date</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="detail in details">
+          <th scope="row" ng-bind="detail.studentDetails.id"></th>
+          <td ng-bind="detail.studentDetails.fname + ' ' + detail.studentDetails.lname"></td>
+          <td ng-bind="detail.studentDetails.semester"></td>
+          <td ng-bind="detail.bcode"></td>
+          <td ng-bind="detail.bname"></td>
+          <td ng-bind="detail.date"></td>
+
+        </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

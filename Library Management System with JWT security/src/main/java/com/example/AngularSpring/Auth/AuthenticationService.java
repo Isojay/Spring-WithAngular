@@ -53,20 +53,30 @@ public class AuthenticationService {
 
         String jwtToken;
         Role role;
+        Integer id = null; // Initialize with null
 
         if (staffUser != null) {
             jwtToken = jwtService.generateToken(staffUser);
             role = staffUser.getRole();
+            return AuthResponse.builder()
+                    .token(jwtToken)
+                    .role(role.name())
+                    .build();
         } else {
             jwtToken = jwtService.generateToken(studentUser);
             role = studentUser.getRole();
+            id = studentUser.getId();
+            return AuthResponse.builder()
+                    .token(jwtToken)
+                    .role(role.name())
+                    .id(id)
+                    .build();
+
         }
 
-        return AuthResponse.builder()
-                .token(jwtToken)
-                .role(role.name())
-                .build();
+
     }
+
 
     private void authenticateUser(String email, String password) {
         authenticationManager.authenticate(

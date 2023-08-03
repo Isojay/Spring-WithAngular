@@ -5,9 +5,8 @@
                 <img src="icon.png" width="auto" height="45" class="d-inline-block align-top" alt="" />
             </div>
             <div class="col-md-3">
-                <a class="navbar-brand" href="#"> Student Management</a>
+                <a class="navbar-brand" href="#"> Library Management System</a>
             </div>
-
         </div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -31,10 +30,11 @@
                     <a class="nav-link" href="#" ng-click="triggerBook()">Book</a>
                 </li>
                 <li class="nav-item active" ng-show="role === 'USER'">
-                    <a class="nav-link" href="#" ng-click="bookBorrowed()">Book Borrowed {{}}</a>
+                    <a class="nav-link" href="#" ng-click="showDetails(currentSTDid)">Book Borrowed {{numberOfElements}}</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 <br>
+
