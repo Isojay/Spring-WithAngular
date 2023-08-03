@@ -2,6 +2,7 @@ var app = angular.module('student', ['ngTable']);
 
 
 app.controller('LibraryController', function ($scope, $http,NgTableParams, $window, $timeout) {
+	$scope.login = {};
 	$scope.showLibrary = false;
 	$scope.currentPage = 0;
 	$scope.pageSize = 10000;
@@ -10,23 +11,41 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	$scope.keywordEmail = '';
 	$scope.count = 0;
 	$scope.statusId = null;
+	$scope.loginStatus = false;
 
-	$scope.logIn = function () {
+	$scope.logInModal = function () {
 		$('#logInModal').modal('show');
 	}
 	$scope.logInData = function () {
+		$http.post('/api/auth/login', $scope.login)
+			.then(function (response) {
+				$scope.loginStatus = true;
+				$scope.token = response.data.token;
+				$scope.role = response.data.role;
+				$scope.currentSTDid = null;
+				$('#logInModal').modal('hide');
+				console.log($scope.role)
+			})
+			.catch(function (error) {
+				console.error('Error in Logging in user ', error);
+			});
 
 	}
 
-	$scope.logOut = function () {
+	$scope.logOutModal = function () {
+		$('#logOutModal').modal('show');
+	}
 
+
+	$scope.logOut = function () {
+		$scope.loginStatus = false;
 		$scope.token = null;
 		$scope.role = null;
 		$scope.currentSTDid = null;
-
-
+		$('#logOutModal').modal('hide');
+		$window.location.reload();
 	}
-/*
+
 	function fetchStudents() {
 		let apiUrl = '/api/students/';
 
@@ -69,8 +88,8 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			.catch(function (error) {
 				console.error('Error fetching paginated students:', error);
 			});
-	}*/
-
+	}
+/*
 	function fetchStudents() {
 		let apiUrl = '/api/students/students';
 
@@ -97,7 +116,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			});
 	}
 
-
+*/
 	function fetchBook() {
 		let apiUrl1 = '/api/books/';
 		if($scope.statusId === null){

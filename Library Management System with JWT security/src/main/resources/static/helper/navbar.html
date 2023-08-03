@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2">
+                <img src="icon.png" width="auto" height="45" class="d-inline-block align-top" alt="" />
+            </div>
+            <div class="col-md-3">
+                <a class="navbar-brand" href="#"> Student Management</a>
+            </div>
+
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto"></ul>
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" ng-click="triggerHome()">Home</a>
+                </li>
+                <li class="nav-item active" ng-show="!loginStatus">
+                    <a class="nav-link" href="#" ng-click="logInModal()">Log In</a>
+                </li>
+                <li class="nav-item active" ng-show="loginStatus">
+                    <a class="nav-link" href="#" ng-click="logOutModal()">Log Out</a>
+                </li>
+                <li class="nav-item active" ng-show="role === 'ADMIN'">
+                    <a class="nav-link" href="#" ng-click="triggerStudent()">Student</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" ng-click="triggerBook()">Book</a>
+                </li>
+                <li class="nav-item active" ng-show="role === 'USER'">
+                    <a class="nav-link" href="#" ng-click="bookBorrowed()">Book Borrowed {{}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>

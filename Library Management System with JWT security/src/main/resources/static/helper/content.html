@@ -1,4 +1,3 @@
-
 <div class="container " ng-show="showLibrary">
     <div class="card shadow-none p-3 mb-5 bg-light rounded">
         <h5 class="card-header">Search for Records:</h5>
@@ -34,9 +33,9 @@
                 <tr ng-repeat="student in $data">
                     <td title="'SN'" ng-bind="$index+1 "></td>
                     <td title="'ID'" class="text-center align-middle"  sortable="'id'" filter="{ 'id': 'number' }">{{student.id}}</td>
-                    <td class="text-center align-middle" title="'First Name'" sortable="'fName'" filter="{ 'fName': 'text' }">{{student.fName}}</td>
-                    <td class="text-center align-middle" title="'Last Name'" sortable="'lName'" filter="{ 'lName': 'text' }">{{ student.lName}}</td>
-                    <td class="text-center align-middle" title="'Email'" sortable="'name'" filter="{ 'email': 'text' }">{{student.email}}</td>
+                    <td class="text-center align-middle" title="'First Name'" sortable="'fname'" filter="{ 'fname': 'text' }">{{student.fname}}</td>
+                    <td class="text-center align-middle" title="'Last Name'" sortable="'lname'" filter="{ 'lname': 'text' }">{{ student.lname}}</td>
+                    <td class="text-center align-middle" title="'Email'" sortable="'email'" filter="{ 'email': 'text' }">{{student.email}}</td>
                     <td class="text-center align-middle" title="'Semester'" sortable="'semester'" filter="{ 'semester': 'text' }">{{student.semester}}</td>
                     <td title="Delete"><a href="#" ng-click="deleteStudent(student.id)" class="btn btn-danger">Delete</a></td>
                     <td title="Update"><a href="#" ng-click="doUpdate(student.id)" class="btn btn-warning">Update</a></td>
@@ -51,7 +50,6 @@
                     <h5>Book Details</h5>
                 </div>
                 <div class="col-md-6 d-flex justify-content-end">
-                    <!-- Add the dropdown button in the card header -->
                     <select ng-model="SearchCategory" ng-click="byStatus(SearchCategory)" class="form-control" style="width: auto;">
                         <option value = "null">All Books</option>
                         <option value="1">Borrowed Book</option>
@@ -71,7 +69,7 @@
                     <td class="text-center align-middle" title="'Published Year'" sortable="'year'" filter="{ 'year': 'number' }">{{book.year}}</td>
                     <td class="text-center align-middle" title="'Status  '" sortable="'status'" filter="{ 'status': 'number' }">{{ book.status === 0 ? 'Available' : 'Borrowed' }}</td>
                     <td class="text-center align-middle" title="'Borrowed date'" sortable="'date'" filter="{ 'date': 'number' }">{{book.date}}</td>
-                    <td class="text-center align-middle" title="'Borrowed by'" sortable="'date'" filter="{ 'date': 'number' }">{{book.studentDetails.fName+" "+book.studentDetails.lName}}</td>
+                    <td class="text-center align-middle" title="'Borrowed by'" sortable="'date'" filter="{ 'date': 'number' }">{{book.studentDetails.fname+" "+book.studentDetails.lname}}</td>
                     <td class="text-center align-middle" title="Update"><a href="#" ng-click="doUpdateBook(book.bcode)" class="btn btn-warning">{{ book.status === 0 ? 'Borrow' : 'Return' }}</a></td>
                     <td class="text-center align-middle" title="Delete" ng-show="book.status === 0"><a href="#" ng-click="deleteBook(book.bcode)" class="btn btn-danger">Delete</a></td>
                     <td class="text-center align-middle" title="Delete" ng-show="book.status === 1"><a href="#" ng-click="showDetails(book.studentDetails.id)" class="btn btn-primary">Student Info</a></td>
@@ -95,11 +93,11 @@
                     <form ng-submit="update()">
                         <input type="hidden" name="id" ng-model="student.id">
                         <div class="form-group">
-                            <label for="fName">First Name</label>
-                            <input type="text" class="form-control" required ng-model="student.fName" id="fName" placeholder="Enter first name">
+                            <label for="fname">First Name</label>
+                            <input type="text" class="form-control" required ng-model="student.fname" id="fname" placeholder="Enter first name">
                             <br>
-                            <label for="lName">Last Name</label>
-                            <input type="text" class="form-control" required ng-model="student.lName" id="lName" placeholder="Enter last name">
+                            <label for="lname">Last Name</label>
+                            <input type="text" class="form-control" required ng-model="student.lname" id="lname" placeholder="Enter last name">
                             <br>
                             <label for="email">Email</label>
                             <input type="email" class="form-control" required ng-model="student.email" id="email" placeholder="Enter email">
@@ -128,11 +126,11 @@
                     <form ng-submit="addStudent()">
                         <input type="hidden" name="id" ng-model="student.id">
                         <div class="form-group">
-                            <label for="fName">First Name</label>
-                            <input type="text" class="form-control" required ng-model="student.fName" id="fName" placeholder="Enter first name">
+                            <label for="fname">First Name</label>
+                            <input type="text" class="form-control" required ng-model="student.fname" id="fname" placeholder="Enter first name">
                             <br>
-                            <label for="lName">Last Name</label>
-                            <input type="text" class="form-control" required ng-model="student.lName" id="lName" placeholder="Enter last name">
+                            <label for="lname">Last Name</label>
+                            <input type="text" class="form-control" required ng-model="student.lname" id="lname" placeholder="Enter last name">
                             <br>
                             <label for="email">Email</label>
                             <input type="email" class="form-control" required ng-model="student.email" id="email" placeholder="Enter email">
@@ -265,7 +263,7 @@
                                     </div>
                                     <div class="col-md-7">
                                         <label>Student Name : </label><br>
-                                        {{ book.studentDetails.fName + ' ' + book.studentDetails.lName }}
+                                        {{ book.studentDetails.fname + ' ' + book.studentDetails.lname }}
                                     </div>
                                 </div>
                             </div>
@@ -302,7 +300,7 @@
                     <tbody>
                     <tr ng-repeat="detail in details">
                         <th scope="row" ng-bind="detail.studentDetails.id"></th>
-                        <td ng-bind="detail.studentDetails.fName + ' ' + detail.studentDetails.lName"></td>
+                        <td ng-bind="detail.studentDetails.fname + ' ' + detail.studentDetails.lname"></td>
                         <td ng-bind="detail.studentDetails.semester"></td>
                         <td ng-bind="detail.bcode"></td>
                         <td ng-bind="detail.bname"></td>
