@@ -1,0 +1,184 @@
+
+<div class="modal fade" id="updateStudentModal" tabindex="-1" role="dialog" aria-labelledby="updateStudentModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateStudentModalLabel">Update Student</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form ng-submit="update()">
+                    <input type="hidden" name="id" ng-model="student.id">
+                    <div class="form-group">
+                        <label for="fname">First Name</label>
+                        <input type="text" class="form-control" required ng-model="student.fname" id="fname" placeholder="Enter first name">
+                        <br>
+                        <label for="lname">Last Name</label>
+                        <input type="text" class="form-control" required ng-model="student.lname" id="lname" placeholder="Enter last name">
+                        <br>
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" required ng-model="student.email" id="email" placeholder="Enter email">
+                        <br>
+                        <label for="semester">Semester</label>
+                        <input type="text" class="form-control" required ng-model="student.semester" id="semester" placeholder="Enter semester">
+                        <br>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Student</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addStudentModalLabel">Add a new Student</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form ng-submit="addStudent()">
+                    <input type="hidden" name="id" ng-model="student.id">
+                    <div class="form-group">
+                        <label for="fname">First Name</label>
+                        <input type="text" class="form-control" required ng-model="student.fname" id="fname" placeholder="Enter first name">
+                        <br>
+                        <label for="lname">Last Name</label>
+                        <input type="text" class="form-control" required ng-model="student.lname" id="lname" placeholder="Enter last name">
+                        <br>
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" required ng-model="student.email" id="email" placeholder="Enter email">
+                        <br>
+                        <label for="semester">Semester</label>
+                        <input type="text" class="form-control" required ng-model="student.semester" id="semester" placeholder="Enter semester">
+                        <br>
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" required ng-model="student.password" id="password" placeholder="Enter password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Student</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addBookModal" tabindex="-1" role="dialog" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addBookModalLabel">Add a new Book</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form ng-submit="addBook()">
+                    <div class="form-group">
+                        <label for="bcode">Book code</label>
+                        <input type="text" class="form-control" required ng-model="book.bcode" id="bcode" placeholder="Enter Book Code">
+                        <br>
+                        <label for="bname">Book Name</label>
+                        <input type="text" class="form-control" required ng-model="book.bname" id="bname" placeholder="Enter Book name">
+                        <br>
+                        <label for="bauthor">Book Author</label>
+                        <input type="text" class="form-control" required ng-model="book.bauthor" id="bauthor" placeholder="Enter Author Name">
+                        <br>
+                        <label for="year">Publish Year</label>
+                        <input type="number" class="form-control" required ng-model="book.year" id="year" placeholder="Enter Publish Yeat">
+                        <br>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Book</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updateBookModal" tabindex="-1" role="dialog" aria-labelledby="updateStudentModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateBookModalLabel">Borrow Book</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form ng-submit="updateBook()">
+                    <div class="form-group">
+                        <label>Book ID :</label>
+                        {{ book.bcode }}
+                        <br>
+                        <label>Book Name :</label>
+                        {{ book.bname }}
+                        <br>
+                        <div class="row" ng-show="book.status === 0">
+                            <div class="col-md-5">
+                                <label>Student ID</label>
+                                <input type="text" class="form-control" required ng-model="book.studentDetails" id="studentDetails" placeholder="Student ID">
+                            </div>
+                        </div>
+                        <div ng-show="book.status === 1">
+                            <label>Borrowed by </label>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>Student ID : </label><br>
+                                    {{ book.studentDetails.id }}
+                                </div>
+                                <div class="col-md-7">
+                                    <label>Student Name : </label><br>
+                                    {{ book.studentDetails.fname + ' ' + book.studentDetails.lname }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary">{{ book.status === 0 ? 'Register Borrow' : 'Return' }}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="showDetailsModal" tabindex="-1" role="dialog" aria-labelledby="DetailModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="showDetailsModalLabel">Operation Successful</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <table class="table text-center align-middle">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">Student Id</th>
+                    <th scope="col">Student Name</th>
+                    <th scope="col">Semester</th>
+                    <th scope="col">Book Code</th>
+                    <th scope="col">Book name</th>
+                    <th scope="col">Borrowed Date</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="detail in details">
+                    <th scope="row" ng-bind="detail.studentDetails.id"></th>
+                    <td ng-bind="detail.studentDetails.fname + ' ' + detail.studentDetails.lname"></td>
+                    <td ng-bind="detail.studentDetails.semester"></td>
+                    <td ng-bind="detail.bcode"></td>
+                    <td ng-bind="detail.bname"></td>
+                    <td ng-bind="detail.date"></td>
+
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
