@@ -166,8 +166,8 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	}
 
 	$scope.triggerStudent = function () {
-		$scope.showTable = true;
 		$scope.showLibrary = true;
+		$scope.showTable = true;
 		fetchStudents();
 	}
 	$scope.triggerBook = function () {

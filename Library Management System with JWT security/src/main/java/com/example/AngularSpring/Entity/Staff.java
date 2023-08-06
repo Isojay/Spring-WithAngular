@@ -30,7 +30,7 @@ public class Staff implements UserDetails {
     @NotEmpty
     private String semail;
 
-    //private boolean accountstatus;
+    private boolean accountstatus;
 
     @Column(name = "Password")
     private String spassword;
@@ -70,6 +70,6 @@ public class Staff implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return accountstatus;
     }
 }

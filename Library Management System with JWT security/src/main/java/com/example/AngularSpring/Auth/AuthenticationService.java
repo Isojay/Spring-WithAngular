@@ -30,6 +30,7 @@ public class AuthenticationService {
                 .semail(request.getUemail())
                 .spassword(passwordEncoder.encode(request.getUpassword()))
                 .role(Role.ADMIN)
+                .accountstatus(false)
                 .build();
         return staffRepo.save(staffUser);
     }
