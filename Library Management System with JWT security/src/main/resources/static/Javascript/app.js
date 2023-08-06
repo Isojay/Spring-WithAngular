@@ -1,6 +1,6 @@
 var app = angular.module('student', ['ngTable']);
 
-app.factory('JwtInterceptor', function ($window) {
+app.factory('JwtInterceptor', ['$window', '$q', function ($window, $q) {
 	return {
 		request: function (config) {
 			var token = $window.localStorage.getItem('jwtToken');
@@ -10,27 +10,21 @@ app.factory('JwtInterceptor', function ($window) {
 			return config;
 		}
 	};
-});
+}]);
 
-app.config(function ($httpProvider) {
+app.config(['$httpProvider', function ($httpProvider) {
 	$httpProvider.interceptors.push('JwtInterceptor');
-});
+}]);
 
 
 app.controller('LibraryController', function ($scope, $http,NgTableParams, $window, $timeout) {
 
 
 	$scope.logInModal = function () {
+		$('#registerModal').modal('hide');
 		$('#logInModal').modal('show');
 	}
-	const storedToken = $window.localStorage.getItem('jwtToken');
-	if (storedToken) {
-		// Token is set, you can handle this as needed
-		$scope.loginStatus = true;
-		var token = storedToken;
-		console.log(token)
-		// ... Other code ...
-	}
+
 	$scope.logInData = function () {
 		$http.post('/api/auth/login', $scope.login)
 			.then(function (response) {
@@ -40,11 +34,11 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 				$scope.role = response.data.role;
 				$scope.currentSTDid = response.data.id;
 				$('#logInModal').modal('hide');
-				console.log(token)
-				getnumber($scope.currentSTDid)
-				console.log($scope.role)
+				getnumber($scope.currentSTDid)//for show details
 			})
 			.catch(function (error) {
+				$scope.logInErrorStatus = true;
+				$scope.logInError = error.data.message;
 				console.error('Error in Logging in user ', error);
 			});
 
@@ -55,6 +49,12 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			.then(function (response){
 				$scope.numberOfElements = response.data.length;
 			})
+	}
+
+	$scope.openRegisterModal = function (){
+		$('#logInModal').modal('hide');
+		$('#registerModal').modal('show');
+
 	}
 
 	$scope.showDetails= function (stdId){
@@ -105,12 +105,13 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		} else {
 			apiUrl += `${$scope.pageSize}/${$scope.currentPage}`;
 		}
-
+		console.log($scope.keywordName)
 		$http.get(apiUrl)
 			.then(function (response) {
 				console.log("Reset")
 				$scope.students = response.data.content;
 				const data = response.data.content;
+				console.log("RUN RUN")
 				$scope.tableParams = new NgTableParams(
 					{
 						page: 1, // Show the first page
@@ -311,8 +312,8 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			$('#updateBookModal').modal('hide');
 			$('#errorModal').modal('show');
 			$scope.errorMessage = 'Student ID not Found';
-		}else if (msg ==="addStudent"){
-			$('#addStudentModal').modal('hide');
+		}else if (msg ==="emailError"){
+
 			$('#errorModal').modal('show');
 			$scope.errorMessage = 'Email Id already Registered';
 		}else if (msg ==="addBook"){
@@ -332,25 +333,58 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		$('#addStudentModal').modal('show', 'keyboard', 'focus');
 	};
 
-//Add Student
+
+	//self user registration
 	$scope.addStudent = function () {
-		$http.post('/api/students/add', $scope.student)
+		$http.post('/api/auth/student/register', $scope.student)
 			.then(function (response) {
-				$scope.successMessage1 = 'Student data added successfully.';
-				$('#addStudentModal').modal('hide');
-				$('#addSuccessModal').modal('show');
-				$scope.student = {};
-				$timeout(function () {
-					$('#addSuccessModal').modal('hide');
-					fetchStudents();
-				}, 1000);
+				if (response.status === 200 || response.status === 201) {
+					$scope.successMessage1 = response.data.message;
+					console.log($scope.successMessage1)
+					$('#registerModal').modal('hide');
+					$('#addSuccessModal').modal('show');
+					$scope.student = {};
+					$timeout(function () {
+						$('#addSuccessModal').modal('hide');
+						fetchStudents();
+					}, 1000);
+				}
 			})
 			.catch(function (error) {
-				var from = "addStudent"
-				errorMessage(from)
+				var from = "emailError"
+				errorMessage(from);
+				$('#registerModal').modal('hide');
+				$('#addStudentModal').modal('hide');
+				$scope.errorMessage = error.data.message;
 				console.error('Error updating student:', error);
 			});
 	};
+
+	$scope.addStaff = function () {
+		$http.post('/api/auth/staff/register', $scope.staff)
+			.then(function (response) {
+				if (response.status === 200 || response.status === 201) {
+					$scope.successMessage1 = response.data.message;
+					console.log($scope.successMessage1)
+					$('#registerModal').modal('hide');
+					$('#addSuccessModal').modal('show');
+					$scope.student = {};
+					$timeout(function () {
+						$('#addSuccessModal').modal('hide');
+						fetchStudents();
+					}, 1000);
+				}
+			})
+			.catch(function (error) {
+				var from = "emailError"
+				errorMessage(from);
+				$('#registerModal').modal('hide');
+				$scope.errorMessage = error.data.message;
+				console.error('Error Adding Staff:', error.data.message);
+			});
+	};
+
+
 	$scope.addBookModal = function () {
 		$scope.book = null;
 		$('#addBookModal').modal('show');
@@ -391,15 +425,41 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 
 	}
 
-	$scope.login = {};
-	$scope.showLibrary = false;
-	$scope.currentPage = 0;
-	$scope.pageSize = 10000;
-	$scope.keywordSemester = '';
-	$scope.keywordName = '';
-	$scope.keywordEmail = '';
-	$scope.count = 0;
-	$scope.statusId = null;
-	$scope.loginStatus = false;
 
-	});
+
+	function initialize() {
+		$window.localStorage.removeItem('jwtToken');
+		$scope.logInErrorStatus = false;
+		$scope.studentRegister = true;
+		$scope.passwordMismatch = false;
+		$scope.showLibrary = false;
+		$scope.currentPage = 0;
+		$scope.pageSize = 10000;
+		$scope.keywordSemester = '';
+		$scope.keywordName = '';
+		$scope.keywordEmail = '';
+		$scope.count = 0;
+		$scope.statusId = null;
+		$scope.loginStatus = false;
+		$scope.role = null;
+		$scope.currentSTDid = null;
+		$scope.login = {};
+		$scope.student = {};
+		$scope.staff = {};
+		$scope.students = [];
+		$scope.books = [];
+	}
+
+	initialize();
+
+	$scope.validatePassword = function() {
+		$scope.passwordMismatch = $scope.student.password !== $scope.student.confirmPassword;
+	};
+
+	$scope.validatePasswordstaff = function() {
+		$scope.passwordMismatch = $scope.staff.upassword !== $scope.staff.confirmPassword;
+	};
+
+
+
+});

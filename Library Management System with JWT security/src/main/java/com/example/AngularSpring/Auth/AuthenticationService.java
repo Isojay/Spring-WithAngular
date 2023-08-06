@@ -34,7 +34,7 @@ public class AuthenticationService {
         return staffRepo.save(staffUser);
     }
 
-    public StudentDetails registerStudent(StudentDetails request) {
+    public void registerStudent(StudentDetails request) {
         StudentDetails studentUser = StudentDetails.builder()
                 .fName(request.getFName())
                 .lName(request.getLName())
@@ -43,8 +43,9 @@ public class AuthenticationService {
                 .semester(request.getSemester())
                 .role(Role.USER)
                 .build();
-        return studentService.save(studentUser);
+        studentService.save(studentUser);
     }
+
 
     public AuthResponse authenticate(AuthenticationRequest request) {
         authenticateUser(request.getUemail(), request.getUpassword());

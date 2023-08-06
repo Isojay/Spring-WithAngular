@@ -9,27 +9,9 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="icon" type=".png" href="/icon.png">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <link rel="stylesheet" href="style.css">
     <style>
-        .ng-table-pagination{
-            display: flex;
-            justify-content: center;
-        }
-        .ng-table-pagination a {
-            color: black;
-            float: right;
-            padding: 8px 16px;
-            text-decoration: none;
-        }
-        .ng-table-pagination-page-size{
-            display: flex;
-            justify-content: right;
-        }
-        .ng-table-fixedcolumn1 {
-            position:absolute;
-            width:5em;
-            left:0;
-            top:auto;
-        }
+
     </style>
 </head>
 
@@ -38,6 +20,7 @@
     <div ng-include="'helper/navbar.html'"></div>
 
     <div ng-include="'helper/AuthModal.html'"></div>
+    <div ng-include="'helper/Modal_Register.html'"></div>
 
     <div ng-include="'helper/home-content.html'"></div>
     <div ng-include="'helper/Modal.html'"></div>
@@ -46,11 +29,11 @@
 
 
         <div ng-include="'helper/data-content.html'"></div>
-        <div ng-include="'helper/Modal_Data.html'"></div>
+
 
     </div>
 
-
+    <div ng-include="'helper/Modal_Data.html'"></div>
 
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.2/angular.js"></script>

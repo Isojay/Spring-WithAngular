@@ -1,8 +1,16 @@
-.ng-table-scrollcontainer {
-    width: 300px;
-    overflow-x:scroll;
-    margin-left:10em;
-    overflow-y:visible;
+.ng-table-pagination{
+    display: flex;
+    justify-content: center;
+}
+.ng-table-pagination a {
+    color: black;
+    float: right;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+.ng-table-pagination-page-size{
+    display: flex;
+    justify-content: right;
 }
 .ng-table-fixedcolumn1 {
     position:absolute;
@@ -10,16 +18,35 @@
     left:0;
     top:auto;
 }
-.ng-table-fixedcolumn2 {
-    position:absolute;
-    width:5em;
-    left:5em;
-    top:auto;
-}
-.ng-table-fixedcolumn3 {
-    position:absolute;
-    width:5em;
-    left:10em;
-    top:auto;
+
+.modal-md {
+    max-width: 350px; /* Adjust this value as needed */
 }
 
+.modal-md1 {
+    max-width: 450px; /* Adjust this value as needed */
+}
+
+.custom-modal .modal-body .form-control {
+    border: none; /* Remove default border */
+    border-bottom: 1px solid #ccc; /* Add bottom border */
+    border-radius: 0; /* Remove border radius */
+    background-color: transparent; /* Remove background color */
+    box-shadow: none; /* Remove box shadow */
+}
+
+/* Add focus styles */
+.custom-modal .modal-body .form-control:focus {
+    border-color: #42F3FA;
+}
+.custom-font {
+    font-family: 'YourCustomFont', sans-serif;
+}
+
+.equal-width-button {
+    width: 50%;
+    height: 100%;
+}
+.active-button {
+    border: 1px solid #ced4da; /* Add border to active button */
+}

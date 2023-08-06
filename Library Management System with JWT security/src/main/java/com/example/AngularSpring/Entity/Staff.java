@@ -30,6 +30,8 @@ public class Staff implements UserDetails {
     @NotEmpty
     private String semail;
 
+    //private boolean accountstatus;
+
     @Column(name = "Password")
     private String spassword;
 

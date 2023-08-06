@@ -1,4 +1,4 @@
-<div class="container " ng-show="showLibrary">
+
     <div class="card shadow-none p-3 mb-5 bg-light rounded" ng-show="role === 'ADMIN'">
         <h5 class="card-header">Search for Records:</h5>
         <div class="card-body">
@@ -58,7 +58,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body" ng-show="role ==='ADMIN'">
             <table ng-table="tableParams1" class="table text-center" show-filter="true">
                 <tr ng-repeat="book in $data">
                     <td class="text-center align-middle" title="'SN'" ng-bind="$index+1 "></td>
@@ -75,59 +75,18 @@
                 </tr>
             </table>
         </div>
+        <div class="card-body" ng-hide="role ==='ADMIN'">
+            <table ng-table="tableParams1" class="table text-center" show-filter="true">
+                <tr ng-repeat="book in $data">
+                    <td class="text-center align-middle" title="'SN'" ng-bind="$index+1 "></td>
+                    <td class="text-center align-middle" title="'Book Code'" sortable="'bcode'" filter="{ 'bcode': 'text' }">{{book.bcode}}</td>
+                    <td class="text-center align-middle" title="'Book Name'" sortable="'bname'" filter="{ 'bname': 'text' }">{{book.bname}}</td>
+                    <td class="text-center align-middle" title="'Book Author'" sortable="'bauthor'" filter="{ 'bauthor': 'text' }">{{book.bauthor}}</td>
+                    <td class="text-center align-middle" title="'Published Year'" sortable="'year'" filter="{ 'year': 'number' }">{{book.year}}</td>
+                    <td class="text-center align-middle" title="'Status  '" sortable="'status'" filter="{ 'status': 'number' }">{{ book.status === 0 ? 'Available' : 'Borrowed' }}</td>
+                </tr>
+            </table>
+        </div>
     </div>
 
     <br>
-
-
-    <div class="modal fade" id="addSuccessModal" tabindex="-1" role="dialog" aria-labelledby="SuccessModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="SuccessModalLabel">Operation Successful</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {{ successMessage1 }}
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="SuccessModal" tabindex="-1" role="dialog" aria-labelledby="updateSuccessModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="updateSuccessModalLabel">Operation Successful</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {{ successMessage }}
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="errorModalLabel">Error Error Error!!!</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {{ errorMessage }}
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-</div>

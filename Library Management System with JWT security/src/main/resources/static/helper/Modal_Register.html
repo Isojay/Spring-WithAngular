@@ -1,0 +1,91 @@
+
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="logOutModalLabel">
+    <div class="modal-dialog modal-dialog-centered modal-md1 custom-modal " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registerModalLabel"> {{studentRegister === true ?'Student':'Staff'}} Registration</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-between mb-2">
+                    <button class="btn btn-light flex-fill equal-width-button" ng-class="{ 'active-button': studentRegister === true }" ng-click="studentRegister = true">Student</button>
+                    <button class="btn btn-light flex-fill equal-width-button" ng-class="{ 'active-button': studentRegister === false }" ng-click="studentRegister = false">Staff</button>
+                </div>
+
+                <br>
+                <div ng-show="studentRegister">
+
+                    <form ng-submit="addStudent()">
+                        <input type="hidden" name="id" ng-model="student.id">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="fname">First Name</label>
+                                    <input type="text" class="form-control" required ng-model="student.fname" id="fname" placeholder="Enter first name">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lname">Last Name</label>
+                                    <input type="text" class="form-control" required ng-model="student.lname" id="lname" placeholder="Enter last name">
+                                </div>
+                            </div>
+                            <br>
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" required ng-model="student.email" id="email" placeholder="Enter email">
+                            <br>
+                            <label for="semester">Semester</label>
+                            <input type="text" class="form-control" required ng-model="student.semester" id="semester" placeholder="Enter semester">
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="password">Password</label>
+                                    <input type="password" class="form-control" required ng-model="student.password" id="password" placeholder="Enter password">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="cpassword">Confirm Password</label>
+                                    <input type="password" class="form-control" required ng-model="student.confirmPassword" id="cpassword" placeholder="Confirm password" ng-change="validatePassword()">
+                                    <div ng-show="passwordMismatch" class="text-danger">Passwords do not match.</div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Add Student</button>
+                    </form>
+
+                </div>
+
+                <div ng-show="!studentRegister">
+                    <form ng-submit="addStaff()">
+                        <input type="hidden" name="id" ng-model="staff.id">
+                        <div class="form-group">
+                            <label for="uname">Full Name</label>
+                            <input type="text" class="form-control" required ng-model="staff.uname" id="uname" placeholder="Enter Full name">
+                            <br>
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" required ng-model="student.uemail" id="umail" placeholder="Enter email">
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="password">Password</label>
+                                    <input type="password" class="form-control" required ng-model="staff.upassword" id="upassword" placeholder="Enter password">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="cpassword">Confirm Password</label>
+                                    <input type="password" class="form-control" required ng-model="staff.confirmPassword" id="cupassword" placeholder="Confirm password" ng-change="validatePasswordstaff()">
+                                    <div ng-show="passwordMismatch" class="text-danger">Passwords do not match.</div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <button type="submit" class="btn btn-primary  btn-block">Register.</button>
+
+                    </form>
+                </div>
+                <p class="mt-3 text-center">Already have Acccount?<a class="text-primary" href="#" ng-click="logInModal()"> Log In here</a></p>
+            </div>
+        </div>
+    </div>
+</div>

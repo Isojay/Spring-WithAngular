@@ -24,15 +24,18 @@ public class SecurityConfig {
 
     private final JWTAuthenticationFilter jwtAuthFilter;
     private  final UserDetailsService userDetailsService;
+    private final JwtAuthenticationEntryPoint point;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(configurer -> configurer
+                        .requestMatchers("/api/students/**").hasAuthority("ADMIN")
                         .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(point))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
         ;
