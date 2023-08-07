@@ -1,0 +1,42 @@
+<div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel">
+    <div class="modal-dialog modal-dialog-centered modal-md custom-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h5 class="modal-title" id="profileModalLabel">Profile</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <img src="{{imgName}}" alt="Profile Image" class="img-fluid rounded-circle mb-3" style="max-width: 100px;">
+                </div>
+                <div class="mb-3">
+                    <strong>First name:</strong> {{student.fname}}
+                </div>
+                <div class="mb-3">
+                    <strong>Last name:</strong> {{student.lname}}
+                </div>
+                <div class="mb-3">
+                    <strong>Semester:</strong> {{student.semester}}
+                </div>
+
+                <div class="mb-3">
+                    <strong>Email:</strong> {{student.email}}
+                </div>
+                <div class="mb-3">
+                    <strong>Contact:</strong> {{student.contact}}
+                </div>
+                <div class="mb-3">
+                    <strong>Address:</strong> {{student.address}}
+                </div>
+                <div class="mb-3">
+                    <strong>College: </strong> Kathmandu Bernhardt College
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

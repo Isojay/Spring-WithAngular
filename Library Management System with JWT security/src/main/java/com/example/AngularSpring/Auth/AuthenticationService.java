@@ -42,6 +42,9 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .semester(request.getSemester())
+                .contact(request.getContact())
+                .address(request.getAddress())
+                .idstatus(0)
                 .role(Role.USER)
                 .build();
         studentService.save(studentUser);

@@ -37,6 +37,7 @@
                     <td class="text-center align-middle" title="'Last Name'" sortable="'lname'" filter="{ 'lname': 'text' }">{{ student.lname}}</td>
                     <td class="text-center align-middle" title="'Email'" sortable="'email'" filter="{ 'email': 'text' }">{{student.email}}</td>
                     <td class="text-center align-middle" title="'Semester'" sortable="'semester'" filter="{ 'semester': 'text' }">{{student.semester}}</td>
+                    <td class="text-center align-middle" title="'Contact'" sortable="'contact'" filter="{ 'contact': 'number' }">{{student.contact}}</td>
                     <td title="Delete"><a href="#" ng-click="deleteStudent(student.id)" class="btn btn-danger">Delete</a></td>
                     <td title="Update"><a href="#" ng-click="doUpdate(student.id)" class="btn btn-warning">Update</a></td>
                 </tr>

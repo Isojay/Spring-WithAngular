@@ -35,12 +35,19 @@ public class StudentDetails implements UserDetails {
     @Column(name = "Last_name")
     private String lName;
 
+    private long contact;
+    private  String address;
+
+    private int idstatus;
+
     @Column(nullable = true, unique = true)
     @NotEmpty
     private String email;
 
     private String semester;
     private String password;
+
+
 
     public StudentDetails(int id) {
         this.id = id;

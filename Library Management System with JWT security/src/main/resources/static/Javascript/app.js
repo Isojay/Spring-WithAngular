@@ -34,6 +34,10 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 				$scope.role = response.data.role;
 				$scope.currentSTDid = response.data.id;
 				$('#logInModal').modal('hide');
+				if ($scope.role === "USER"){
+					$('#imgModal').modal('show');
+				}
+
 				getnumber($scope.currentSTDid)//for show details
 			})
 			.catch(function (error) {
@@ -43,6 +47,22 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			});
 
 	}
+
+	$scope.addImg = function (){
+		$('#imgModal').modal('hide');
+		$http.post()
+			.then(function (response){
+
+
+			})
+			.catch(function (error){
+
+				$('#errorModal').modal('show');
+
+
+			});
+	}
+
 	function getnumber(currentSTDid) {
 		$('#logInModal').modal('hide');
 		$http.get('/api/books/getDetails/'+ currentSTDid)
@@ -58,7 +78,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	}
 
 	$scope.showDetails= function (stdId){
-		$http.get('/api/books/getDetails/'+ stdId)
+		$http.get('/api/books/getDetails/'+ $scope.currentSTDid)
 			.then(function (response){
 				$scope.details = response.data;
 				$scope.numberOfElements = response.data.length;
@@ -74,6 +94,21 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		$('#logOutModal').modal('show');
 	}
 
+	$scope.showProfile = function (){
+		$http.get('/api/profileById/'+$scope.currentSTDid)
+			.then(function (response){
+				$scope.student = response.data;
+				console.log("I am in Details")
+				$('#profileModal').modal('show');
+			})
+			.catch(function (error) {
+				$('#errorModal').modal('show');
+				$scope.errorMessage = error.data.message;
+				console.log("Student ID not found", $scope.errorMessage)
+			})
+
+
+	}
 
 	$scope.logOut = function () {
 		$window.localStorage.removeItem('jwtToken');
@@ -313,7 +348,6 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			$('#errorModal').modal('show');
 			$scope.errorMessage = 'Student ID not Found';
 		}else if (msg ==="emailError"){
-
 			$('#errorModal').modal('show');
 			$scope.errorMessage = 'Email Id already Registered';
 		}else if (msg ==="addBook"){
@@ -448,6 +482,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		$scope.staff = {};
 		$scope.students = [];
 		$scope.books = [];
+		$scope.imgName = "icon.png"
 	}
 
 	initialize();

@@ -20,9 +20,7 @@
                 <li class="nav-item active" ng-show="!loginStatus">
                     <a class="nav-link" href="#" ng-click="logInModal()">Log In</a>
                 </li>
-                <li class="nav-item active" ng-show="loginStatus">
-                    <a class="nav-link" href="#" ng-click="logOutModal()">Log Out</a>
-                </li>
+
                 <li class="nav-item active" ng-show="role === 'ADMIN'">
                     <a class="nav-link" href="#" ng-click="triggerStudent()">Student</a>
                 </li>
@@ -30,7 +28,13 @@
                     <a class="nav-link" href="#" ng-click="triggerBook()">Book</a>
                 </li>
                 <li class="nav-item active" ng-show="role === 'USER'">
-                    <a class="nav-link" href="#" ng-click="showDetails(currentSTDid)">Book Borrowed {{numberOfElements}}</a>
+                    <a class="nav-link" href="#" ng-click="showProfile()">Profile</a>
+                </li>
+                <li class="nav-item active" ng-show="role === 'USER'">
+                    <a class="nav-link" href="#" ng-click="showDetails()">Borrowed {{numberOfElements}}</a>
+                </li>
+                <li class="nav-item active" ng-show="loginStatus">
+                    <a class="nav-link" href="#" ng-click="logOutModal()">Log Out</a>
                 </li>
             </ul>
         </div>

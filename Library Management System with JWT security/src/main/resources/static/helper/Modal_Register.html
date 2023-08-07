@@ -31,11 +31,27 @@
                                 </div>
                             </div>
                             <br>
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" required ng-model="student.email" id="email" placeholder="Enter email">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" required ng-model="student.email" id="email" placeholder="Enter email">
+                                </div>
+                                <div class="col-md-5">
+                                    <label for="semester">Semester</label>
+                                    <input type="text" class="form-control" required ng-model="student.semester" id="semester" placeholder="Enter semester">
+                                </div>
+                            </div>
                             <br>
-                            <label for="semester">Semester</label>
-                            <input type="text" class="form-control" required ng-model="student.semester" id="semester" placeholder="Enter semester">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="Address">Address</label>
+                                    <input type="email" class="form-control" required ng-model="student.address" id="address" placeholder="Enter Address">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="text" class="form-control" required ng-model="student.contact" id="phone" placeholder="Enter Phone Number">
+                                </div>
+                            </div>
                             <br>
                             <div class="row">
                                 <div class="col-md-6">
@@ -51,7 +67,7 @@
 
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Add Student</button>
+                        <button type="submit" class="btn btn-primary btn-block">Register</button>
                     </form>
 
                 </div>
@@ -89,3 +105,30 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="imgModal" tabindex="-1" role="dialog" aria-labelledby="imgModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imgModalLabel">Picture For Your Library Card</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Select Photo for your Card</p>
+                <form ng-submit="addImg()">
+
+
+
+                write code here!!!!
+
+                <br>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">I will Do it later</button>
+                <button type="submit" class="btn btn-primary">Confirm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

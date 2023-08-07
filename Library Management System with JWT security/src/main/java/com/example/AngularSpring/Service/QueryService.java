@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class QueryService {
@@ -13,7 +15,14 @@ public class QueryService {
     private final QueryRepo queryRepo;
 
     public Queries saveQuery(Queries queries){
-        return null;
+        return queryRepo.save(queries);
     }
 
+    public void deleteQuery(int id){
+        queryRepo.deleteById(id);
+    }
+
+    public List<Queries> findAll(){
+        return queryRepo.findAll();
+    }
 }
