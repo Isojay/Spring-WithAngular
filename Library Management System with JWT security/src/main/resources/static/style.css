@@ -50,3 +50,8 @@
 .active-button {
     border: 1px solid #ced4da; /* Add border to active button */
 }
+
+.preview-image {
+    max-width: 300px; /* Set the maximum width you desire */
+    max-height: 300px; /* Set the maximum height you desire */
+}

@@ -117,11 +117,14 @@
             </div>
             <div class="modal-body">
                 <p>Select Photo for your Card</p>
-                <form ng-submit="addImg()">
+                <form ng-submit="addImg()" enctype="multipart/form-data">
 
+                    <input type="file" file-model="imageFile" accept="image/jpeg, image/png" />
+                    <img ng-src="{{ uploadedImage }}" alt="Uploaded Image" class="preview-image" />
+                    <br>
+                    What an Ugly Face!!
 
-
-                write code here!!!!
+                    <br>
 
                 <br>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">I will Do it later</button>

@@ -35,31 +35,37 @@ public class PublicController {
     }
 
     @PostMapping("/upByImg")
-    public ResponseEntity<?> upByimg(@RequestParam("file")MultipartFile file,
-                                     @RequestParam("id")int id){
+    public ResponseEntity<?> upByimg(@RequestParam("file") MultipartFile file,
+                                     @RequestParam("id") int id) throws IOException {
 
         StudentDetails studentDetails = studentService.findById(id).get();
 
-        if (file.isEmpty()){
+        if (file.isEmpty()) {
             msgResponse.setMessage("File is Empty");
-            return  ResponseEntity.status(400).body(msgResponse);
+            return ResponseEntity.status(400).body(msgResponse);
         }
 
-        String Oname = file.getOriginalFilename(); //Extract Original Filename
-        assert Oname != null;
-        String fileExtension = Oname.substring(Oname.indexOf('.')); // extract extension
-        String Rname = id + "_" + studentDetails.getFName() + fileExtension; // rename the image
+        String originalName = file.getOriginalFilename();
+        if (originalName == null) {
+            msgResponse.setMessage("Invalid file name");
+            return ResponseEntity.status(400).body(msgResponse);
+        }
+
+        String fileExtension = originalName.substring(originalName.lastIndexOf('.'));
+        String newName = id + "_" + studentDetails.getFName() + fileExtension;
 
         try {
-            File destFile = new File(Uploaddir + File.separator + Rname);
+            File destFile = new File(Uploaddir + File.separator + newName);
             file.transferTo(destFile);
-
-            return ResponseEntity.ok("Image uploaded and saved successfully");
+            studentDetails.setImgName(newName);
+            msgResponse.setMessage("Image uploaded successfully");
+            return ResponseEntity.ok(msgResponse);
         } catch (IOException e) {
-            return ResponseEntity.status(500).body("Error uploading image: " + e.getMessage());
+            msgResponse.setMessage("Error uploading image: " + e.getMessage());
+            return ResponseEntity.status(500).body(msgResponse);
         }
-
     }
+
 
 
 }

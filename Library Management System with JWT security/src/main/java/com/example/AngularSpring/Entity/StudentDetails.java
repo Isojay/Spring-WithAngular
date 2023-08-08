@@ -27,6 +27,8 @@ public class StudentDetails implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private String imgName;
+
     @NotEmpty
     @Column(name = "First_name")
     private String fName;

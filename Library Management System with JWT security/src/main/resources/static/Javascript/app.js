@@ -16,8 +16,37 @@ app.config(['$httpProvider', function ($httpProvider) {
 	$httpProvider.interceptors.push('JwtInterceptor');
 }]);
 
+app.directive('fileModel', ['$parse', '$rootScope', function ($parse, $rootScope) {
+	return {
+		restrict: 'A',
+		link: function (scope, element, attrs) {
+			var model = $parse(attrs.fileModel);
+			var modelSetter = model.assign;
 
-app.controller('LibraryController', function ($scope, $http,NgTableParams, $window, $timeout) {
+			element.bind('change', function () {
+				scope.$apply(function () {
+					modelSetter(scope, element[0].files[0]);
+					$rootScope.imageFile = element[0].files[0];
+					if (scope.imageFile) {
+						var reader = new FileReader();
+						reader.onload = function (e) {
+							scope.$apply(function () {
+								scope.uploadedImage = e.target.result;
+							});
+						};
+						reader.readAsDataURL(scope.imageFile);
+					}
+				});
+			});
+		}
+	};
+}]);
+
+
+
+
+
+app.controller('LibraryController', function ($scope, $http,NgTableParams, $window,  $rootScope,$timeout) {
 
 
 	$scope.logInModal = function () {
@@ -48,20 +77,32 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 
 	}
 
+
+
 	$scope.addImg = function (){
 		$('#imgModal').modal('hide');
-		$http.post()
-			.then(function (response){
+		console.log('IMGfile in addImg function:', $rootScope.imageFile);
+		var formData = new FormData();
+		formData.append('file',  $rootScope.imageFile);
+		formData.append('id', $scope.currentSTDid);
 
+		$http.post('/api/upByImg', formData, {
+			transformRequest: angular.identity,
+			headers: {'Content-Type': undefined}
+		}).then(function (response){
+				$scope.successMessage1 = response.data.message;
+				$('#addSuccessModal').modal('show');
 
 			})
 			.catch(function (error){
-
+				$scope.errorMessage = error.data.message;
 				$('#errorModal').modal('show');
-
-
+				console.log("Error Uploading the Photo")
 			});
 	}
+
+
+
 
 	function getnumber(currentSTDid) {
 		$('#logInModal').modal('hide');
