@@ -31,11 +31,15 @@
                     <a class="nav-link" href="#" ng-click="showProfile()">Profile</a>
                 </li>
                 <li class="nav-item active" ng-show="role === 'USER'">
+                    <a class="nav-link" href="#" ng-click="showDetails()">Card Status</a>
+                </li>
+                <li class="nav-item active" ng-show="role === 'USER'">
                     <a class="nav-link" href="#" ng-click="showDetails()">Borrowed {{numberOfElements}}</a>
                 </li>
                 <li class="nav-item active" ng-show="loginStatus">
                     <a class="nav-link" href="#" ng-click="logOutModal()">Log Out</a>
                 </li>
+
             </ul>
         </div>
     </div>

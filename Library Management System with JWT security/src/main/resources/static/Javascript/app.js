@@ -1,6 +1,6 @@
 var app = angular.module('student', ['ngTable']);
 
-app.factory('JwtInterceptor', ['$window', '$q', function ($window, $q) {
+app.factory('JwtInterceptor', ['$window', '$q', function ($window) {
 	return {
 		request: function (config) {
 			var token = $window.localStorage.getItem('jwtToken');
@@ -26,16 +26,7 @@ app.directive('fileModel', ['$parse', '$rootScope', function ($parse, $rootScope
 			element.bind('change', function () {
 				scope.$apply(function () {
 					modelSetter(scope, element[0].files[0]);
-					$rootScope.imageFile = element[0].files[0];
-					if (scope.imageFile) {
-						var reader = new FileReader();
-						reader.onload = function (e) {
-							scope.$apply(function () {
-								scope.uploadedImage = e.target.result;
-							});
-						};
-						reader.readAsDataURL(scope.imageFile);
-					}
+					$rootScope.imageFile = element[0].files[0]; // Set in $rootScope
 				});
 			});
 		}
@@ -118,12 +109,11 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 
 	}
 
-	$scope.showDetails= function (stdId){
+	$scope.showDetails= function (){
 		$http.get('/api/books/getDetails/'+ $scope.currentSTDid)
 			.then(function (response){
 				$scope.details = response.data;
 				$scope.numberOfElements = response.data.length;
-
 				$('#showDetailsModal').modal('show', 'keyboard', 'focus');
 			})
 			.catch(function (error) {

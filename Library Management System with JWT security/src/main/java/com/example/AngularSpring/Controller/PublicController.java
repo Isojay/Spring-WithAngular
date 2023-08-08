@@ -46,18 +46,15 @@ public class PublicController {
         }
 
         String originalName = file.getOriginalFilename();
-        if (originalName == null) {
-            msgResponse.setMessage("Invalid file name");
-            return ResponseEntity.status(400).body(msgResponse);
-        }
-
         String fileExtension = originalName.substring(originalName.lastIndexOf('.'));
         String newName = id + "_" + studentDetails.getFName() + fileExtension;
-
+        System.out.println(newName);
+        studentDetails.setImgName(newName);
+        studentService.save(studentDetails);
         try {
             File destFile = new File(Uploaddir + File.separator + newName);
             file.transferTo(destFile);
-            studentDetails.setImgName(newName);
+
             msgResponse.setMessage("Image uploaded successfully");
             return ResponseEntity.ok(msgResponse);
         } catch (IOException e) {

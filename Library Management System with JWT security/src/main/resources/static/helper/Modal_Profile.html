@@ -1,5 +1,5 @@
 <div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel">
-    <div class="modal-dialog modal-dialog-centered modal-md custom-modal" role="document">
+    <div class="modal-dialog modal-dialog-centered custom-modal" role="document">
         <div class="modal-content">
             <div class="modal-header text-center">
                 <h5 class="modal-title" id="profileModalLabel">Profile</h5>
@@ -7,32 +7,36 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <div class="text-center">
-                    <img src="{{imgName}}" alt="Profile Image" class="img-fluid rounded-circle mb-3" style="max-width: 100px;">
+            <div class="modal-body d-flex">
+                <div class="text-center mr-4 d-flex flex-column align-items-center">
+                    <img src="Pictures/{{student.imgName}}" alt="Profile Image" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
+                    <br>
+                    <button type="button" class="btn btn-primary mb-2 equal-width-buttons" ng-click="#">Change Picture</button>
+                    <button type="button" class="btn btn-primary mb-2 equal-width-buttons" ng-click="#">Edit Profile</button>
+                    <button type="button" class="btn btn-secondary equal-width-buttons" ng-click="#">Change Password</button>
                 </div>
-                <div class="mb-3">
-                    <strong>First name:</strong> {{student.fname}}
-                </div>
-                <div class="mb-3">
-                    <strong>Last name:</strong> {{student.lname}}
-                </div>
-                <div class="mb-3">
-                    <strong>Semester:</strong> {{student.semester}}
+                <div>
+                    <h3>Student Details : </h3>
+                    <div class="mb-3">
+                        <strong>Name:</strong>    {{student.fname}} {{student.lname}}
+                    </div>
+                    <div class="mb-3">
+                        <strong>Semester:</strong>      {{student.semester}}
+                    </div>
+                    <div class="mb-3">
+                        <strong>Email:</strong>         {{student.email}}
+                    </div>
+                    <div class="mb-3">
+                        <strong>Contact:</strong>       {{student.contact}}
+                    </div>
+                    <div class="mb-3">
+                        <strong>Address:</strong>       {{student.address}}
+                    </div>
+                    <div class="mb-3">
+                        <strong>College:</strong>       Kathmandu Bernhardt College
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <strong>Email:</strong> {{student.email}}
-                </div>
-                <div class="mb-3">
-                    <strong>Contact:</strong> {{student.contact}}
-                </div>
-                <div class="mb-3">
-                    <strong>Address:</strong> {{student.address}}
-                </div>
-                <div class="mb-3">
-                    <strong>College: </strong> Kathmandu Bernhardt College
-                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

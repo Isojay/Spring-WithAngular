@@ -119,9 +119,12 @@
                 <p>Select Photo for your Card</p>
                 <form ng-submit="addImg()" enctype="multipart/form-data">
 
-                    <input type="file" file-model="imageFile" accept="image/jpeg, image/png" />
-                    <img ng-src="{{ uploadedImage }}" alt="Uploaded Image" class="preview-image" />
+                    <input type="file" file-model="imageFile" accept="image/jpeg, image/png,image/jpg" />
+
                     <br>
+                    <div class="cropper-container">
+                        <img id="image" ng-src="{{ imageSrc }}" />
+                    </div>
                     What an Ugly Face!!
 
                     <br>
