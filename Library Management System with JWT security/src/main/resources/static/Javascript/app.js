@@ -54,9 +54,9 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 				$scope.role = response.data.role;
 				$scope.currentSTDid = response.data.id;
 				$('#logInModal').modal('hide');
-				if ($scope.role === "USER"){
-					$('#imgModal').modal('show');
-				}
+				// if ($scope.role === "USER"){
+				// 	$('#imgModal').modal('show');
+				// }
 
 				getnumber($scope.currentSTDid)//for show details
 			})
@@ -109,7 +109,10 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 
 	}
 
-	$scope.showDetails= function (){
+	$scope.showDetails= function (stdID){
+		if (stdID){
+			 $scope.currentSTDid = stdID;
+		}
 		$http.get('/api/books/getDetails/'+ $scope.currentSTDid)
 			.then(function (response){
 				$scope.details = response.data;
@@ -137,8 +140,19 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 				$scope.errorMessage = error.data.message;
 				console.log("Student ID not found", $scope.errorMessage)
 			})
-
-
+	}
+	$scope.showProfileForId = function (){
+		$http.get('/api/profileById/'+$scope.currentSTDid)
+			.then(function (response){
+				$scope.student = response.data;
+				console.log("I am in Details")
+				$('#idCardModal').modal('show');
+			})
+			.catch(function (error) {
+				$('#errorModal').modal('show');
+				$scope.errorMessage = error.data.message;
+				console.log("Student ID not found", $scope.errorMessage)
+			})
 	}
 
 	$scope.logOut = function () {
@@ -177,7 +191,6 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 				console.log("Reset")
 				$scope.students = response.data.content;
 				const data = response.data.content;
-				console.log("RUN RUN")
 				$scope.tableParams = new NgTableParams(
 					{
 						page: 1, // Show the first page
@@ -378,19 +391,20 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			$('#updateBookModal').modal('hide');
 			$('#errorModal').modal('show');
 			$scope.errorMessage = 'Student ID not Found';
-		}else if (msg ==="emailError"){
+		}else if (msg ==="emailError" || msg ==="studentUpdate"){
+			$('#updateStudentModal').modal('hide');
 			$('#errorModal').modal('show');
 			$scope.errorMessage = 'Email Id already Registered';
 		}else if (msg ==="addBook"){
 			$('#addBookModal').modal('hide');
 			$('#errorModal').modal('show');
 			$scope.errorMessage = 'Book Code already Registered';
-		}else if (msg ==="studentUpdate"){
-			$('#updateStudentModal').modal('hide');
-			$('#errorModal').modal('show');
-			$scope.errorMessage = 'Email Id already Registered';
 		}
-
+		// else if (msg ==="studentUpdate"){
+		//
+		// 	$('#errorModal').modal('show');
+		// 	$scope.errorMessage = 'Email Id already Registered';
+		// }
 	}
 	$scope.addStudentModal = function () {
 		console.log('Opening Add Student modal...');
@@ -407,6 +421,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 					$scope.successMessage1 = response.data.message;
 					console.log($scope.successMessage1)
 					$('#registerModal').modal('hide');
+					$('#addStudentModal').modal('hide');
 					$('#addSuccessModal').modal('show');
 					$scope.student = {};
 					$timeout(function () {
@@ -451,12 +466,12 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 
 
 	$scope.addBookModal = function () {
-		$scope.book = null;
+		$scope.book = {};
 		$('#addBookModal').modal('show');
 	};
 
 	$scope.addBook = function (){
-		$http.post('api/books/addBooks', $scope.book, { responseType: 'text' })
+		$http.post('/api/books/addBooks', $scope.book )
 			.then(function (response){
 				if( response.status === 200){
 					$scope.successMessage1 = 'Book data added successfully.';
@@ -467,10 +482,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 						$('#addSuccessModal').modal('hide');
 						$scope.triggerBook();
 					}, 1000);
-				}else{
-
 				}
-
 			})
 			.catch(function (error) {
 				var from = "addBook"
@@ -488,6 +500,16 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			fetchBook();
 		}
 
+	}
+
+	$scope.openModal = function (modalName) {
+		$scope.query = {};
+		var modalID = '#'+ modalName + 'Modal';
+		$(modalID).modal('show');
+	}
+	$scope.closeModal = function (modalName) {
+		var modalID = '#'+ modalName + 'Modal';
+		$(modalID).modal('hide');
 	}
 
 
@@ -511,9 +533,12 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		$scope.login = {};
 		$scope.student = {};
 		$scope.staff = {};
+		$scope.book = {};
+		$scope.query= {};
 		$scope.students = [];
 		$scope.books = [];
-		$scope.imgName = "icon.png"
+		$scope.queries = [];
+		$scope.adminMenu = true;
 	}
 
 	initialize();
@@ -526,6 +551,46 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		$scope.passwordMismatch = $scope.staff.upassword !== $scope.staff.confirmPassword;
 	};
 
+	$scope.msg2Admin = function (){
+		$scope.closeModal('contactAdmin');
+		$http.post("/api/query/add", $scope.query)
+			.then(function (){
+				$scope.openModal('contactSucess');
+				$scope.closeModal('contactAdmin');
 
+			})
+			.catch(function (error) {
+				$('#errorModal').modal('show');
+				$scope.errorMessage = 'Server Error. Try Again Later';
+			});
+	}
+	$scope.triggerQueries = function (){
+		$scope.adminMenu = false;
+		fetchqueries();
+	}
+	function fetchqueries(){
+		$http.get("/api/query/getQueries")
+			.then(function (response) {
+				$scope.queries =  response.data;
+				console.log($scope.queries)
+				const data2 = response.data;
+				console.log("it looks good")
+				$scope.tableParams2 = new NgTableParams(
+					{
+						page: 1, // Show the first page
+						count: 10, // Number of items per page
+						sorting: {
+							date: 'asc' // Default sorting by 'First Name' column in ascending order
+						}
+					},
+					{
+						dataset: data2 // Set the fetched data as the dataset
+					}
+				);
+			})
+			.catch(function (error) {
+				console.error('Error fetching Queries:', error);
+			});
+	}
 
 });

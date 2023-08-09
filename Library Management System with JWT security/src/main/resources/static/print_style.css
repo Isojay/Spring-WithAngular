@@ -1,0 +1,30 @@
+@media print {
+    body * {
+        display: none !important;
+    }
+    #idCardModal {
+        display: block !important;
+        position: static;
+        visibility: visible;
+        opacity: 1;
+    }
+    .modal-dialog {
+        max-width: none !important;
+        width: auto !important;
+        margin: 0 !important;
+    }
+    .modal-content {
+        border: none !important;
+        box-shadow: none !important;
+    }
+    .modal-body {
+        padding: 0 !important;
+    }
+    .modal-footer {
+        display: none !important;
+    }
+    .img-fluid {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+}

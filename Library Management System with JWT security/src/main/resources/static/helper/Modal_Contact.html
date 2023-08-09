@@ -1,0 +1,54 @@
+<div class="modal fade" id="contactAdminModal" tabindex="-1" role="dialog" aria-labelledby="contactAdminModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="contactAdminLabel">Contact Admin</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form ng-submit="msg2Admin()">
+                    <input type="hidden" name="id" ng-model="query.id">
+                    <div class="form-group">
+                        <label for="uname">Name</label>
+                        <input type="text" class="form-control" required ng-model="query.name" id="uname" placeholder="Enter Your Name">
+                        <br>
+                        <label for="uemail">Email</label>
+                        <input type="text" class="form-control" required ng-model="query.email" id="uemail" placeholder="Enter Your Email">
+                        <br>
+                        <label for="unumber">Phone number</label>
+                        <input type="text" class="form-control" required ng-model="query.contact" id="unumber" placeholder="Enter Your Contact Number">
+                        <br>
+                        <label for="qsubject">Subject</label>
+                        <input type="text" class="form-control" required ng-model="query.querytopic" id="qsubject" placeholder="Enter Your Problem">
+                        <br>
+                        <label for="qelab">Message</label>
+                        <textarea class="form-control" rows="5" ng-model="query.message" id="qelab" placeholder="Elaborate Your Problem Here!!!"></textarea>
+                        <br>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="contactSucessModal" tabindex="-1" role="dialog" aria-labelledby="contactSucessModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="contactSucessLabel">Contact Sucess</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <i class="fa fa-check-circle" style="font-size:48px;color:green"></i>
+
+            </div>
+        </div>
+    </div>
+</div>
+

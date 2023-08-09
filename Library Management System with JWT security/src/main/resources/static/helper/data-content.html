@@ -80,7 +80,7 @@
             <table ng-table="tableParams1" class="table text-center" show-filter="true">
                 <tr ng-repeat="book in $data">
                     <td class="text-center align-middle" title="'SN'" ng-bind="$index+1 "></td>
-                    <td class="text-center align-middle" title="'Book Code'" sortable="'bcode'" filter="{ 'bcode': 'text' }">{{book.bcode}}</td>
+                    <td class="text-center align-middle truncate-cell" title="'Book Code'" sortable="'bcode'" filter="{ 'bcode': 'text' }">{{book.bcode}}</td>
                     <td class="text-center align-middle" title="'Book Name'" sortable="'bname'" filter="{ 'bname': 'text' }">{{book.bname}}</td>
                     <td class="text-center align-middle" title="'Book Author'" sortable="'bauthor'" filter="{ 'bauthor': 'text' }">{{book.bauthor}}</td>
                     <td class="text-center align-middle" title="'Published Year'" sortable="'year'" filter="{ 'year': 'number' }">{{book.year}}</td>

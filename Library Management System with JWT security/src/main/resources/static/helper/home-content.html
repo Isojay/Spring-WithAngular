@@ -1,6 +1,5 @@
 <div class="container" ng-show="!showLibrary">
-
-    <div class="card shadow p-3 mb-5 bg-white rounded ">
+    <div class="card shadow p-3 mb-5 bg-white rounded" ng-show="role !== 'ADMIN' ">
         <h5 class="card-header text-center">Library Management System</h5>
         <div class="card-body">
             <p>
@@ -22,6 +21,66 @@
                 <li>Integration with Backend APIs: The system communicates with backend APIs to fetch and store data from and to the database.</li>
             </ul>
         </div>
+    </div>
+
+    <div ng-show="role === 'ADMIN' && adminMenu">
+        <div class="jumbotron text-center">
+            <h1 class="display-4">Welcome back, Admin</h1>
+            <p>Easily manage your data from this admin <mark>CMS</mark></p>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3 pt-3">
+                    <div class="card" style="background-color:white;">
+                        <div class="card-body">
+                            <h4 class="card-title">Books</h4>
+                            <p class="card-text">Manage the Books section here.</p>
+                            <a ng-click="triggerBook()" class="card-link btn btn-primary" style="color: white;">Manage</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 pt-3">
+                    <div class="card" style="background-color:white;">
+                        <div class="card-body">
+                            <h4 class="card-title">Students</h4>
+                            <p class="card-text">Manage all the Students here.</p>
+                            <a ng-click="triggerStudent()" class="card-link btn btn-primary" style="color: white;">Manage</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 pt-3">
+                    <div class="card" style="background-color:white;">
+                        <div class="card-body">
+                            <h4 class="card-title">Queries</h4>
+                            <p class="card-text">Manage all the Queries here.</p>
+                            <a ng-click="triggerQueries()" class="card-link btn btn-primary" style="color: white;">Manage</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ng-show="role === 'ADMIN' && !adminMenu">
+
+        <div class="card shadow p-3 mb-5 bg-white rounded">
+            <h5 class="card-header">Queries</h5>
+            <div class="card-body">
+                <table ng-table="tableParams2" class="table" show-filter="true">
+                    <tr ng-repeat="query in $data">
+                        <td title="'SN'" class="text-center align-middle" ng-bind="$index+1 "></td>
+                        <td class="text-center align-middle" title="'Subject'" sortable="'subject'" filter="{ 'subject': 'text' }">{{query.querytopic}}</td>
+                        <td class="text-center align-middle" title="'By'" sortable="'name'" filter="{ 'name': 'text' }">{{ query.name}}</td>
+                        <td class="text-center align-middle" title="'Email'" sortable="'email'" filter="{ 'email': 'text' }">{{query.email}}</td>
+                        <td class="text-center align-middle" title="'Contact'" sortable="'contact'" filter="{ 'contact': 'number' }">{{query.contact}}
+                        <td class="text-center align-middle" title="'Created Date'" sortable="'date'" filter="{ 'date': 'number' }">{{query.date}}</td>
+                        <td title="Delete"><a href="#" ng-click="deleteStudent(query.id)" class="btn btn-danger">Delete</a></td>
+                        <td title="Update"><a href="#" ng-click="doUpdate(query.id)" class="btn btn-warning">Update</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
     </div>
 
 </div>

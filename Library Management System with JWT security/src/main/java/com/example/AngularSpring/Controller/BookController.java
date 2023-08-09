@@ -47,7 +47,7 @@ public class BookController {
 
     @PostMapping("/addBooks")
     public ResponseEntity<?> addBook(@RequestBody Book book){
-
+        System.out.println("Error Ran away");
         Optional<Book> bid = bookService.findById(book.getBcode());
         if(bid.isPresent()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

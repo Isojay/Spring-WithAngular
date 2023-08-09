@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Builder
 @Data
 @NoArgsConstructor
@@ -17,23 +19,27 @@ import lombok.NoArgsConstructor;
 public class Queries {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "Name")
+    private String name;
 
     @NotEmpty
     @Column(name = "Email")
     private String email;
 
-    @Column(name = "Phone Number")
-    private int contact;
+    @Column(name = "Phone_Number")
+    private long contact;
 
     @Column(name = "Nachricht")
     private String message;
 
+    @Column(name="Created Date")
+    private LocalDate date;
 
     private int status; // 0 - new  1 - seen  2- solved
 
-
-
+    private String querytopic;
 
 }

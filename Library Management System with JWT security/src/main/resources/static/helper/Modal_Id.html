@@ -1,0 +1,29 @@
+<div class="modal fade" id="idCardModal" tabindex="-1" role="dialog" aria-labelledby="idCardModalLabel">
+    <div class="modal-dialog modal-dialog-centered custom-modal" role="document">
+        <div class="modal-content "><div class="id-card-modal" id="print"><br>
+            <div class="row justify-content-center">
+                <div class="col-md-12 text-center">
+                    <img src="icon.png" width="auto" height="30" class="d-inline-block align-top" alt="" />
+                    <p class="header-text mb-0">Library Management System</p>
+                </div>
+            </div>
+
+            <div class="modal-body d-flex">
+                <div class="text-center mr-3">
+                    <img src="Pictures/{{student.imgName}}" alt="Profile Image" class="img-fluid small-image">
+                </div>
+                <div class="card-content">
+                    <p class="details-text"><strong>Id:</strong> {{student.id}}</p>
+                    <p class="details-text"><strong>Name:</strong> {{student.fname}} {{student.lname}}</p>
+                    <p class="details-text"><strong>Semester:</strong> {{student.semester}}</p>
+                    <p class="details-text"><strong>Email:</strong> {{student.email}}</p>
+                    <p class="details-text"><strong>College:</strong> Kathmandu Bernhardt College</p>
+                    <p class="details-text"><strong>Expiration Date:</strong> 2023/12/30</p>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="printDiv()">Print</button>
+        </div></div>
+    </div>
+</div>

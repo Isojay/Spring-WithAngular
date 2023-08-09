@@ -59,3 +59,44 @@
     width: 100%;
     max-width: 170px; /* Adjust this value to control the maximum width of the buttons */
 }
+.square-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px; /* Optional: Add rounded corners */
+}
+.small-image {
+    width: 1.5in; /* Adjust image width */
+    height: auto;
+    max-width: 100%; /* Ensure the image doesn't exceed its container */
+    border-radius: 10px; /* Optional: Add rounded corners */
+}
+.card-content {
+    flex-grow: 1; /* Allow content to grow and fill available space */
+    padding-left: 1px; /* Add padding to the left side */
+    padding-right: 10px;
+}
+.header-text {
+    font-size: 12px; /* Adjust header text size */
+    margin-top: 5px; /* Add a small margin to separate from the icon */
+}
+.details-text {
+    font-size: 13px; /* Adjust student details text size */
+    margin-bottom: 5px; /* Reduce the spacing between details */
+}
+.details-text:last-child {
+    margin-bottom: 0; /* Remove margin from the last details item */
+}
+
+.id-card-modal {
+    border: 2px solid #333; /* Add a border around the modal content */
+    border-radius: 10px; /* Add rounded corners to the border */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow effect */
+}
+
+.truncate-cell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px; /* Adjust this value as needed */
+}
