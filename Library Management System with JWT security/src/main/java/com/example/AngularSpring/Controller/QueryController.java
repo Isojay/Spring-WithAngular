@@ -1,10 +1,13 @@
 package com.example.AngularSpring.Controller;
 
+import com.example.AngularSpring.Auth.MsgResponse;
 import com.example.AngularSpring.Entity.Queries;
 import com.example.AngularSpring.Service.QueryService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -16,12 +19,29 @@ import java.util.List;
 public class QueryController {
 
     private  final QueryService queryService;
+    MsgResponse msgResponse =new MsgResponse();
 
     @GetMapping("/getQueries")
     public List<Queries> getQueries(){
-
-        System.out.println("hello from QUeries");
         return queryService.findAll();
+    }
+
+    @GetMapping("/getQuerybyId/{id}")
+    public ResponseEntity<?> getQueryById(@PathVariable int id){
+        try {
+            Queries queries = queryService.findbyid(id).get();
+            queries.setStatus(1);
+            queryService.saveQuery(queries);
+            return ResponseEntity.ok(queries);
+        }catch (Exception e){
+            msgResponse.setMessage("Internal Server Error !!!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msgResponse);
+        }
+    }
+
+    @GetMapping("/byStatus/{id}")
+    public List<Queries> findByStatus(@PathVariable int id){
+        return queryService.findByStatus(id);
     }
 
     @PostMapping("/add")
@@ -33,7 +53,7 @@ public class QueryController {
 
     @PutMapping("/add")
     public void editQuery(@RequestBody Queries queries){
-        queries.setStatus(1);
+        queries.setStatus(2);
         queryService.saveQuery(queries);
     }
 

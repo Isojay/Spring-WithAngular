@@ -11,9 +11,9 @@
                 <div class="text-center mr-4 d-flex flex-column align-items-center">
                     <img src="Pictures/{{student.imgName}}" alt="Profile Image" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
                     <br>
-                    <button type="button" class="btn btn-primary mb-2 equal-width-buttons" ng-click="#">Change Picture</button>
-                    <button type="button" class="btn btn-primary mb-2 equal-width-buttons" ng-click="#">Edit Profile</button>
-                    <button type="button" class="btn btn-secondary equal-width-buttons" ng-click="#">Change Password</button>
+                    <button type="button" class="btn btn-primary mb-2 equal-width-buttons" ng-click="twoModal('img','profile')">Change Picture</button>
+                    <button type="button" class="btn btn-primary mb-2 equal-width-buttons" ng-click="twoModal('updateStudent','profile')">Edit Profile</button>
+                    <button type="button" class="btn btn-secondary equal-width-buttons" ng-click="twoModal('img','profile')">Change Password</button>
                 </div>
                 <div>
                     <h3>Information : </h3>

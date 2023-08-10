@@ -10,7 +10,7 @@
     <link rel="icon" type=".png" href="/icon.png">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" type="text/css" href="/print-style.css" media="print">
+    <link type="text/css" href="/print-style.css" media="print">
     <style>
 
     </style>
@@ -27,11 +27,13 @@
 
     <div ng-include="'helper/home-content.html'"></div>
     <div ng-include="'helper/Modal.html'"></div>
+    <div ng-include="'helper/Modal_QueryShow.html'"></div>
 
     <div class="container " ng-show="showLibrary">
 
         <div ng-include="'helper/Modal.html'"></div>
         <div ng-include="'helper/data-content.html'"></div>
+        <div ng-include="'helper/Modal_QueryShow.html'"></div>
 
 
     </div>

@@ -1,0 +1,42 @@
+<div class="modal fade" id="queryDetailsModal" tabindex="-1" role="dialog" aria-labelledby="queryDetailsModalLabel">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #007BFF; color: white;">
+                <h5 class="modal-title" id="queryDetailsModalLabel">Query Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3 class="text-primary">Information:</h3>
+                <div class="mb-3">
+                    <strong class="text-secondary">Subject:</strong> {{ query.querytopic }}
+                </div>
+                <div class="mb-3">
+                    <strong class="text-secondary">Name:</strong> {{ query.name }}
+                </div>
+                <div class="mb-3">
+                    <strong class="text-secondary">Email:</strong> {{ query.email }}
+                </div>
+                <div class="mb-3">
+                    <strong class="text-secondary">Contact:</strong> {{ query.contact }}
+                </div>
+                <div class="mb-3">
+                    <strong class="text-secondary">Created on:</strong> {{ query.date }}
+                </div>
+                <div class="mb-3">
+                    <strong class="text-secondary">Status:</strong>
+                    <span class="{{ query.status === 1 ? 'text-danger' : 'text-success' }}">
+                        {{ query.status === 1 ? 'Unsolved' : 'Solved' }}
+                    </span>
+                </div>
+                <div class="mb-3">
+                    <strong class="text-secondary">Details:</strong> {{ query.message }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

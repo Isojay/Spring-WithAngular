@@ -39,12 +39,6 @@ app.directive('fileModel', ['$parse', '$rootScope', function ($parse, $rootScope
 
 app.controller('LibraryController', function ($scope, $http,NgTableParams, $window,  $rootScope,$timeout) {
 
-
-	$scope.logInModal = function () {
-		$('#registerModal').modal('hide');
-		$('#logInModal').modal('show');
-	}
-
 	$scope.logInData = function () {
 		$http.post('/api/auth/login', $scope.login)
 			.then(function (response) {
@@ -53,7 +47,9 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 				$window.localStorage.setItem('jwtToken', token);
 				$scope.role = response.data.role;
 				$scope.currentSTDid = response.data.id;
+				$scope.query.email = response.data.email;
 				$('#logInModal').modal('hide');
+				$scope.byStatus(0,'query')
 				// if ($scope.role === "USER"){
 				// 	$('#imgModal').modal('show');
 				// }
@@ -67,6 +63,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			});
 
 	}
+
 
 
 
@@ -92,9 +89,6 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			});
 	}
 
-
-
-
 	function getnumber(currentSTDid) {
 		$('#logInModal').modal('hide');
 		$http.get('/api/books/getDetails/'+ currentSTDid)
@@ -103,11 +97,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			})
 	}
 
-	$scope.openRegisterModal = function (){
-		$('#logInModal').modal('hide');
-		$('#registerModal').modal('show');
 
-	}
 
 	$scope.showDetails= function (stdID){
 		if (stdID){
@@ -124,9 +114,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			});
 	}
 
-	$scope.logOutModal = function () {
-		$('#logOutModal').modal('show');
-	}
+
 
 	$scope.showProfile = function (){
 		$http.get('/api/profileById/'+$scope.currentSTDid)
@@ -241,6 +229,8 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	$scope.triggerHome = function () {
 		$scope.showTable = null;
 		$scope.showLibrary = false;
+		$scope.adminMenu = true;
+		$scope.byStatus(0,'query')
 		fetchStudents();
 	}
 
@@ -274,7 +264,9 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		if (confirm('Are you sure you want to delete this task?')) {
 			$http.delete('/api/students/delete/' + studentID)
 				.then(function (response) {
-					deleteMessage(true)
+					$scope.successMessage = 'Data deleted sucessfully.';
+					$scope.openModal('SucessModal');
+					fetchStudents();
 				})
 				.catch(function (error) {
 					console.error('Error deleting Student Data:', error);
@@ -287,7 +279,23 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			console.log(BookID)
 			$http.delete('/api/books/deleteBook/' + BookID)
 				.then(function () {
-					deleteMessage(false);
+					$scope.successMessage = 'Data deleted sucessfully.';
+					$scope.openModal('SucessModal');
+					fetchBook();
+				})
+				.catch(function (error) {
+					console.error('Error deleting Book:', error);
+				});
+		}
+	};
+
+	$scope.deleteQuery = function (statusID) {
+		if (confirm('Are you sure you want to delete this task?')) {
+			$http.delete('api/query/deletebyId/'+statusID)
+				.then(function () {
+					$scope.successMessage = 'Data deleted sucessfully.';
+					$scope.openModal('SucessModal');
+					fetchqueries();
 				})
 				.catch(function (error) {
 					console.error('Error deleting Book:', error);
@@ -359,31 +367,13 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 					$('#updateBookModal').modal('hide');
 					$('#SuccessModal').modal('show');
 					$scope.book = null;
-					$timeout(function () {
-						$('#SuccessModal').modal('hide');
-						$scope.triggerBook();
-					}, 1000);
+					$scope.triggerBook();
 				}
 			})
 			.catch(function (error) {
 				var from = "bookUpdate"
 				errorMessage(from);
 			});
-	}
-
-	function deleteMessage(from){
-		$scope.successMessage = 'Data deleted sucessfully.';
-		$('#SuccessModal').modal('show');
-		$scope.book = null;
-		$scope.student = null;
-		$timeout(function () {
-			$('#SuccessModal').modal('hide');
-			if (from){
-				fetchStudents();
-			}else{
-				$scope.triggerBook();
-			}
-		}, 1000);
 	}
 
 	function errorMessage(msg){
@@ -400,14 +390,8 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			$('#errorModal').modal('show');
 			$scope.errorMessage = 'Book Code already Registered';
 		}
-		// else if (msg ==="studentUpdate"){
-		//
-		// 	$('#errorModal').modal('show');
-		// 	$scope.errorMessage = 'Email Id already Registered';
-		// }
 	}
 	$scope.addStudentModal = function () {
-		console.log('Opening Add Student modal...');
 		$scope.student = {};
 		$('#addStudentModal').modal('show', 'keyboard', 'focus');
 	};
@@ -415,26 +399,21 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 
 	//self user registration
 	$scope.addStudent = function () {
+		$('#registerModal').modal('hide');
+		$('#addStudentModal').modal('hide');
 		$http.post('/api/auth/student/register', $scope.student)
 			.then(function (response) {
 				if (response.status === 200 || response.status === 201) {
 					$scope.successMessage1 = response.data.message;
 					console.log($scope.successMessage1)
-					$('#registerModal').modal('hide');
-					$('#addStudentModal').modal('hide');
 					$('#addSuccessModal').modal('show');
+					fetchStudents();
 					$scope.student = {};
-					$timeout(function () {
-						$('#addSuccessModal').modal('hide');
-						fetchStudents();
-					}, 1000);
 				}
 			})
 			.catch(function (error) {
 				var from = "emailError"
 				errorMessage(from);
-				$('#registerModal').modal('hide');
-				$('#addStudentModal').modal('hide');
 				$scope.errorMessage = error.data.message;
 				console.error('Error updating student:', error);
 			});
@@ -445,14 +424,9 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			.then(function (response) {
 				if (response.status === 200 || response.status === 201) {
 					$scope.successMessage1 = response.data.message;
-					console.log($scope.successMessage1)
-					$('#registerModal').modal('hide');
-					$('#addSuccessModal').modal('show');
-					$scope.student = {};
-					$timeout(function () {
-						$('#addSuccessModal').modal('hide');
-						fetchStudents();
-					}, 1000);
+					$scope.twoModal('addSuccess','register');
+					$scope.staff = {};
+					fetchStudents();
 				}
 			})
 			.catch(function (error) {
@@ -475,8 +449,9 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			.then(function (response){
 				if( response.status === 200){
 					$scope.successMessage1 = 'Book data added successfully.';
-					$('#addBookModal').modal('hide');
-					$('#addSuccessModal').modal('show');
+					$scope.twoModal('addSuccess','addBook');
+					// $('#addBookModal').modal('hide');
+					// $('#addSuccessModal').modal('show');
 					$scope.book = {};
 					$timeout(function () {
 						$('#addSuccessModal').modal('hide');
@@ -490,16 +465,27 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			});
 	}
 
-	$scope.byStatus = function(statusID){
+	$scope.byStatus = function(statusID,from){
 		if(statusID !== "null"){
 			$scope.statusId = statusID;
-			fetchBook();
-		}else{
-			console.log("nullify")
-			$scope.statusId = null;
-			fetchBook();
-		}
+			if(from ==='query'){
+				fetchqueries();
+			}else{
+				fetchBook();
+			}
 
+		}else{
+			$scope.statusId = null;
+			if(from ==='query'){
+				fetchqueries();
+			}else{
+				fetchBook();
+			}
+		}
+	}
+	function emptyThem(){
+		$scope.student = {};
+		$scope.book = {};
 	}
 
 	$scope.openModal = function (modalName) {
@@ -510,6 +496,14 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	$scope.closeModal = function (modalName) {
 		var modalID = '#'+ modalName + 'Modal';
 		$(modalID).modal('hide');
+	}
+
+	$scope.twoModal = function (modalName,modalName2){
+		var modalID2 = '#'+ modalName2 + 'Modal';
+		$(modalID2).modal('hide');
+
+		var modalID = '#'+ modalName + 'Modal';
+		$(modalID).modal('show');
 	}
 
 
@@ -539,6 +533,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		$scope.books = [];
 		$scope.queries = [];
 		$scope.adminMenu = true;
+		$scope.newQuery = 0;
 	}
 
 	initialize();
@@ -557,7 +552,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			.then(function (){
 				$scope.openModal('contactSucess');
 				$scope.closeModal('contactAdmin');
-
+				$scope.query = {};
 			})
 			.catch(function (error) {
 				$('#errorModal').modal('show');
@@ -568,13 +563,20 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		$scope.adminMenu = false;
 		fetchqueries();
 	}
+
 	function fetchqueries(){
-		$http.get("/api/query/getQueries")
+		let apiUrl1 = '/api/query/';
+		if($scope.statusId === null){
+			apiUrl1 += 'getQueries';
+		}else{
+			apiUrl1 += 'byStatus/'+$scope.statusId ;
+		}
+		$http.get(apiUrl1)
 			.then(function (response) {
 				$scope.queries =  response.data;
-				console.log($scope.queries)
+				$scope.count = response.data.length;
 				const data2 = response.data;
-				console.log("it looks good")
+				$scope.statusId = null;
 				$scope.tableParams2 = new NgTableParams(
 					{
 						page: 1, // Show the first page
@@ -590,6 +592,22 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			})
 			.catch(function (error) {
 				console.error('Error fetching Queries:', error);
+			});
+	}
+
+	$scope.queryInDetails = function (id){
+		var qId = id ;
+		$http.get("/api/query/getQuerybyId/" + qId)
+			.then(function (response){
+				if( response.status === 200) {
+					$('#queryDetailsModal').modal('show');
+					$scope.query = response.data;
+				}
+			})
+			.catch(function (error) {
+				$scope.errorMessage = error.data.message;
+				$('#errorModal').modal('show');
+				console.log("Error in fetching Query");
 			});
 	}
 

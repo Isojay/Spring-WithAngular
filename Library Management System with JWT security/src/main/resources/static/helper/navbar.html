@@ -18,7 +18,7 @@
                     <a class="nav-link" href="#" ng-click="triggerHome()">Home</a>
                 </li>
                 <li class="nav-item active" ng-show="!loginStatus">
-                    <a class="nav-link" href="#" ng-click="logInModal()">Log In</a>
+                    <a class="nav-link" href="#" ng-click="openModal('logIn')">Log In</a>
                 </li>
 
                 <li class="nav-item active" ng-show="role === 'ADMIN'">
@@ -27,7 +27,7 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="#" ng-click="triggerBook()">Book</a>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item active" ng-show="role !== 'ADMIN'">
                     <a class="nav-link" href="#" ng-click="openModal('contactAdmin')">Contact</a>
                 </li>
                 <li class="nav-item active" ng-show="role === 'USER'">
@@ -40,7 +40,7 @@
                     <a class="nav-link" href="#" ng-click="showDetails()">Borrowed {{numberOfElements}}</a>
                 </li>
                 <li class="nav-item active" ng-show="loginStatus">
-                    <a class="nav-link" href="#" ng-click="logOutModal()">Log Out</a>
+                    <a class="nav-link" href="#" ng-click="openModal('logOut')">Log Out</a>
                 </li>
 
             </ul>

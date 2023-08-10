@@ -2,11 +2,11 @@ package com.example.AngularSpring.Service;
 
 import com.example.AngularSpring.Entity.Queries;
 import com.example.AngularSpring.Repo.QueryRepo;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,4 +25,9 @@ public class QueryService {
     public List<Queries> findAll(){
         return queryRepo.findAll();
     }
+
+    public Optional<Queries> findbyid(int id){ return queryRepo.findById(id);}
+
+    public List<Queries> findByStatus(int id){ return queryRepo.findAllByStatus(id);}
+
 }

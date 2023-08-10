@@ -22,7 +22,6 @@
             </ul>
         </div>
     </div>
-
     <div ng-show="role === 'ADMIN' && adminMenu">
         <div class="jumbotron text-center">
             <h1 class="display-4">Welcome back, Admin</h1>
@@ -30,7 +29,7 @@
         </div>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-sm-3 pt-3">
+                <div class="col-md-4 pt-3">
                     <div class="card" style="background-color:white;">
                         <div class="card-body">
                             <h4 class="card-title">Books</h4>
@@ -39,7 +38,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-3 pt-3">
+                <div class="col-md-4 pt-3">
                     <div class="card" style="background-color:white;">
                         <div class="card-body">
                             <h4 class="card-title">Students</h4>
@@ -48,12 +47,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-3 pt-3">
+                <div class="col-md-4 pt-3">
                     <div class="card" style="background-color:white;">
                         <div class="card-body">
                             <h4 class="card-title">Queries</h4>
                             <p class="card-text">Manage all the Queries here.</p>
-                            <a ng-click="triggerQueries()" class="card-link btn btn-primary" style="color: white;">Manage</a>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <a ng-click="triggerQueries()" class="btn btn-primary" style="color: white;">Manage</a>
+                                </div>
+                                <div class="col-md-6  text-center align-self-center">
+                                    <p class="card-text">New Queries: {{count}}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -61,26 +67,40 @@
         </div>
     </div>
 
+
+
     <div ng-show="role === 'ADMIN' && !adminMenu">
 
         <div class="card shadow p-3 mb-5 bg-white rounded">
-            <h5 class="card-header">Queries</h5>
+            <div class="card-header">
+                <div class="row justify-content-between">
+                    <div class="col-md-6 align-middle">
+                        <h5>Queries List</h5>
+                    </div>
+                    <div class="col-md-6 d-flex justify-content-end">
+                        <select ng-model="SearchCategory" ng-click="byStatus(SearchCategory,'query')" class="form-control" style="width: auto;">
+                            <option value = "null">All Queries</option>
+                            <option value="0">Unread Queries</option>
+                            <option value="1">Unsolved Queries</option>
+                            <option value="2">Solved Queries</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
             <div class="card-body">
                 <table ng-table="tableParams2" class="table" show-filter="true">
                     <tr ng-repeat="query in $data">
                         <td title="'SN'" class="text-center align-middle" ng-bind="$index+1 "></td>
-                        <td class="text-center align-middle" title="'Subject'" sortable="'subject'" filter="{ 'subject': 'text' }">{{query.querytopic}}</td>
+                        <td  class="text-center align-middle" title="'Subject'" sortable="'subject'" filter="{ 'subject': 'text' }"><a href="#" ng-click="queryInDetails(query.id)" class="text-primary">{{query.querytopic}}</a></td>
                         <td class="text-center align-middle" title="'By'" sortable="'name'" filter="{ 'name': 'text' }">{{ query.name}}</td>
                         <td class="text-center align-middle" title="'Email'" sortable="'email'" filter="{ 'email': 'text' }">{{query.email}}</td>
                         <td class="text-center align-middle" title="'Contact'" sortable="'contact'" filter="{ 'contact': 'number' }">{{query.contact}}
                         <td class="text-center align-middle" title="'Created Date'" sortable="'date'" filter="{ 'date': 'number' }">{{query.date}}</td>
-                        <td title="Delete"><a href="#" ng-click="deleteStudent(query.id)" class="btn btn-danger">Delete</a></td>
-                        <td title="Update"><a href="#" ng-click="doUpdate(query.id)" class="btn btn-warning">Update</a></td>
+                        <td title="Delete"><a href="#" ng-click="deleteQuery(query.id)" class="btn btn-danger">Delete</a></td>
                     </tr>
                 </table>
             </div>
         </div>
-
     </div>
 
 </div>

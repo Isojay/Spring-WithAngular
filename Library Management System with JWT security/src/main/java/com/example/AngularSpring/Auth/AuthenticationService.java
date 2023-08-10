@@ -68,6 +68,7 @@ public class AuthenticationService {
                     .role(role.name())
                     .build();
         } else {
+            String email = studentUser.getEmail();
             jwtToken = jwtService.generateToken(studentUser);
             role = studentUser.getRole();
             id = studentUser.getId();
@@ -75,11 +76,9 @@ public class AuthenticationService {
                     .token(jwtToken)
                     .role(role.name())
                     .id(id)
+                    .email(email)
                     .build();
-
         }
-
-
     }
 
 

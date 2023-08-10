@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +23,7 @@ public class PublicController {
     private final StudentService studentService;
     public static String Uploaddir =  System.getProperty("user.dir")+"/src/main/resources/static/Pictures";
     MsgResponse msgResponse = new MsgResponse();
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/profileById/{id}")
     public ResponseEntity<?> profileByid(@PathVariable int id){
@@ -32,6 +34,25 @@ public class PublicController {
             msgResponse.setMessage("Student ID not Found");
             return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(msgResponse);
         }
+    }
+
+
+    @PutMapping("/add")
+    public StudentDetails updateStudent(@RequestBody StudentDetails studentDetail) {
+        return studentService.save(studentDetail);
+    }
+
+    @PutMapping("/change")
+    public ResponseEntity<?> changePass(@RequestBody StudentDetails studentDetail,
+                                     @RequestParam("id") String cpassword) {
+        StudentDetails studentDetails1 = studentService.findByEmail(studentDetail.getEmail());
+        if(passwordEncoder.matches(studentDetail.getPassword(),studentDetails1.getPassword())){
+            studentDetail.setPassword(passwordEncoder.encode(cpassword));
+            msgResponse.setMessage("Password Sucessfully Changed !!");
+            return ResponseEntity.ok(msgResponse);
+        }
+        msgResponse.setMessage("Error Error!! Password Incorrect !!!");
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(msgResponse);
     }
 
     @PostMapping("/upByImg")
