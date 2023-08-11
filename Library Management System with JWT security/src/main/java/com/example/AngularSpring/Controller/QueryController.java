@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -41,6 +42,12 @@ public class QueryController {
 
     @GetMapping("/byStatus/{id}")
     public List<Queries> findByStatus(@PathVariable int id){
+        if(id == 1) {
+            List<Queries> status1 = queryService.findByStatus(id);
+            List<Queries> status0 = queryService.findByStatus(0);
+            status1.addAll(status0);
+            return status1;
+        }
         return queryService.findByStatus(id);
     }
 
