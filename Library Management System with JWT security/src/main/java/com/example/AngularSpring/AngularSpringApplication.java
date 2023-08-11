@@ -8,6 +8,7 @@ public class AngularSpringApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AngularSpringApplication.class, args);
-		System.out.println("started");
+		String Os = System.getProperty("os.name");
+		System.out.println(Os);
 	}
 }

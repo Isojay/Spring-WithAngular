@@ -80,7 +80,9 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		}).then(function (response){
 				$scope.successMessage1 = response.data.message;
 				$('#addSuccessModal').modal('show');
-
+				$scope.student.imgName = null;
+				$scope.student = {};
+				fetchProfile();
 			})
 			.catch(function (error){
 				$scope.errorMessage = error.data.message;
@@ -97,8 +99,6 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			})
 	}
 
-
-
 	$scope.showDetails= function (stdID){
 		if (stdID){
 			 $scope.currentSTDid = stdID;
@@ -114,14 +114,11 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			});
 	}
 
-
-
-	$scope.showProfile = function (){
+	function fetchProfile(){
 		$http.get('/api/profileById/'+$scope.currentSTDid)
 			.then(function (response){
 				$scope.student = response.data;
-				console.log("I am in Details")
-				$('#profileModal').modal('show');
+				$scope.img = response.data.imgName + '?' + new Date().getTime();
 			})
 			.catch(function (error) {
 				$('#errorModal').modal('show');
@@ -129,11 +126,17 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 				console.log("Student ID not found", $scope.errorMessage)
 			})
 	}
+
+
+	$scope.showProfile = function (){
+		$('#profileModal').modal('show');
+		fetchProfile();
+	}
+
 	$scope.showProfileForId = function (){
 		$http.get('/api/profileById/'+$scope.currentSTDid)
 			.then(function (response){
 				$scope.student = response.data;
-				console.log("I am in Details")
 				$('#idCardModal').modal('show');
 			})
 			.catch(function (error) {
@@ -534,6 +537,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		$scope.queries = [];
 		$scope.adminMenu = true;
 		$scope.newQuery = 0;
+		$scope.defaultImg = "default.png";
 	}
 
 	initialize();

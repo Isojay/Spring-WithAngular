@@ -9,35 +9,46 @@
             </div>
             <div class="modal-body d-flex">
                 <div class="text-center mr-4 d-flex flex-column align-items-center">
-                    <img src="Pictures/{{student.imgName}}" alt="Profile Image" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
+                    <img src="/Pictures/{{student.imgName !== null ? student.imgName : defaultImg }}" alt="Profile Image" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
                     <br>
                     <button type="button" class="btn btn-primary mb-2 equal-width-buttons" ng-click="twoModal('img','profile')">Change Picture</button>
                     <button type="button" class="btn btn-primary mb-2 equal-width-buttons" ng-click="twoModal('updateStudent','profile')">Edit Profile</button>
-                    <button type="button" class="btn btn-secondary equal-width-buttons" ng-click="twoModal('img','profile')">Change Password</button>
+                    <button type="button" class="btn btn-secondary equal-width-buttons" ng-click="twoModal('cPassword','profile')">Change Password</button>
                 </div>
                 <div>
                     <h3>Information : </h3>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <strong>ID:</strong> {{student.id}}
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="mb-6">
+                                <strong>Name:</strong> {{student.fname}} {{student.lname}}
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="mb-3">
-                        <strong>Name:</strong>    {{student.fname}} {{student.lname}}
+                        <strong>Semester:</strong> {{student.semester}}
                     </div>
                     <div class="mb-3">
-                        <strong>Semester:</strong>      {{student.semester}}
+                        <strong>Email:</strong> {{student.email}}
                     </div>
                     <div class="mb-3">
-                        <strong>Email:</strong>         {{student.email}}
+                        <strong>Contact:</strong> {{student.contact}}
                     </div>
                     <div class="mb-3">
-                        <strong>Contact:</strong>       {{student.contact}}
+                        <strong>Address:</strong> {{student.address}}
                     </div>
                     <div class="mb-3">
-                        <strong>Address:</strong>       {{student.address}}
+                        <strong>College:</strong> Kathmandu Bernhardt College
                     </div>
                     <div class="mb-3">
-                        <strong>College:</strong>       Kathmandu Bernhardt College
+                        <strong>Registered on:</strong> 2023/08/08
                     </div>
-                    <div class="mb-3">
-                        <strong>Registered on:</strong>       2023/08/08
-                    </div>
+
                 </div>
 
             </div>
@@ -47,3 +58,18 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="cPasswordModal" tabindex="-1" role="dialog" aria-labelledby="cPasswordModalLabel">
+    <div class="modal-dialog modal-dialog-centered custom-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h5 class="modal-title" id="cPasswordModalLabel">Change Password</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+

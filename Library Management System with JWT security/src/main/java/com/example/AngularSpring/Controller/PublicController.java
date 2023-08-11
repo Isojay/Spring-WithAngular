@@ -22,8 +22,30 @@ public class PublicController {
 
     private final StudentService studentService;
     public static String Uploaddir =  System.getProperty("user.dir")+"/src/main/resources/static/Pictures";
+//    public static String Uploaddir =  "/home/blue/Desktop/For practice/other_Pictures";
     MsgResponse msgResponse = new MsgResponse();
     private final PasswordEncoder passwordEncoder;
+
+    //to create the folder if not present
+
+    //    public void createDirectoryIfNeeded() {
+    //        String directoryPath = "/path/to/your/project/root/pictures"; // Update this path
+    //
+    //        Path path = Paths.get(directoryPath);
+    //
+    //        if (!Files.exists(path)) {
+    //            try {
+    //                Files.createDirectories(path);
+    //                System.out.println("Directory created: " + directoryPath);
+    //            } catch (IOException e) {
+    //                System.err.println("Error creating directory: " + e.getMessage());
+    //            }
+    //        }
+    //    }
+    //    @PostConstruct
+    //    public void init(){
+    //        createDirectoryIfNeeded();
+    //    }
 
     @GetMapping("/profileById/{id}")
     public ResponseEntity<?> profileByid(@PathVariable int id){

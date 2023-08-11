@@ -1,0 +1,5 @@
+
+
+note the is part in Public controller that will help user to create folder path and if user uploads the photo and it will not reload in the real time then new static location to be used so that it can function without reloading server
+and there is also to find os name to determine the path that will decide that where is the path will be established all of this will be commented so that it will be easier to be uploaded to the git.
+multiple location is commented in  aplication properties and regarding os is still remaining
