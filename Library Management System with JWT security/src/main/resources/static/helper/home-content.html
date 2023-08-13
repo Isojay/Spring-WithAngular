@@ -96,6 +96,10 @@
                         <td class="text-center align-middle" title="'Email'" sortable="'email'" filter="{ 'email': 'text' }">{{query.email}}</td>
                         <td class="text-center align-middle" title="'Contact'" sortable="'contact'" filter="{ 'contact': 'number' }">{{query.contact}}
                         <td class="text-center align-middle" title="'Created Date'" sortable="'date'" filter="{ 'date': 'number' }">{{query.date}}</td>
+                        <td title="Status" class="text-center align-middle">
+                            <a href="#" ng-click="solvedQuery(query.id)" class="btn btn-primary" ng-show="query.status !== 2">Solved</a>
+                            <span ng-show="query.status === 2">Solved</span>
+                        </td>
                         <td title="Delete"><a href="#" ng-click="deleteQuery(query.id)" class="btn btn-danger">Delete</a></td>
                     </tr>
                 </table>

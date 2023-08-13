@@ -1,5 +1,5 @@
 <div class="modal fade" id="queryDetailsModal" tabindex="-1" role="dialog" aria-labelledby="queryDetailsModalLabel">
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog modal-md1" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #007BFF; color: white;">
                 <h5 class="modal-title" id="queryDetailsModalLabel">Query Details</h5>
@@ -27,7 +27,7 @@
                 <div class="mb-3">
                     <strong class="text-secondary">Status:</strong>
                     <span class="{{ query.status === 1 ? 'text-danger' : 'text-success' }}">
-                        {{ query.status === 1 ? 'Unsolved' : 'Solved' }}
+                        {{ query.status !== 2 ? 'Unsolved' : 'Solved' }}
                     </span>
                 </div>
                 <div class="mb-3">
@@ -35,6 +35,9 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-primary">
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{query.email}}&su=Regarding%20{{query.querytopic}}" target="_blank" style="color: inherit; text-decoration: none;">Contact</a>
+                </button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>

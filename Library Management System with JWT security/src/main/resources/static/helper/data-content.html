@@ -51,7 +51,7 @@
                     <h5>Book Details</h5>
                 </div>
                 <div class="col-md-6 d-flex justify-content-end">
-                    <select ng-model="SearchCategory" ng-click="byStatus(SearchCategory,'books')" class="form-control" style="width: auto;">
+                    <select ng-model="SearchCategory" ng-init="SearchCategory = null"  ng-click="byStatus(SearchCategory,'books')" class="form-control" style="width: auto;">
                         <option value = "null">All Books</option>
                         <option value="1">Borrowed Book</option>
                         <option value="0">InShelf Book</option>

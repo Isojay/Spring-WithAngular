@@ -100,3 +100,37 @@
     text-overflow: ellipsis;
     max-width: 150px; /* Adjust this value as needed */
 }
+
+.modal-scrollable {
+    max-height: calc(100vh - 150px); /* Adjust this value to fit your design */
+    overflow-y: auto;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px;
+}
+
+.modal {
+    border-radius: 10px;
+}
+
+
+/* Apply background image to the custom modal backdrop */
+.custom-modal-dialog.modal-open .modal-backdrop {
+    background-image: url('/Pictures/background.jpg');
+    background-size: cover; /* Adjust to cover the entire backdrop */
+    background-position: center; /* Center the background image */
+    backdrop-filter: blur(3px); /* Add backdrop blur */
+    z-index: 1039; /* Set the z-index to be below the modal content */
+}
+
+/* Apply background color and blur to the modal content */
+.custom-modal-content {
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly translucent white background */
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+

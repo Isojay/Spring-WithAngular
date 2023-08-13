@@ -31,7 +31,9 @@ public class QueryController {
     public ResponseEntity<?> getQueryById(@PathVariable int id){
         try {
             Queries queries = queryService.findbyid(id).get();
-            queries.setStatus(1);
+            if(queries.getStatus() != 2){
+                queries.setStatus(1);
+            }
             queryService.saveQuery(queries);
             return ResponseEntity.ok(queries);
         }catch (Exception e){

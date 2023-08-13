@@ -8,8 +8,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <div class="d-flex justify-content-between mb-2">
+            <div class="modal-body modal-scrollable">
+                <div class="button-group">
                     <button class="btn btn-light flex-fill equal-width-button" ng-class="{ 'active-button': studentRegister === true }" ng-click="studentRegister = true">Student</button>
                     <button class="btn btn-light flex-fill equal-width-button" ng-class="{ 'active-button': studentRegister === false }" ng-click="studentRegister = false">Staff</button>
                 </div>
@@ -60,14 +60,26 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="cpassword">Confirm Password</label>
-                                    <input type="password" class="form-control" required ng-model="student.confirmPassword" id="cpassword" placeholder="Confirm password" ng-change="validatePassword()">
+                                    <input type="password" class="form-control" required ng-model="student.confirmPassword" id="cpassword" placeholder="Confirm password" ng-blur="validatePassword(student.password,student.confirmPassword)">
                                     <div ng-show="passwordMismatch" class="text-danger">Passwords do not match.</div>
                                 </div>
                             </div>
+                            <br>
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="subscribe" id="subscribe">
+                                    <label class="form-check-label" for="subscribe">Subscribe to our newsletter</label>
+                                </div>
+                            </div><div class="form-group">
+                            <div class="form-check" ng-click="enableRegister = true">
+                                <input class="form-check-input" type="checkbox" name="subscribe" id="terms">
+                                <label class="form-check-label" for="subscribe">Agree to Terms and Conditions</label>
+                            </div>
+                        </div>
 
                         </div>
 
-                        <button type="submit" class="btn btn-primary btn-block">Register</button>
+                        <button type="submit" class="btn btn-primary btn-block" ng-disabled="!enableRegister">Register</button>
                     </form>
 
                 </div>
@@ -89,7 +101,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="cpassword">Confirm Password</label>
-                                    <input type="password" class="form-control" required ng-model="staff.confirmPassword" id="cupassword" placeholder="Confirm password" ng-change="validatePasswordstaff()">
+                                    <input type="password" class="form-control" required ng-model="staff.confirmPassword" id="cupassword" placeholder="Confirm password" ng-change="validatePassword(staff.upassword,staff.confirmPassword)">
                                     <div ng-show="passwordMismatch" class="text-danger">Passwords do not match.</div>
                                 </div>
                             </div>

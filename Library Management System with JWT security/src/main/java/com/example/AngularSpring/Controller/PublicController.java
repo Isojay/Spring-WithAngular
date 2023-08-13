@@ -22,7 +22,7 @@ public class PublicController {
 
     private final StudentService studentService;
     public static String Uploaddir =  System.getProperty("user.dir")+"/src/main/resources/static/Pictures";
-//    public static String Uploaddir =  "/home/blue/Desktop/For practice/other_Pictures";
+//    public static String Uploaddir =  "opt/Librarymgmt";
     MsgResponse msgResponse = new MsgResponse();
     private final PasswordEncoder passwordEncoder;
 
@@ -30,7 +30,7 @@ public class PublicController {
 
     //    public void createDirectoryIfNeeded() {
     //        String directoryPath = "/path/to/your/project/root/pictures"; // Update this path
-    //
+    //        String directoryPath = Uploaddir
     //        Path path = Paths.get(directoryPath);
     //
     //        if (!Files.exists(path)) {
@@ -51,7 +51,9 @@ public class PublicController {
     public ResponseEntity<?> profileByid(@PathVariable int id){
         Optional<StudentDetails> response = studentService.findById(id);
         if(response.isPresent()){
-            return ResponseEntity.ok(response);
+            StudentDetails send = response.get();
+            send.setPassword(null);
+            return ResponseEntity.ok(send);
         }else{
             msgResponse.setMessage("Student ID not Found");
             return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(msgResponse);
@@ -66,10 +68,11 @@ public class PublicController {
 
     @PutMapping("/change")
     public ResponseEntity<?> changePass(@RequestBody StudentDetails studentDetail,
-                                     @RequestParam("id") String cpassword) {
+                                     @RequestParam("password") String npassword) {
         StudentDetails studentDetails1 = studentService.findByEmail(studentDetail.getEmail());
         if(passwordEncoder.matches(studentDetail.getPassword(),studentDetails1.getPassword())){
-            studentDetail.setPassword(passwordEncoder.encode(cpassword));
+            studentDetail.setPassword(passwordEncoder.encode(npassword));
+            studentService.save(studentDetail);
             msgResponse.setMessage("Password Sucessfully Changed !!");
             return ResponseEntity.ok(msgResponse);
         }
@@ -89,6 +92,7 @@ public class PublicController {
         }
 
         String originalName = file.getOriginalFilename();
+        assert originalName != null;
         String fileExtension = originalName.substring(originalName.lastIndexOf('.'));
         String newName = id + "_" + studentDetails.getFName() + fileExtension;
         System.out.println(newName);

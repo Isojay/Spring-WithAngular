@@ -33,10 +33,6 @@ app.directive('fileModel', ['$parse', '$rootScope', function ($parse, $rootScope
 	};
 }]);
 
-
-
-
-
 app.controller('LibraryController', function ($scope, $http,NgTableParams, $window,  $rootScope,$timeout) {
 
 	$scope.logInData = function () {
@@ -114,6 +110,28 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			});
 	}
 
+	$scope.changePassword = function (){
+		if ($scope.student.npassword === $scope.student.ncpassword) {
+			if ($scope.student.npassword !== $scope.student.password) {
+				$http.put(`/api/change?password=${$scope.student.ncpassword}`, $scope.student)
+					.then(function (response) {
+						$scope.successMessage = response.data.message;
+						$scope.twoModal('Success', 'cPassword')
+					})
+					.catch(function (error) {
+						$scope.logInErrorStatus = true;
+						$scope.passError = error.data.message;
+					});
+				}else{
+					$scope.logInErrorStatus = true;
+					$scope.passError = "Old Password And New Password must not be Same";
+				}
+		}else{
+			$scope.logInErrorStatus = true;
+			$scope.passError = "New Password And Confirm Password do not match";
+		}
+	}
+
 	function fetchProfile(){
 		$http.get('/api/profileById/'+$scope.currentSTDid)
 			.then(function (response){
@@ -179,7 +197,6 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		console.log($scope.keywordName)
 		$http.get(apiUrl)
 			.then(function (response) {
-				console.log("Reset")
 				$scope.students = response.data.content;
 				const data = response.data.content;
 				$scope.tableParams = new NgTableParams(
@@ -268,7 +285,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			$http.delete('/api/students/delete/' + studentID)
 				.then(function (response) {
 					$scope.successMessage = 'Data deleted sucessfully.';
-					$scope.openModal('SucessModal');
+					$scope.openModal('Success');
 					fetchStudents();
 				})
 				.catch(function (error) {
@@ -279,11 +296,10 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 
 	$scope.deleteBook = function (BookID) {
 		if (confirm('Are you sure you want to delete this task?')) {
-			console.log(BookID)
 			$http.delete('/api/books/deleteBook/' + BookID)
 				.then(function () {
 					$scope.successMessage = 'Data deleted sucessfully.';
-					$scope.openModal('SucessModal');
+					$scope.openModal('Success');
 					fetchBook();
 				})
 				.catch(function (error) {
@@ -297,7 +313,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			$http.delete('api/query/deletebyId/'+statusID)
 				.then(function () {
 					$scope.successMessage = 'Data deleted sucessfully.';
-					$scope.openModal('SucessModal');
+					$scope.openModal('Success');
 					fetchqueries();
 				})
 				.catch(function (error) {
@@ -515,7 +531,8 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		$window.localStorage.removeItem('jwtToken');
 		$scope.logInErrorStatus = false;
 		$scope.studentRegister = true;
-		$scope.passwordMismatch = false;
+		passwordMismatch = false;
+		$scope.enableRegister = false;
 		$scope.showLibrary = false;
 		$scope.currentPage = 0;
 		$scope.pageSize = 10000;
@@ -542,12 +559,12 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 
 	initialize();
 
-	$scope.validatePassword = function() {
-		$scope.passwordMismatch = $scope.student.password !== $scope.student.confirmPassword;
-	};
+	$scope.goBack = function (){
 
-	$scope.validatePasswordstaff = function() {
-		$scope.passwordMismatch = $scope.staff.upassword !== $scope.staff.confirmPassword;
+	}
+
+	$scope.validatePassword = function(pass1 , pass2) {
+		$scope.passwordMismatch = pass1 !== pass2;
 	};
 
 	$scope.msg2Admin = function (){
@@ -614,5 +631,6 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 				console.log("Error in fetching Query");
 			});
 	}
+
 
 });
