@@ -28,14 +28,14 @@ public class StudentController {
 	public List<StudentDetails> getallStudents(){
 		return studentService.findAll();
 	}
-		
+
 	@PostMapping("/add")
 	public StudentDetails addStudents(@RequestBody StudentDetails studentDetails) {
 		studentDetails.setPassword(passwordEncoder.encode(studentDetails.getPassword()));
 		studentDetails.setRole(Role.USER);
 		return studentService.save(studentDetails);
 	}
-	
+
 	@PutMapping("/add")
 	public StudentDetails updateStudent(@RequestBody StudentDetails studentDetail) {
 		return studentService.save(studentDetail);

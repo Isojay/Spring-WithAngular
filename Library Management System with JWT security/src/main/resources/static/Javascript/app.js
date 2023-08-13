@@ -345,8 +345,22 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		$http.put('/api/students/add', $scope.student)
 			.then(function (response) {
 				$scope.successMessage = 'Student data updated successfully.';
-				$('#updateStudentModal').modal('hide');
-				$('#SuccessModal').modal('show');
+				$scope.twoModal('Success','updateStudent')
+				$scope.student = {};
+				fetchProfile();
+			})
+			.catch(function (error) {
+				var from = "studentUpdate"
+				errorMessage(from);
+				console.error('Error updating student:', error);
+			});
+	};
+
+	$scope.updateself = function () {
+		$http.put('/api/add', $scope.student)
+			.then(function (response) {
+				$scope.successMessage = 'Student data updated successfully.';
+				$scope.twoModal('Success','updateStudent')
 				$scope.student = {};
 				$timeout(function () {
 					$('#SuccessModal').modal('hide');

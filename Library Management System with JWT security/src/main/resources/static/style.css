@@ -1,4 +1,4 @@
-.ng-table-pagination{
+.ng-table-pagination {
     display: flex;
     justify-content: center;
 }
@@ -8,34 +8,31 @@
     padding: 8px 16px;
     text-decoration: none;
 }
-.ng-table-pagination-page-size{
+.ng-table-pagination-page-size {
     display: flex;
     justify-content: right;
 }
 .ng-table-fixedcolumn1 {
-    position:absolute;
-    width:5em;
-    left:0;
-    top:auto;
+    position: absolute;
+    width: 5em;
+    left: 0;
+    top: auto;
 }
 
 .modal-md {
-    max-width: 350px; /* Adjust this value as needed */
+    max-width: 350px;
 }
-
 .modal-md1 {
-    max-width: 450px; /* Adjust this value as needed */
+    max-width: 450px;
 }
 
 .custom-modal .modal-body .form-control {
-    border: none; /* Remove default border */
-    border-bottom: 1px solid #ccc; /* Add bottom border */
-    border-radius: 0; /* Remove border radius */
-    background-color: transparent; /* Remove background color */
-    box-shadow: none; /* Remove box shadow */
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: transparent;
+    box-shadow: none;
 }
-
-/* Add focus styles */
 .custom-modal .modal-body .form-control:focus {
     border-color: #42F3FA;
 }
@@ -48,89 +45,101 @@
     height: 100%;
 }
 .active-button {
-    border: 1px solid #ced4da; /* Add border to active button */
+    border: 1px solid #ced4da;
 }
-
 .preview-image {
-    max-width: 300px; /* Set the maximum width you desire */
-    max-height: 300px; /* Set the maximum height you desire */
+    max-width: 300px;
+    max-height: 300px;
 }
 .equal-width-buttons {
     width: 100%;
-    max-width: 170px; /* Adjust this value to control the maximum width of the buttons */
+    max-width: 170px;
 }
 .square-image {
     width: 150px;
     height: 150px;
     object-fit: cover;
-    border-radius: 10px; /* Optional: Add rounded corners */
+    border-radius: 10px;
 }
 .small-image {
-    width: 1.5in; /* Adjust image width */
+    width: 1.5in;
     height: auto;
-    max-width: 100%; /* Ensure the image doesn't exceed its container */
-    border-radius: 10px; /* Optional: Add rounded corners */
+    max-width: 100%;
+    border-radius: 10px;
 }
 .card-content {
-    flex-grow: 1; /* Allow content to grow and fill available space */
-    padding-left: 1px; /* Add padding to the left side */
+    flex-grow: 1;
+    padding-left: 1px;
     padding-right: 10px;
 }
 .header-text {
-    font-size: 12px; /* Adjust header text size */
-    margin-top: 5px; /* Add a small margin to separate from the icon */
+    font-size: 12px;
+    margin-top: 5px;
 }
 .details-text {
-    font-size: 13px; /* Adjust student details text size */
-    margin-bottom: 5px; /* Reduce the spacing between details */
+    font-size: 13px;
+    margin-bottom: 5px;
 }
 .details-text:last-child {
-    margin-bottom: 0; /* Remove margin from the last details item */
+    margin-bottom: 0;
 }
-
 .id-card-modal {
-    border: 2px solid #333; /* Add a border around the modal content */
-    border-radius: 10px; /* Add rounded corners to the border */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow effect */
+    border: 2px solid #333;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
 .truncate-cell {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 150px; /* Adjust this value as needed */
+    max-width: 150px;
 }
-
 .modal-scrollable {
-    max-height: calc(100vh - 150px); /* Adjust this value to fit your design */
+    max-height: calc(100vh - 150px);
     overflow-y: auto;
 }
-
 .button-group {
     display: flex;
     justify-content: space-between;
     padding: 0 15px;
 }
-
 .modal {
-    border-radius: 10px;
+    border-radius: 10px !important;
 }
 
+/* Add this CSS to your stylesheet */
+.custom-modal {
+    border-radius: 10px;
+}
+.custom-modal .modal-content {
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 0;
+}
+.custom-modal .modal-header {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: #007BFF;
+    color: white;
+}
+.custom-modal .modal-footer {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color: white;
+}
 
 /* Apply background image to the custom modal backdrop */
 .custom-modal-dialog.modal-open .modal-backdrop {
     background-image: url('/Pictures/background.jpg');
-    background-size: cover; /* Adjust to cover the entire backdrop */
-    background-position: center; /* Center the background image */
-    backdrop-filter: blur(3px); /* Add backdrop blur */
-    z-index: 1039; /* Set the z-index to be below the modal content */
+    background-size: cover;
+    background-position: center;
+    backdrop-filter: blur(3px);
+    z-index: 1039;
 }
-
 /* Apply background color and blur to the modal content */
 .custom-modal-content {
-    background-color: rgba(255, 255, 255, 0.9); /* Slightly translucent white background */
+    background-color: rgba(255, 255, 255, 1);
     border: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 }
-

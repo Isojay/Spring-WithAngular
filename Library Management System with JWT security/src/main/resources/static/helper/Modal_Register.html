@@ -16,7 +16,6 @@
 
                 <br>
                 <div ng-show="studentRegister">
-
                     <form ng-submit="addStudent()">
                         <input type="hidden" name="id" ng-model="student.id">
                         <div class="form-group">
@@ -45,7 +44,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="Address">Address</label>
-                                    <input type="email" class="form-control" required ng-model="student.address" id="address" placeholder="Enter Address">
+                                    <input type="text" class="form-control" required ng-model="student.address" id="address" placeholder="Enter Address">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="phone">Phone Number</label>
