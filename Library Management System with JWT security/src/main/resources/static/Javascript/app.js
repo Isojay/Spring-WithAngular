@@ -332,7 +332,9 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 				fname: studentToUpdate.fname,
 				lname: studentToUpdate.lname,
 				email: studentToUpdate.email,
-				semester: studentToUpdate.semester
+				semester: studentToUpdate.semester,
+				contact : studentToUpdate.contact,
+				address : studentToUpdate.address
 			};
 
 			$('#updateStudentModal').modal('show', 'keyboard', 'focus');
@@ -347,7 +349,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 				$scope.successMessage = 'Student data updated successfully.';
 				$scope.twoModal('Success','updateStudent')
 				$scope.student = {};
-				fetchProfile();
+				fetchStudents();
 			})
 			.catch(function (error) {
 				var from = "studentUpdate"
@@ -356,16 +358,13 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			});
 	};
 
-	$scope.updateself = function () {
+	$scope.updateSelf = function () {
 		$http.put('/api/add', $scope.student)
 			.then(function (response) {
-				$scope.successMessage = 'Student data updated successfully.';
-				$scope.twoModal('Success','updateStudent')
+				$scope.successMessage = 'Data updated successfully.';
+				$scope.twoModal('Success','updateSelf')
 				$scope.student = {};
-				$timeout(function () {
-					$('#SuccessModal').modal('hide');
-					fetchStudents();
-				}, 1000);
+				fetchProfile();
 			})
 			.catch(function (error) {
 				var from = "studentUpdate"
@@ -408,7 +407,6 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 				errorMessage(from);
 			});
 	}
-
 	function errorMessage(msg){
 		if(msg === "bookUpdate"){
 			$('#updateBookModal').modal('hide');

@@ -63,6 +63,11 @@ public class PublicController {
 
     @PutMapping("/add")
     public StudentDetails updateStudent(@RequestBody StudentDetails studentDetail) {
+        Optional<StudentDetails> response = studentService.findById(studentDetail.getId());
+        if(response.isPresent()){
+            StudentDetails send = response.get();
+            studentDetail.setPassword(send.getPassword());
+        }
         return studentService.save(studentDetail);
     }
 

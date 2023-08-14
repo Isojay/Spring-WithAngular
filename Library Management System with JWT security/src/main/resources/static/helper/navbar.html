@@ -17,13 +17,9 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="#" ng-click="triggerHome()">Home</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="#" ng-click="openModal('contactSucess')">Sucess</a>
-                </li>
                 <li class="nav-item active" ng-show="!loginStatus">
                     <a class="nav-link" href="#" ng-click="openModal('logIn')">Log In</a>
                 </li>
-
                 <li class="nav-item active" ng-show="role === 'ADMIN'">
                     <a class="nav-link" href="#" ng-click="triggerStudent()">Student</a>
                 </li>
@@ -45,7 +41,6 @@
                 <li class="nav-item active" ng-show="loginStatus">
                     <a class="nav-link" href="#" ng-click="openModal('logOut')">Log Out</a>
                 </li>
-
             </ul>
         </div>
     </div>

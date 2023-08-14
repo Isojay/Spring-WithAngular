@@ -24,7 +24,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
 
 
-    public Staff registerStaff(RegisterRequest request) {
+    public void registerStaff(RegisterRequest request) {
         Staff staffUser = Staff.builder()
                 .sname(request.getUname())
                 .semail(request.getUemail())
@@ -32,7 +32,7 @@ public class AuthenticationService {
                 .role(Role.ADMIN)
                 .accountstatus(false)
                 .build();
-        return staffRepo.save(staffUser);
+        staffRepo.save(staffUser);
     }
 
     public void registerStudent(StudentDetails request) {
