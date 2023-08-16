@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -64,8 +66,30 @@ public class AuthenticationController {
             AuthResponse response = service.authenticate(request);
             return ResponseEntity.ok(response);
         } catch (BadCredentialsException e) {
-            response.setMessage("Invalid email or password");
+            response.setMessage("Invalid Email or Password");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+    }
+
+    //Google Log in
+    @PostMapping("/signWithGoogle")
+    public  ResponseEntity<?> logInWithGoogle( @RequestBody Map<String, String> requestBody){
+        try{
+            String idToken = requestBody.get("idToken");
+            System.out.println("1");
+            AuthResponse resp = service.logInWithGoogle(idToken);
+            if (resp != null){
+                System.out.println("12");
+                return ResponseEntity.ok(resp);
+            }else{
+                response.setMessage("An Error!! Please Try Again Later.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            System.out.println("13");
+            response.setMessage("An Error has Occurred!! Please Try Again Later.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
 

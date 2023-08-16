@@ -1,11 +1,13 @@
 package com.example.AngularSpring.Auth;
 
+import com.example.AngularSpring.Config.GoogleAuth;
 import com.example.AngularSpring.Config.JwtService;
 import com.example.AngularSpring.Entity.Role;
 import com.example.AngularSpring.Entity.Staff;
 import com.example.AngularSpring.Entity.StudentDetails;
 import com.example.AngularSpring.Repo.StaffRepo;
 import com.example.AngularSpring.Service.StudentService;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,7 +21,7 @@ public class AuthenticationService {
     private final StaffRepo staffRepo;
     private final StudentService studentService;
     private final JwtService jwtService;
-
+    private final GoogleAuth googleAuth;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
 
@@ -54,7 +56,7 @@ public class AuthenticationService {
     public AuthResponse authenticate(AuthenticationRequest request) {
         authenticateUser(request.getUemail(), request.getUpassword());
         Staff staffUser = staffRepo.findBySemail(request.getUemail());
-        StudentDetails studentUser = studentService.findByEmail(request.getUemail());
+        StudentDetails studentUser = studentService.findbyEmail(request.getUemail());
 
         String jwtToken;
         Role role;
@@ -78,6 +80,38 @@ public class AuthenticationService {
                     .id(id)
                     .email(email)
                     .build();
+        }
+    }
+
+    public AuthResponse logInWithGoogle(String passToken){
+        Payload payload = googleAuth.verifyAndExtractPayload(passToken);
+        if (payload != null){
+            System.out.println("2");
+            if(studentService.findbyEmail(payload.getEmail()) == null){
+                StudentDetails studentUser = StudentDetails.builder()
+                        .fName((String) payload.get("given_name"))
+                        .lName((String) payload.get("family_name"))
+                        .email(payload.getEmail())
+                        .contact((Long) payload.get("phone_number"))
+                        .idstatus(0)
+                        .role(Role.USER)
+                        .build();
+                studentService.save(studentUser);
+            }
+            StudentDetails studentUser = studentService.findbyEmail(payload.getEmail());
+            String email = studentUser.getEmail();
+            String jwtToken = jwtService.generateToken(studentUser);
+            Role role = studentUser.getRole();
+            int id = studentUser.getId();
+            return AuthResponse.builder()
+                    .token(jwtToken)
+                    .role(role.name())
+                    .id(id)
+                    .email(email)
+                    .build();
+        }else{
+            System.out.println("3");
+            return null;
         }
     }
 

@@ -24,7 +24,7 @@
                 <div class="w-100 text-center">
                     <p class="mb-0">Log in with</p>
                     <button class="btn btn-outline-primary rounded-circle mx-2"><i class="fab fa-facebook-f"></i></button>
-                    <button class="btn btn-outline-danger rounded-circle mx-2"><i class="fab fa-google"></i></button>
+                    <button ng-click="googlelogin()" class="btn btn-outline-danger rounded-circle mx-2 g-signin2"><i class="fab fa-google"></i></button>
                     <button class="btn btn-outline-info rounded-circle mx-2"><i class="fab fa-twitter"></i></button>
                 </div>
             </div>
@@ -35,20 +35,18 @@
 <div class="modal fade" id="logOutModal" tabindex="-1" role="dialog" aria-labelledby="logOutModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="logOutModalLabel">Log Out</h5>
+            <div class="modal-body text-center" style="padding: 30px;">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to log out?</p>
-                <p> You will be Missed !! </p>
-            </div>
-            <div class="modal-footer">
+                <i class="fa fa-sign-out" style="font-size:48px;color : #333333;"></i>
+                <p class="mb-3" style="font-size: 35px;">Wanna Log Out?</p>
+                <p class="mb-3">You will be Missed !!</p>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary" ng-click="logOut()">Log Out</button>
+
             </div>
+
         </div>
     </div>
 </div>

@@ -74,7 +74,7 @@ public class PublicController {
     @PutMapping("/change")
     public ResponseEntity<?> changePass(@RequestBody StudentDetails studentDetail,
                                      @RequestParam("password") String npassword) {
-        StudentDetails studentDetails1 = studentService.findByEmail(studentDetail.getEmail());
+        StudentDetails studentDetails1 = studentService.findbyEmail(studentDetail.getEmail());
         if(passwordEncoder.matches(studentDetail.getPassword(),studentDetails1.getPassword())){
             studentDetail.setPassword(passwordEncoder.encode(npassword));
             studentService.save(studentDetail);

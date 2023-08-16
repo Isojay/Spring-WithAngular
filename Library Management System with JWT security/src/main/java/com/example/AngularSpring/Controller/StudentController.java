@@ -38,6 +38,7 @@ public class StudentController {
 
 	@PutMapping("/add")
 	public StudentDetails updateStudent(@RequestBody StudentDetails studentDetail) {
+		studentDetail.setRole(Role.USER);
 		return studentService.save(studentDetail);
 	}
 	

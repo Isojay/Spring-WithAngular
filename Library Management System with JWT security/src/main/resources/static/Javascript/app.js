@@ -35,6 +35,62 @@ app.directive('fileModel', ['$parse', '$rootScope', function ($parse, $rootScope
 
 app.controller('LibraryController', function ($scope, $http,NgTableParams, $window,  $rootScope,$timeout) {
 
+
+
+	$scope.openLoginModal = function (){
+		$scope.openModal('logIn')
+		google.accounts.id.initialize({
+			client_id:"880713808646-db7qbait6rm10c1t5a8oeo0o067j75j3.apps.googleusercontent.com",
+			auto_select:false,
+			callback:handleCredentialsResponse
+		})
+	}
+
+	$scope.googlelogin = function (){
+		google.accounts.id.prompt();
+	}
+
+	function handleCredentialsResponse(response){
+		var idToken = response.credential;
+		var requestData = {
+			idToken: idToken
+		};
+
+		$http.post('/api/auth/signWithGoogle', requestData)
+			.then(function (response) {
+				$scope.loginStatus = true;
+				var token = response.data.token;
+				$window.localStorage.setItem('jwtToken', token);
+				$scope.role = response.data.role;
+				$scope.currentSTDid = response.data.id;
+				$scope.query.email = response.data.email;
+				$('#logInModal').modal('hide');
+				$scope.byStatus(0,'query')
+
+				// if ($scope.role === "USER"){
+				// 	$('#imgModal').modal('show');
+				// }
+				clearCookies()
+				console.log("sucess")
+				getnumber($scope.currentSTDid)//for show details
+			})
+			.catch(function (error) {
+				$scope.logInErrorStatus = true;
+				$scope.logInError = error.data.message;
+				console.error('Error in Logging in user ', error);
+			});
+
+	}
+	function clearCookies() {
+		var cookies = document.cookie.split("; ");
+		for (var i = 0; i < cookies.length; i++) {
+			var cookie = cookies[i];
+			var eqPos = cookie.indexOf("=");
+			var cookieName = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+			document.cookie = cookieName + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
+		}
+	}
+
 	$scope.logInData = function () {
 		$http.post('/api/auth/login', $scope.login)
 			.then(function (response) {
@@ -536,8 +592,6 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		var modalID = '#'+ modalName + 'Modal';
 		$(modalID).modal('show');
 	}
-
-
 
 	function initialize() {
 		$window.localStorage.removeItem('jwtToken');

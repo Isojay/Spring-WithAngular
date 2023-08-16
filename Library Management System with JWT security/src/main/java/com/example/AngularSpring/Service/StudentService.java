@@ -30,7 +30,13 @@ public class StudentService {
     	
 		 studentRepo.deleteById(id);
     }
-    
+
+    public StudentDetails findEmail(String keyword){
+        StudentDetails student = studentRepo.findByEmail(keyword);
+        return student;
+    }
+
+
     public List<StudentDetails> findAll() {
 		return studentRepo.findAll();
 	}
@@ -42,7 +48,10 @@ public class StudentService {
    public Page<StudentDetails> findAllwithpagesize(int offset, int pagesize) {
         return studentRepo.findAll(PageRequest.of(offset,pagesize));
     }
-
+    
+    public StudentDetails findbyEmail(String keyword){
+           return studentRepo.findByEmail(keyword);
+    }
 
     public  Page<StudentDetails> findbyemail(String keyword, Pageable pageable){
         return studentRepo.findAllByEmailContainingIgnoreCase(keyword, pageable);
@@ -66,10 +75,5 @@ public class StudentService {
     }
     public Page<StudentDetails> findbyfnamesemester(String fName, String Semester,Pageable pageable){
         return studentRepo.findAllByfNameContainingIgnoreCaseAndSemesterContainingIgnoreCase(fName, Semester, pageable);
-    }
-
-
-    public StudentDetails findByEmail(String username) {
-        return studentRepo.findByEmail(username);
     }
 }
