@@ -55,58 +55,29 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		var requestData = {
 			idToken: idToken
 		};
-
 		$http.post('/api/auth/signWithGoogle', requestData)
 			.then(function (response) {
-				$scope.loginStatus = true;
-				var token = response.data.token;
-				$window.localStorage.setItem('jwtToken', token);
-				$scope.role = response.data.role;
-				$scope.currentSTDid = response.data.id;
-				$scope.query.email = response.data.email;
-				$('#logInModal').modal('hide');
-				$scope.byStatus(0,'query')
-
-				// if ($scope.role === "USER"){
-				// 	$('#imgModal').modal('show');
-				// }
+				logInData(response)
+				$scope.google = response.data.activate
+				console.log($scope.google)
+				if(response.data.activate === true){
+					$scope.openModal('updateSelf');
+					$scope.fromGoogle = true;
+				}
+				fetchProfile()
 				clearCookies()
-				console.log("sucess")
-				getnumber($scope.currentSTDid)//for show details
 			})
 			.catch(function (error) {
 				$scope.logInErrorStatus = true;
 				$scope.logInError = error.data.message;
 				console.error('Error in Logging in user ', error);
 			});
-
-	}
-	function clearCookies() {
-		var cookies = document.cookie.split("; ");
-		for (var i = 0; i < cookies.length; i++) {
-			var cookie = cookies[i];
-			var eqPos = cookie.indexOf("=");
-			var cookieName = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-			document.cookie = cookieName + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
-		}
 	}
 
 	$scope.logInData = function () {
 		$http.post('/api/auth/login', $scope.login)
 			.then(function (response) {
-				$scope.loginStatus = true;
-				var token = response.data.token;
-				$window.localStorage.setItem('jwtToken', token);
-				$scope.role = response.data.role;
-				$scope.currentSTDid = response.data.id;
-				$scope.query.email = response.data.email;
-				$('#logInModal').modal('hide');
-				$scope.byStatus(0,'query')
-				// if ($scope.role === "USER"){
-				// 	$('#imgModal').modal('show');
-				// }
-
-				getnumber($scope.currentSTDid)//for show details
+				logInData(response)
 			})
 			.catch(function (error) {
 				$scope.logInErrorStatus = true;
@@ -116,7 +87,17 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 
 	}
 
-
+	function logInData(response){
+		$scope.loginStatus = true;
+		var token = response.data.token;
+		$window.localStorage.setItem('jwtToken', token);
+		$scope.role = response.data.role;
+		$scope.currentSTDid = response.data.id;
+		$scope.query.email = response.data.email;
+		$('#logInModal').modal('hide');
+		$scope.byStatus(0,'query')
+		getnumber($scope.currentSTDid)
+	}
 
 
 	$scope.addImg = function (){
@@ -126,7 +107,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		formData.append('file',  $rootScope.imageFile);
 		formData.append('id', $scope.currentSTDid);
 
-		$http.post('/api/upByImg', formData, {
+		$http.post('/api/public/upByImg', formData, {
 			transformRequest: angular.identity,
 			headers: {'Content-Type': undefined}
 		}).then(function (response){
@@ -169,7 +150,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	$scope.changePassword = function (){
 		if ($scope.student.npassword === $scope.student.ncpassword) {
 			if ($scope.student.npassword !== $scope.student.password) {
-				$http.put(`/api/change?password=${$scope.student.ncpassword}`, $scope.student)
+				$http.put(`/api/public/change?password=${$scope.student.ncpassword}`, $scope.student)
 					.then(function (response) {
 						$scope.successMessage = response.data.message;
 						$scope.twoModal('Success', 'cPassword')
@@ -188,11 +169,28 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		}
 	}
 
+	$scope.setPassword = function (){
+		console.log($scope.student.snpassword, $scope.student.sncpassword)
+		if ($scope.student.snpassword === $scope.student.sncpassword) {
+				$http.put(`/api/public/setPass?password=${$scope.student.sncpassword}`, $scope.student)
+					.then(function (response) {
+						$scope.successMessage = response.data.message;
+						$scope.twoModal('Success', 'setPassword')
+					})
+					.catch(function (error) {
+						$scope.logInErrorStatus = true;
+						$scope.passError = error.data.message;
+					});
+			} else{
+				$scope.logInErrorStatus = true;
+				$scope.passError = "Password And Confirm Password do not match";
+			}
+	}
+
 	function fetchProfile(){
-		$http.get('/api/profileById/'+$scope.currentSTDid)
+		$http.get('/api/public/profileById/'+$scope.currentSTDid)
 			.then(function (response){
 				$scope.student = response.data;
-				$scope.img = response.data.imgName + '?' + new Date().getTime();
 			})
 			.catch(function (error) {
 				$('#errorModal').modal('show');
@@ -208,7 +206,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	}
 
 	$scope.showProfileForId = function (){
-		$http.get('/api/profileById/'+$scope.currentSTDid)
+		$http.get('/api/public/profileById/'+$scope.currentSTDid)
 			.then(function (response){
 				$scope.student = response.data;
 				$('#idCardModal').modal('show');
@@ -286,10 +284,10 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 				const data1 = response.data;
 				$scope.tableParams1 = new NgTableParams(
 					{
-						page: 1, // Show the first page
-						count: 10, // Number of items per page
+						page: 1,
+						count: 10,
 						sorting: {
-							bcode: 'asc' // Default sorting by 'First Name' column in ascending order
+							bcode: 'asc'
 						}
 					},
 					{
@@ -392,7 +390,6 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 				contact : studentToUpdate.contact,
 				address : studentToUpdate.address
 			};
-
 			$('#updateStudentModal').modal('show', 'keyboard', 'focus');
 		} else {
 			console.error('Student not found:', studentID);
@@ -415,12 +412,17 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	};
 
 	$scope.updateSelf = function () {
-		$http.put('/api/add', $scope.student)
+		$http.put('/api/public/add', $scope.student)
 			.then(function (response) {
 				$scope.successMessage = 'Data updated successfully.';
-				$scope.twoModal('Success','updateSelf')
-				$scope.student = {};
-				fetchProfile();
+				if ($scope.fromGoogle === false){
+					$scope.twoModal('Success','updateSelf')
+					$scope.student = {};
+					fetchProfile();
+				}else if ($scope.fromGoogle === true){
+					$scope.twoModal('setPassword','updateSelf')
+				}
+
 			})
 			.catch(function (error) {
 				var from = "studentUpdate"
@@ -492,10 +494,12 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 			.then(function (response) {
 				if (response.status === 200 || response.status === 201) {
 					$scope.successMessage1 = response.data.message;
-					console.log($scope.successMessage1)
 					$('#addSuccessModal').modal('show');
 					fetchStudents();
 					$scope.student = {};
+					// if ($scope.role === "USER"){
+					// 	$('#imgModal').modal('show');
+					// }
 				}
 			})
 			.catch(function (error) {
@@ -615,12 +619,15 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 		$scope.staff = {};
 		$scope.book = {};
 		$scope.query= {};
+		$scope.showQuery = false ;
+		$scope.showActivity = false;
 		$scope.students = [];
 		$scope.books = [];
 		$scope.queries = [];
 		$scope.adminMenu = true;
 		$scope.newQuery = 0;
 		$scope.defaultImg = "default.png";
+		$scope.fromGoogle = false;
 	}
 
 	initialize();
@@ -646,9 +653,18 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 				$scope.errorMessage = 'Server Error. Try Again Later';
 			});
 	}
-	$scope.triggerQueries = function (){
+	$scope.triggerMenu = function (from){
 		$scope.adminMenu = false;
-		fetchqueries();
+		if(from === "Query"){
+			$scope.showQuery = true ;
+			$scope.showActivity = false;
+			fetchqueries();
+		}else if (from === "Activity"){
+			$scope.showQuery = false ;
+			$scope.showActivity = true;
+			fetchActitvity();
+		}
+
 	}
 
 	function fetchqueries(){
@@ -696,6 +712,50 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 				$('#errorModal').modal('show');
 				console.log("Error in fetching Query");
 			});
+	}
+
+	function fetchActitvity(){
+		$http.get("/api/logs/returnAllActivity")
+			.then(function (response){
+				$scope.logData = response.data;
+				const data2 = response.data;
+				$scope.statusId = null;
+				$scope.tableParams2 = new NgTableParams(
+					{
+						page: 1, // Show the first page
+						count: 10, // Number of items per page
+						sorting: {
+							date: 'asc' // Default sorting by 'First Name' column in ascending order
+						}
+					},
+					{
+						dataset: data2 // Set the fetched data as the dataset
+					}
+				);
+			}).catch(function (error) {
+			console.error('Error fetching Logs:', error);
+			});
+	}
+
+	$scope.logById = function (){
+		$http.get("/api/public/activityById/"+ $scope.currentSTDid)
+			.then(function (response){
+				$scope.openModal('activityById');
+				$scope.logData = response.data;
+
+			}).catch(function (error) {
+			console.error('Error fetching Logs:', error);
+		})
+	}
+
+	function clearCookies() {
+		var cookies = document.cookie.split("; ");
+		for (var i = 0; i < cookies.length; i++) {
+			var cookie = cookies[i];
+			var eqPos = cookie.indexOf("=");
+			var cookieName = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+			document.cookie = cookieName + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
+		}
 	}
 
 

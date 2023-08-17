@@ -21,4 +21,6 @@ public class AuthResponse {
     private String error;
 
     private int id;
+
+    private boolean activate;
 }

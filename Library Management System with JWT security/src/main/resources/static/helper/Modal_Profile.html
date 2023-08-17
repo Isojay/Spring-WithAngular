@@ -93,12 +93,13 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="updateSelfModalLabel">Update Student</h5>
+                <h5 class="modal-title" id="updateSelfModalLabel">Update Student Profile</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
+                <p ng-show="google === true">Please Complete the Profile. This will only be shown this Time</p>
                 <form ng-submit="updateSelf()">
                     <input type="hidden" name="id" ng-model="student.id">
                     <div class="form-group">
@@ -143,3 +144,32 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="setPasswordModal" tabindex="-1" role="dialog" aria-labelledby="setPasswordModalLabel">
+    <div class="modal-dialog modal-dialog-centered  modal-md  custom-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h5 class="modal-title" id="setPasswordModalLabel">Set Password</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" ng-click="logInErrorStatus = false">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p> Your Information is sucessfully added.Now you have to set Password for your convenience when Your Google account is unavailable </p>
+                default pass = 12345
+                <form ng-submit="setPassword()">
+                    <input type="hidden" name="id" ng-model="student.id">
+                    <div class="form-group">
+                        <span class="text-danger" ng-show="logInErrorStatus"> {{passError}} <br></span>
+                        <label for="password">New Password</label>
+                        <input type="password" class="form-control" required ng-model="student.snpassword" id="snpassword" placeholder="Enter password"><br>
+                        <label for="ncpassword">Confirm New Password</label>
+                        <input type="password" class="form-control" required ng-model="student.sncpassword" id="sncpassword" placeholder="Enter password" >
+
+                    </div>
+                    <button type="submit" class="btn btn-primary" >Set Password</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

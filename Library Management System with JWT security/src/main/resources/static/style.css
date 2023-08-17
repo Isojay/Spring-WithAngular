@@ -130,7 +130,7 @@
 
 /* Apply background image to the custom modal backdrop */
 .custom-modal-dialog.modal-open .modal-backdrop {
-    background-image: url('/Pictures/background.jpg');
+    background-image: url('static/Pictures/background.jpg');
     background-size: cover;
     background-position: center;
     backdrop-filter: blur(3px);

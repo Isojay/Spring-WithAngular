@@ -3,6 +3,7 @@ package com.example.AngularSpring.Controller;
 import com.example.AngularSpring.Entity.Role;
 import com.example.AngularSpring.Entity.StudentDetails;
 import com.example.AngularSpring.Service.StudentService;
+import jakarta.annotation.PostConstruct;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,16 @@ public class StudentController {
 		this.studentService = studentService;
 		this.passwordEncoder = passwordEncoder;
 	}
+
+//	@PostConstruct
+//	public void edit(){
+//		String email= "isongum@gmail.com";
+//		StudentDetails studentDetails = studentService.findbyEmail(email) ;
+//		if (studentDetails != null){
+//			studentDetails.setGoogleActivate(false);
+//			studentService.save(studentDetails);
+//		}
+//	}
 
 	@GetMapping("/students")
 	public List<StudentDetails> getallStudents(){

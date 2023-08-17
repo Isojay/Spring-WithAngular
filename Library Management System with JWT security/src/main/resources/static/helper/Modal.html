@@ -37,3 +37,43 @@
     </div>
   </div>
 </div>
+
+
+
+<div class="modal fade" id="activityByIdModal" tabindex="-1" role="dialog" aria-labelledby="activityByIdModalLabel">
+  <div class="modal-dialog modal-md custom-modal-dialog" role="document">
+    <div class="modal-content custom-modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="activityByIdModalLabel">Login Details</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <table class="table table-bordered table-striped">
+          <thead class="thead-light">
+          <tr>
+            <th scope="col">Device</th>
+            <th scope="col">Location</th>
+            <th scope="col">Date and Time</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="detail in logData">
+            <td>{{ detail.os }}</td>
+            <td>Kathmandu, Nepal</td>
+            <td>{{ detail.localDateTime | date:'MMMM d' }} at {{ detail.localDateTime | date:'HH:mm' }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+

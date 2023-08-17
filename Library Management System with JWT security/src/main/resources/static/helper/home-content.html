@@ -54,12 +54,21 @@
                             <p class="card-text">Manage all the Queries here.</p>
                             <div class="row">
                                 <div class="col-md-5">
-                                    <a ng-click="triggerQueries()" class="btn btn-primary" style="color: white;">Manage</a>
+                                    <a ng-click="triggerMenu('Query')" class="btn btn-primary" style="color: white;">Manage</a>
                                 </div>
                                 <div class="col-md-6  text-center align-self-center">
                                     <p class="card-text">New Queries: {{count}}</p>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 pt-3">
+                    <div class="card" style="background-color:white;">
+                        <div class="card-body">
+                            <h4 class="card-title">Activites</h4>
+                            <p class="card-text">Manage all the Activities here.</p>
+                            <a ng-click="triggerMenu('Activity')" class="card-link btn btn-primary" style="color: white;">Manage</a>
                         </div>
                     </div>
                 </div>
@@ -71,7 +80,7 @@
 
     <div ng-show="role === 'ADMIN' && !adminMenu">
 
-        <div class="card shadow p-3 mb-5 bg-white rounded">
+        <div class="card shadow p-3 mb-5 bg-white rounded" ng-show="showQuery">
             <div class="card-header">
                 <div class="row justify-content-between">
                     <div class="col-md-6 align-middle">
@@ -100,7 +109,31 @@
                             <a href="#" ng-click="solvedQuery(query.id)" class="btn btn-primary" ng-show="query.status !== 2">Solved</a>
                             <span ng-show="query.status === 2">Solved</span>
                         </td>
-                        <td title="Delete"><a href="#" ng-click="deleteQuery(query.id)" class="btn btn-danger">Delete</a></td>
+                        <td title="Delete"  class="text-center align-middle"><a href="#" ng-click="deleteQuery(query.id)" class="btn btn-danger">Delete</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="card shadow p-3 mb-5 bg-white rounded" ng-show="showActivity">
+            <div class="card-header">
+                <div class="row justify-content-between">
+                    <div class="col-md-6 align-middle">
+                        <h5>Activities</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <table ng-table="tableParams2" class="table" show-filter="true">
+                    <tr ng-repeat="log in $data">
+                        <div ng-show="$data === null"> NO DATA AVAILABLE</div>
+                        <td title="'SN'" class="text-center align-middle" ng-bind="$index+1 "></td>
+                        <td  class="text-center align-middle" title="'Logged On'" sortable="'localDateTime'" filter="{ 'subject': 'number' }"><a href="#" ng-click="logById(log.id)" class="text-primary">{{log.localDateTime| date:'MMMM d'}} at {{log.localDateTime| date:'HH:mm'}}</a></td>
+                        <td class="text-center align-middle" title="'Logged By'" sortable="'id'" filter="{ 'id': 'number' }">{{ log.studentDetails === null ? log.staff.id : log.studentDetails.id }}</td>
+                        <td class="text-center align-middle" title="'User'" sortable="'user'" filter="{ 'email': 'text' }">{{ log.staff === null ? 'Student' : 'Staff' }}</td>
+                        <td class="text-center align-middle" title="'Browser'" sortable="'email'" filter="{ 'email': 'text' }">{{log.browser}}</td>
+                        <td class="text-center align-middle" title="'Os'" sortable="'contact'" filter="{ 'contact': 'number' }">{{log.os}}
+                        <td title="Delete"><a href="#" ng-click="deletelog(log.id)" class="btn btn-danger">Delete</a></td>
                     </tr>
                 </table>
             </div>

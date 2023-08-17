@@ -32,11 +32,17 @@ public class Staff implements UserDetails {
 
     private boolean accountstatus;
 
+
+
     @Column(name = "Password")
     private String spassword;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    public Staff(int id) {
+        this.id = id;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

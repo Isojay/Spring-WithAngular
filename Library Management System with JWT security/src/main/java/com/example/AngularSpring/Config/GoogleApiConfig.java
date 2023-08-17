@@ -7,7 +7,6 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean;
 
 @Configuration
 public class GoogleApiConfig {
@@ -22,6 +21,5 @@ public class GoogleApiConfig {
         return GsonFactory.getDefaultInstance();
     }
 
-    // Other beans and configurations can also be defined here
 
 }

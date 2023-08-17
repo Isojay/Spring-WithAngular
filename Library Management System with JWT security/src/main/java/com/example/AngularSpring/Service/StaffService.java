@@ -2,11 +2,8 @@ package com.example.AngularSpring.Service;
 
 import com.example.AngularSpring.Entity.Staff;
 import com.example.AngularSpring.Repo.StaffRepo;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +13,10 @@ public class StaffService {
 
     public Staff findByEmail(String email){
         return staffRepo.findBySemail(email);
+    }
+
+    public Staff save(Staff staff){
+        return staffRepo.save(staff);
     }
 
 //    @PostConstruct

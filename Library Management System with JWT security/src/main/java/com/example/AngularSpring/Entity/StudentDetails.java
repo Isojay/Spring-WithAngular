@@ -29,6 +29,8 @@ public class StudentDetails implements UserDetails {
 
     private String imgName;
 
+    private boolean googleActivate;
+
     @NotEmpty
     @Column(name = "First_name")
     private String fName;

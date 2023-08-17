@@ -1,11 +1,12 @@
 package com.example.AngularSpring.Controller;
 
 import com.example.AngularSpring.Auth.MsgResponse;
+import com.example.AngularSpring.Entity.Log_Table;
 import com.example.AngularSpring.Entity.StudentDetails;
+import com.example.AngularSpring.Service.LogService;
 import com.example.AngularSpring.Service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -13,14 +14,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/public")
 public class PublicController {
 
     private final StudentService studentService;
+    private final LogService logService;
     public static String Uploaddir =  System.getProperty("user.dir")+"/src/main/resources/static/Pictures";
 //    public static String Uploaddir =  "opt/Librarymgmt";
     MsgResponse msgResponse = new MsgResponse();
@@ -67,6 +70,8 @@ public class PublicController {
         if(response.isPresent()){
             StudentDetails send = response.get();
             studentDetail.setPassword(send.getPassword());
+            studentDetail.setGoogleActivate(false);
+            System.out.println(studentDetail.isGoogleActivate());
         }
         return studentService.save(studentDetail);
     }
@@ -82,6 +87,20 @@ public class PublicController {
             return ResponseEntity.ok(msgResponse);
         }
         msgResponse.setMessage("Error Error!! Password Incorrect !!!");
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(msgResponse);
+    }
+
+    @PutMapping("/setPass")
+    public ResponseEntity<?> setPass(@RequestBody StudentDetails studentDetail,
+                                        @RequestParam("password") String npassword) {
+        StudentDetails studentDetails = studentService.findbyEmail(studentDetail.getEmail());
+        if(passwordEncoder.matches("12345",studentDetails.getPassword())){
+            studentDetail.setPassword(passwordEncoder.encode(npassword));
+            studentService.save(studentDetail);
+            msgResponse.setMessage("Password Sucessfully Set !!");
+            return ResponseEntity.ok(msgResponse);
+        }
+        msgResponse.setMessage("Error Error!! Please Try Again or DO it in the  Profile section !!!");
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(msgResponse);
     }
 
@@ -115,6 +134,16 @@ public class PublicController {
         }
     }
 
+
+    @GetMapping("/activityById/{id}")
+    private List<Log_Table> activityById(@PathVariable int id){
+        return logService.findbyid(id);
+    }
+
+    @GetMapping("/deleteActivityById/{id}")
+    private void deleteById(@PathVariable  int id){
+        logService.deleteById(id);
+    }
 
 
 }
