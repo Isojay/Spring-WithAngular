@@ -67,7 +67,7 @@
                     <td class="text-center align-middle" title="'Book Name'" sortable="'bname'" filter="{ 'bname': 'text' }">{{book.bname}}</td>
                     <td class="text-center align-middle" title="'Book Author'" sortable="'bauthor'" filter="{ 'bauthor': 'text' }">{{book.bauthor}}</td>
                     <td class="text-center align-middle" title="'Published Year'" sortable="'year'" filter="{ 'year': 'number' }">{{book.year}}</td>
-                    <td class="text-center align-middle" title="'Status  '" sortable="'status'" filter="{ 'status': 'number' }">{{ book.status === 0 ? 'Available' : 'Borrowed' }}</td>
+                    <td class="text-center align-middle" title="'Availability  '" sortable="'status'" filter="{ 'status': 'number' }">{{ book.status === 0 ? 'Available' : 'Borrowed' }}</td>
                     <td class="text-center align-middle" title="'Borrowed date'" sortable="'date'" filter="{ 'date': 'number' }">{{book.date}}</td>
                     <td class="text-center align-middle" title="'Borrowed by'" sortable="'date'" filter="{ 'date': 'number' }">{{book.studentDetails.fname+" "+book.studentDetails.lname}}</td>
                     <td class="text-center align-middle" title="Update"><a href="#" ng-click="doUpdateBook(book.bcode)" class="btn btn-warning">{{ book.status === 0 ? 'Borrow' : 'Return' }}</a></td>
@@ -84,7 +84,7 @@
                     <td class="text-center align-middle" title="'Book Name'" sortable="'bname'" filter="{ 'bname': 'text' }">{{book.bname}}</td>
                     <td class="text-center align-middle" title="'Book Author'" sortable="'bauthor'" filter="{ 'bauthor': 'text' }">{{book.bauthor}}</td>
                     <td class="text-center align-middle" title="'Published Year'" sortable="'year'" filter="{ 'year': 'number' }">{{book.year}}</td>
-                    <td class="text-center align-middle" title="'Status  '" sortable="'status'" filter="{ 'status': 'number' }">{{ book.status === 0 ? 'Available' : 'Borrowed' }}</td>
+                    <td class="text-center align-middle" title="'Availability  '" sortable="'status'" filter="{ 'status': 'number' }">{{ book.status === 0 ? 'Available' : 'Borrowed' }}</td>
                 </tr>
             </table>
         </div>
