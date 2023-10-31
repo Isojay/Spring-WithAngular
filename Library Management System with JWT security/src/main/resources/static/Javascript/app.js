@@ -311,6 +311,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 	$scope.triggerStudent = function () {
 		$scope.showLibrary = true;
 		$scope.showTable = true;
+		console.log($scope.count)
 		fetchStudents();
 	}
 	$scope.triggerBook = function () {
@@ -330,6 +331,7 @@ app.controller('LibraryController', function ($scope, $http,NgTableParams, $wind
 
 	$scope.searchKeywords = function () {
 		console.log("Keywords")
+		console.log($scope.keywordSemester,$scope.keywordName ,$scope.keywordEmail)
 		$scope.count = 1;
 		$scope.triggerStudent();
 	}

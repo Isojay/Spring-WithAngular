@@ -30,9 +30,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(configurer -> configurer
-                        .requestMatchers("/api/students/**","/api/logs/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/logs/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/public/**").hasAnyAuthority("USER","ADMIN")
-                        .requestMatchers("/**").permitAll()
+                        .requestMatchers("/api/students/**","/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

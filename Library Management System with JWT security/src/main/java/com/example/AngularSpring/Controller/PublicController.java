@@ -1,10 +1,11 @@
 package com.example.AngularSpring.Controller;
 
-import com.example.AngularSpring.Auth.MsgResponse;
+import com.example.AngularSpring.Model.MsgResponse;
 import com.example.AngularSpring.Entity.Log_Table;
 import com.example.AngularSpring.Entity.StudentDetails;
 import com.example.AngularSpring.Service.LogService;
 import com.example.AngularSpring.Service.StudentService;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,31 +28,30 @@ public class PublicController {
 
     private final StudentService studentService;
     private final LogService logService;
-    public static String Uploaddir =  System.getProperty("user.dir")+"/src/main/resources/static/Pictures";
+    public static String Uploaddir =  "/home/blue/Pictures/LBMS";
 //    public static String Uploaddir =  "opt/Librarymgmt";
     MsgResponse msgResponse = new MsgResponse();
     private final PasswordEncoder passwordEncoder;
 
-    //to create the folder if not present
+//    to create the folder if not present
 
-    //    public void createDirectoryIfNeeded() {
-    //        String directoryPath = "/path/to/your/project/root/pictures"; // Update this path
-    //        String directoryPath = Uploaddir
-    //        Path path = Paths.get(directoryPath);
-    //
-    //        if (!Files.exists(path)) {
-    //            try {
-    //                Files.createDirectories(path);
-    //                System.out.println("Directory created: " + directoryPath);
-    //            } catch (IOException e) {
-    //                System.err.println("Error creating directory: " + e.getMessage());
-    //            }
-    //        }
-    //    }
-    //    @PostConstruct
-    //    public void init(){
-    //        createDirectoryIfNeeded();
-    //    }
+        public void createDirectoryIfNeeded() {
+            String directoryPath = Uploaddir;
+            Path path = Paths.get(directoryPath);
+
+            if (!Files.exists(path)) {
+                try {
+                    Files.createDirectories(path);
+                    System.out.println("Directory created: " + directoryPath);
+                } catch (IOException e) {
+                    System.err.println("Error creating directory: " + e.getMessage());
+                }
+            }
+        }
+        @PostConstruct
+        public void init(){
+            createDirectoryIfNeeded();
+        }
 
     @GetMapping("/profileById/{id}")
     public ResponseEntity<?> profileByid(@PathVariable int id){

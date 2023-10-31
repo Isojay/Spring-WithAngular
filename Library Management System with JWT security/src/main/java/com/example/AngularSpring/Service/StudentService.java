@@ -32,8 +32,7 @@ public class StudentService {
     }
 
     public StudentDetails findEmail(String keyword){
-        StudentDetails student = studentRepo.findByEmail(keyword);
-        return student;
+        return studentRepo.findByEmail(keyword);
     }
 
 

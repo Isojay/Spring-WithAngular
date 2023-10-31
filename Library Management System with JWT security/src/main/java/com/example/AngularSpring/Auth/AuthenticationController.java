@@ -2,6 +2,10 @@ package com.example.AngularSpring.Auth;
 
 
 import com.example.AngularSpring.Entity.StudentDetails;
+import com.example.AngularSpring.Model.AuthResponse;
+import com.example.AngularSpring.Model.MsgResponse;
+import com.example.AngularSpring.Model.RegisterRequest;
+import com.example.AngularSpring.Service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;

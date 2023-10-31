@@ -1,17 +1,14 @@
 package com.example.AngularSpring.Controller;
 
-import com.example.AngularSpring.Auth.MsgResponse;
+import com.example.AngularSpring.Model.MsgResponse;
 import com.example.AngularSpring.Entity.Queries;
 import com.example.AngularSpring.Service.QueryService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController

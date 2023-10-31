@@ -5,6 +5,7 @@ import com.example.AngularSpring.Entity.Book;
 import com.example.AngularSpring.Entity.StudentDetails;
 import com.example.AngularSpring.Service.BookService;
 import com.example.AngularSpring.Service.StudentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,15 +16,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/books")
+@RequiredArgsConstructor
 public class BookController {
 
     final BookService bookService;
     final StudentService studentService;
-
-    public BookController(BookService bookService, StudentService studentService) {
-        this.bookService = bookService;
-        this.studentService = studentService;
-    }
 
     @GetMapping("/getBook")
     public List<Book> showBooks(){
@@ -47,7 +44,6 @@ public class BookController {
 
     @PostMapping("/addBooks")
     public ResponseEntity<?> addBook(@RequestBody Book book){
-        System.out.println("Error Ran away");
         Optional<Book> bid = bookService.findById(book.getBcode());
         if(bid.isPresent()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

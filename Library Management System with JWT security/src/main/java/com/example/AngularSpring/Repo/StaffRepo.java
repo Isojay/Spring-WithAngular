@@ -10,8 +10,4 @@ public interface StaffRepo extends JpaRepository<Staff,Integer> {
     Staff findBySemail(String email);
 
 
-
-
-
-
 }

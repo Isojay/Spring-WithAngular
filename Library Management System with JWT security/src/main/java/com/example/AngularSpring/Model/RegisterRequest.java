@@ -1,4 +1,4 @@
-package com.example.AngularSpring.Auth;
+package com.example.AngularSpring.Model;
 
 import lombok.*;
 

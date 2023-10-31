@@ -1,5 +1,8 @@
-package com.example.AngularSpring.Auth;
+package com.example.AngularSpring.Service;
 
+import com.example.AngularSpring.Model.AuthResponse;
+import com.example.AngularSpring.Auth.AuthenticationRequest;
+import com.example.AngularSpring.Model.RegisterRequest;
 import com.example.AngularSpring.Config.GoogleAuth;
 import com.example.AngularSpring.Config.JwtService;
 import com.example.AngularSpring.Entity.Log_Table;
@@ -8,7 +11,6 @@ import com.example.AngularSpring.Entity.Staff;
 import com.example.AngularSpring.Entity.StudentDetails;
 import com.example.AngularSpring.Repo.LogRepo;
 import com.example.AngularSpring.Repo.StaffRepo;
-import com.example.AngularSpring.Service.StudentService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua_parser.Client;
 import ua_parser.Parser;
-import ua_parser.UserAgentParser;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
